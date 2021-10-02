@@ -8,6 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return null;
+        return "";
     }
 }

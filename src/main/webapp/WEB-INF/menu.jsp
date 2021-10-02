@@ -10,6 +10,7 @@
 <html>
 <head>
     <title>Title</title>
+
 </head>
 <body>
 <div style="position: absolute">
@@ -26,11 +27,14 @@
             </form>
         </c:when>
         <c:otherwise>
-            <form method="post" action="">
+            <form method="post" action="controller?action=login">
                 <button type="submit">log in</button>
+
             </form>
         </c:otherwise>
     </c:choose>
+
 </div>
+
 </body>
 </html>

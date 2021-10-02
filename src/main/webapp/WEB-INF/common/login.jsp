@@ -16,8 +16,8 @@
     <h1>log in</h1>
     <br>
     <form method="post" action="controller?action=login">
-        <fmt:message key="login"/><input type = "text" name = "login"/><br>
-        <fmt:message key="password"/><input type = "password" name = "password"/><br>
+        <h4>login</h4><input type = "text" name = "login"/><br>
+        <h4>password</h4><input type = "password" name = "password"/><br>
         <input type="submit" value = "log in"/>
     </form>
 </div>
