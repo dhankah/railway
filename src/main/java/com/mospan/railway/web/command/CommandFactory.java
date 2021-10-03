@@ -1,5 +1,7 @@
 package com.mospan.railway.web.command;
 
+import com.mospan.railway.web.command.commands.AdminMainCommand;
+import com.mospan.railway.web.command.commands.ClientMainCommand;
 import com.mospan.railway.web.command.commands.LoginCommand;
 
 import java.util.HashMap;
@@ -18,5 +20,14 @@ public class CommandFactory {
 
     static {
         commands.put("login", new LoginCommand());
+
+        commands.put("admin", new AdminMainCommand());
+
+        commands.put("client", new ClientMainCommand());
+    }
+
+
+    public Command getCommand(String action) {
+        return commands.get(action);
     }
 }

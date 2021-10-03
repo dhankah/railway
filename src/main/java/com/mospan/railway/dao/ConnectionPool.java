@@ -19,7 +19,7 @@ public class ConnectionPool {
             instance = new ConnectionPool();
         return instance;
     }
-    public static Connection getConnection(){
+    public Connection getConnection(){
         Context ctx;
         Connection c = null;
         try {
