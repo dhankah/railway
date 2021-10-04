@@ -6,7 +6,7 @@
     <title></title>
 </head>
 <body>
-<jsp:include page="view/menu.jsp"></jsp:include>
+<jsp:include page="view/common/menu.jsp"></jsp:include>
 <h1>
 </h1>
 <br/>

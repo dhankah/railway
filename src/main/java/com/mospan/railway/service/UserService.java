@@ -12,8 +12,8 @@ public class UserService {
     public void insert(User user) {
         dao.insert(user);
     }
-    public void update(long id, User user) {
-        dao.update(id, user);
+    public void update(User user) {
+        dao.update(user);
     }
     public User find(String login) {
         return dao.find(login);

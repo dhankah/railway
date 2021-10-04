@@ -1,6 +1,6 @@
 package com.mospan.railway.web.command;
 
-import com.mospan.railway.web.command.commands.AdminMainCommand;
+import com.mospan.railway.web.command.commands.AdminStationCommand;
 import com.mospan.railway.web.command.commands.ClientMainCommand;
 import com.mospan.railway.web.command.commands.LoginCommand;
 
@@ -21,7 +21,7 @@ public class CommandFactory {
     static {
         commands.put("login", new LoginCommand());
 
-        commands.put("admin", new AdminMainCommand());
+        commands.put("stations", new AdminStationCommand());
 
         commands.put("client", new ClientMainCommand());
     }

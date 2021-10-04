@@ -1,7 +1,5 @@
 package com.mospan.railway.web.command.commands;
 
-import com.mospan.railway.dao.Dao;
-import com.mospan.railway.dao.UserDao;
 import com.mospan.railway.model.Role;
 import com.mospan.railway.model.User;
 import com.mospan.railway.service.UserService;
@@ -9,7 +7,6 @@ import com.mospan.railway.web.command.Command;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 public class LoginCommand implements Command {
     @Override
@@ -25,12 +22,15 @@ public class LoginCommand implements Command {
         User user = userService.find(login);
 
         if (!user.getPassword().equals(password)) {
-            System.out.println("dont even try");
+            // logic for wrong password
         }
+
         else if (user.getRole().equals(Role.ADMIN)) {
-            return (new AdminMainCommand()).execute(request, response);
+            request.getSession().setAttribute("user", user);
+            return (new AdminStationCommand()).execute(request, response);
         }
         else if (user.getRole().equals(Role.CLIENT)) {
+            request.getSession().setAttribute("user", user);
             return (new ClientMainCommand()).execute(request, response);
         }
         return "login.jsp";

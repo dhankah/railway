@@ -16,18 +16,63 @@ public class UserDao implements Dao<User>{
 
 
     @Override
-    public void insert(User entity) {
+    public void insert(User user) {
 
+        PreparedStatement st = null;
+        try {
+            st = con.prepareStatement("INSERT INTO user (login, password, role_id, detail_id)" +
+                    " VALUES (?,?, ?, ?)");
+
+            st.setString(1, user.getLogin());
+            st.setString(2, user.getPassword());
+
+            PreparedStatement stDetail = con.prepareStatement("INSERT INTO detail (first_name, last_name, email) VALUES (?, ?, ?)");
+
+            stDetail.setString(1, user.getDetails().getFirstName());
+            stDetail.setString(1, user.getDetails().getLastName());
+            stDetail.setString(1, user.getDetails().getEmail());
+
+            stDetail.executeUpdate();
+
+            ResultSet rs = stDetail.executeQuery("SELECT LAST_INSERT_ID()");
+            rs.next();
+
+            st.setLong(4, rs.getLong(1));
+
+            if (user.getRole().equals(Role.ADMIN)) {
+                st.setLong(3, 0);
+            }
+            else if (user.getRole().equals(Role.CLIENT)) {
+                st.setLong(3, 1);
+            }
+
+            st.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void delete(User entity) {
-
+    public void delete(User user) {
+        try {
+            PreparedStatement st = con.prepareStatement("DELETE FROM user WHERE id = ?");
+            st.setLong(1, user.getId());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void update(long id, User entity) {
-
+    public void update(User user) {
+        PreparedStatement st = null;
+        try {
+            st = con.prepareStatement("UPDATE user WHERE id = ? SET (login, password) VALUES (?, ?)");
+            st.setLong(1, user.getId());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
