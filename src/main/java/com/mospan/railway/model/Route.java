@@ -3,7 +3,7 @@ package com.mospan.railway.model;
 
 import java.time.LocalTime;
 
-public class Route {
+public class Route extends Entity{
 
     private long startStationId;
     private long endStationId;

@@ -1,7 +1,5 @@
 package com.mospan.railway.dao;
 
-import com.mospan.railway.model.Detail;
-import com.mospan.railway.model.Role;
 import com.mospan.railway.model.Station;
 
 import java.sql.Connection;
@@ -18,17 +16,50 @@ public class StationDao implements Dao<Station>{
 
     @Override
     public Station findById(long id) {
-        return null;
+        Station station = new Station();
+
+        try {
+            PreparedStatement st = null;
+            st = con.prepareStatement("SELECT * FROM station WHERE id = ?");
+
+            st.setLong(1, id);
+
+            ResultSet rs = st.executeQuery();
+            rs.next();
+
+            station.setName(rs.getString("name"));
+            station.setId(id);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return station;
     }
 
     @Override
-    public void insert(Station entity) {
+    public void insert(Station station) {
+        PreparedStatement st = null;
+        try {
+            st = con.prepareStatement("INSERT INTO station (name)" +
+                    " VALUES (?)");
+            st.setString(1, station.getName());
+            st.executeUpdate();
 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public void update(Station entity) {
-
+    public void update(Station station) {
+        try {
+            PreparedStatement st = con.prepareStatement("UPDATE station SET (name = ?) WHERE id = ?");
+            st.setString(1, station.getName());
+            st.setLong(2, station.getId());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -54,14 +85,19 @@ public class StationDao implements Dao<Station>{
     }
 
     @Override
-    public void delete(Station entity) {
-
+    public void delete(Station station) {
+        try {
+            PreparedStatement st = con.prepareStatement("DELETE FROM staion WHERE id = ?");
+            st.setLong(1, station.getId());
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public Collection<Station> findAll() {
         List<Station> stations = new ArrayList<>();
-
 
         try {
             PreparedStatement st = null;

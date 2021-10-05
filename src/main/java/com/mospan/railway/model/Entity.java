@@ -1,6 +1,6 @@
 package com.mospan.railway.model;
 
-public class Entity {
+public abstract class Entity {
 
     private long id;
 
