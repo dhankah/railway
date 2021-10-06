@@ -12,7 +12,7 @@ public class StationService {
     public void insert(Station station) {
         dao.insert(station);
     }
-    public void update(long id, Station station) {
+    public void update(Station station) {
         dao.update(station);
     }
     public Station find(String name) {
@@ -27,4 +27,5 @@ public class StationService {
     public Collection<Station> findAll() {
         return dao.findAll();
     }
+
 }

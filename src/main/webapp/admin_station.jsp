@@ -10,14 +10,22 @@
 <html>
 <head>
     <jsp:include page="view/common/menu.jsp"></jsp:include>
+    <jsp:include page="view/common/admin_menu.jsp"></jsp:include>
     <title>Title</title>
 </head>
 <body>
 <h1>WELCOME admin HEYAYEYAEY</h1>
+<form method="post" action="controller?action=editStation">
+    <input type="text" name ="nameForNew">
+    <input type="submit" value="add station">
+</form>
 <table>
     <tr>
         <td><c:forEach items="${sessionScope.stations}" var="station">
-            ${station.name} <br>
+            ${station.name}
+            <a href="controller?action=editStation&stationName=${station.name}">Edit</a>
+            <a href="controller?action=editStation&stationToDelete=${station.name}"  onclick="return confirm('Are you sure?')">Delete</a>
+            <br>
         </c:forEach></td>
     </tr>
 </table>

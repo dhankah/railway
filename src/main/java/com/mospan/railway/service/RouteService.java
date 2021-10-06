@@ -9,7 +9,7 @@ import com.mospan.railway.model.Station;
 import java.util.Collection;
 
 public class RouteService {
-    Dao<Route> dao = new RouteDao();
+    RouteDao dao = new RouteDao();
 
     public void insert(Route route) {
         dao.insert(route);
@@ -28,5 +28,8 @@ public class RouteService {
     }
     public Collection<Route> findAll() {
         return dao.findAll();
+    }
+    public Route findByStations(String startStation, String endStation){
+        return dao.findByStations(startStation, endStation);
     }
 }

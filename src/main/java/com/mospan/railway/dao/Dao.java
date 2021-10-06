@@ -11,4 +11,5 @@ public interface Dao<T> {
     T findById(long id);
     void delete(T entity);
     Collection<T> findAll();
+
 }

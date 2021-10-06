@@ -1,8 +1,6 @@
 package com.mospan.railway.web.command;
 
-import com.mospan.railway.web.command.commands.AdminStationCommand;
-import com.mospan.railway.web.command.commands.ClientMainCommand;
-import com.mospan.railway.web.command.commands.LoginCommand;
+import com.mospan.railway.web.command.commands.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +20,8 @@ public class CommandFactory {
         commands.put("login", new LoginCommand());
 
         commands.put("stations", new AdminStationCommand());
+        commands.put("editStation", new EditStationCommand());
+        commands.put("routes", new AdminRouteCommand());
 
         commands.put("client", new ClientMainCommand());
     }

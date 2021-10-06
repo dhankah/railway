@@ -39,16 +39,6 @@ public class FrontController extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
         }
-       /* RequestDispatcher dispatcher = request.getRequestDispatcher(page);
 
-        if (!page.equals("redirect")) {
-            try {
-                dispatcher.forward(request, response);
-            } catch (ServletException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }*/
     }
 }
