@@ -71,3 +71,5 @@ Q
 -src/main/java/com/mospan/railway/dao/Dao.java,d\0\d040857597b15243e6333646e25d03d17bcac710
 `
 0src/main/java/com/mospan/railway/model/Role.java,d\c\dc40fd2dd904a7a7eaa92750a850e22d31bb567b
+a
+1src/main/java/com/mospan/railway/model/Route.java,6\c\6c90cd4f0503d46c63db9bde73ca4af0b8f4e719

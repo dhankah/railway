@@ -1,6 +1,8 @@
 package com.mospan.railway.dao;
 
 import com.mospan.railway.model.Route;
+import com.mospan.railway.model.Train;
+import com.mospan.railway.service.StationService;
 
 
 import java.sql.*;
@@ -11,6 +13,7 @@ import java.util.List;
 public class RouteDao implements Dao<Route>{
 
     Connection con = ConnectionPool.getInstance().getConnection();
+    StationService stationService = new StationService();
 
     @Override
     public void insert(Route route) {
@@ -116,6 +119,34 @@ public class RouteDao implements Dao<Route>{
         }
 
         return routes;
+    }
+
+    public Route findByStations(String startStation, String endStation) {
+        Route route = new Route();
+
+        try {
+            PreparedStatement st = null;
+            st = con.prepareStatement("SELECT * FROM route WHERE start_station_id = ? AND end_station_id = ?");
+
+            st.setLong(1, stationService.find(startStation).getId());
+            st.setLong(2, stationService.find(endStation).getId());
+
+            ResultSet rs = st.executeQuery();
+
+            rs.next();
+
+            route.setStartStationId(rs.getLong("start_station_id"));
+            route.setEndStationId(rs.getLong("end_station_id"));
+            route.setArrivalTime(rs.getTime("arrival_time").toLocalTime());
+            route.setDepartTime(rs.getTime("depart_time").toLocalTime());
+            route.setId(rs.getLong("id"));
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return route;
     }
 
 }

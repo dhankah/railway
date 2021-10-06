@@ -9,6 +9,7 @@ public class Train extends Entity{
     private int availablePlaces;
     private double price;
     private String number;
+    private long routeId;
 
     public LocalDate getDepartDate() {
         return departDate;
@@ -48,5 +49,13 @@ public class Train extends Entity{
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public long getRouteId() {
+        return routeId;
+    }
+
+    public void setRouteId(long routeId) {
+        this.routeId = routeId;
     }
 }
