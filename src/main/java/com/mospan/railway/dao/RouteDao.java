@@ -22,8 +22,8 @@ public class RouteDao implements Dao<Route>{
             st = con.prepareStatement("INSERT INTO route (start_station_id, end_station_id, depart_time, arrival_time)" +
                     " VALUES (?, ?, ?, ?)");
 
-            st.setLong(1, route.getStartStationId());
-            st.setLong(2, route.getEndStationId());
+            st.setLong(1, route.getStartStation().getId());
+            st.setLong(2, route.getEndStation().getId());
             st.setTime(3, Time.valueOf(route.getDepartTime()));
             st.setTime(4, Time.valueOf(route.getArrivalTime()));
 
@@ -42,8 +42,8 @@ public class RouteDao implements Dao<Route>{
             st = con.prepareStatement("UPDATE route SET (start_station_id, end_station_id, depart_time, arrival_time)" +
                     " VALUES (?, ?, ?, ?) WHERE id = ?");
 
-            st.setLong(1, route.getStartStationId());
-            st.setLong(2, route.getEndStationId());
+            st.setLong(1, route.getStartStation().getId());
+            st.setLong(2, route.getEndStation().getId());
             st.setTime(3, Time.valueOf(route.getDepartTime()));
             st.setTime(4, Time.valueOf(route.getArrivalTime()));
             st.setLong(5, route.getId());
@@ -74,8 +74,8 @@ public class RouteDao implements Dao<Route>{
             ResultSet rs = st.executeQuery();
             rs.next();
 
-            route.setStartStationId(rs.getLong("start_station_id"));
-            route.setEndStationId(rs.getLong("end_station_id"));
+            route.setStartStation(stationService.findById(rs.getLong("start_station_id")));
+            route.setEndStation(stationService.findById(rs.getLong("end_station_id")));
             route.setArrivalTime(rs.getTime("arrival_time").toLocalTime());
             route.setDepartTime(rs.getTime("depart_time").toLocalTime());
             route.setId(id);
@@ -135,8 +135,8 @@ public class RouteDao implements Dao<Route>{
 
             rs.next();
 
-            route.setStartStationId(rs.getLong("start_station_id"));
-            route.setEndStationId(rs.getLong("end_station_id"));
+            route.setStartStation(stationService.findById(rs.getLong("start_station_id")));
+            route.setEndStation(stationService.findById(rs.getLong("end_station_id")));
             route.setArrivalTime(rs.getTime("arrival_time").toLocalTime());
             route.setDepartTime(rs.getTime("depart_time").toLocalTime());
             route.setId(rs.getLong("id"));

@@ -2,6 +2,7 @@ package com.mospan.railway.dao;
 
 
 import com.mospan.railway.model.Train;
+import com.mospan.railway.service.RouteService;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import java.util.List;
 public class TrainDao implements Dao<Train> {
 
     Connection con = ConnectionPool.getInstance().getConnection();
-
+    RouteService routeService = new RouteService();
 
 
     @Override
@@ -27,7 +28,7 @@ public class TrainDao implements Dao<Train> {
             st.setInt(3, train.getAvailablePlaces());
             st.setDouble(4, train.getPrice());
             st.setString(5, train.getNumber());
-            st.setLong(6, train.getRouteId());
+            st.setLong(6, train.getRoute().getId());
 
             st.executeUpdate();
 
@@ -47,7 +48,7 @@ public class TrainDao implements Dao<Train> {
             st.setInt(3, train.getAvailablePlaces());
             st.setDouble(4, train.getPrice());
             st.setString(5, train.getNumber());
-            st.setLong(6, train.getRouteId());
+            st.setLong(6, train.getRoute().getId());
             st.setLong(7, train.getId());
             st.executeUpdate();
         } catch (SQLException e) {
@@ -70,7 +71,7 @@ public class TrainDao implements Dao<Train> {
             rs.next();
 
             train.setId(rs.getLong("id"));
-            train.setRouteId(rs.getLong("route_id"));
+            train.setRoute(routeService.findById(rs.getLong("route_id")));
             train.setArrivalDate(rs.getDate("arrival_date").toLocalDate());
             train.setDepartDate(rs.getDate("depart_date").toLocalDate());
             train.setNumber(rs.getString("number"));
@@ -98,7 +99,7 @@ public class TrainDao implements Dao<Train> {
             rs.next();
 
             train.setId(rs.getLong("id"));
-            train.setRouteId(rs.getLong("route_id"));
+            train.setRoute(routeService.findById(rs.getLong("route_id")));
             train.setArrivalDate(rs.getDate("arrival_date").toLocalDate());
             train.setDepartDate(rs.getDate("depart_date").toLocalDate());
             train.setNumber(rs.getString("number"));
@@ -160,7 +161,7 @@ public class TrainDao implements Dao<Train> {
                 Train train = new Train();
 
                 train.setId(rs.getLong("id"));
-                train.setRouteId(rs.getLong("route_id"));
+                train.setRoute(routeService.findById(rs.getLong("route_id")));
                 train.setArrivalDate(rs.getDate("arrival_date").toLocalDate());
                 train.setDepartDate(rs.getDate("depart_date").toLocalDate());
                 train.setNumber(rs.getString("number"));

@@ -5,26 +5,26 @@ import java.time.LocalTime;
 
 public class Route extends Entity{
 
-    private long startStationId;
-    private long endStationId;
+    private Station startStation;
+    private Station endStation;
 
     private LocalTime departTime;
     private LocalTime arrivalTime;
 
-    public long getStartStationId() {
-        return startStationId;
+    public Station getStartStation() {
+        return startStation;
     }
 
-    public void setStartStationId(long startStationId) {
-        this.startStationId = startStationId;
+    public void setStartStation(Station startStation) {
+        this.startStation = startStation;
     }
 
-    public long getEndStationId() {
-        return endStationId;
+    public Station getEndStation() {
+        return endStation;
     }
 
-    public void setEndStationId(long endStationId) {
-        this.endStationId = endStationId;
+    public void setEndStation(Station endStation) {
+        this.endStation = endStation;
     }
 
     public LocalTime getDepartTime() {
