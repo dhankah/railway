@@ -19,16 +19,12 @@ public class TrainDao implements Dao<Train> {
     public void insert(Train train) {
         PreparedStatement st = null;
         try {
-            st = con.prepareStatement("INSERT INTO train (depart_date, arrival_date, available_places, price, " +
-                    "number, route_id)" +
-                    " VALUES (?, ?, ?, ?, ?, ?)");
+            st = con.prepareStatement("INSERT INTO train (price, number, route_id) VALUES (?, ?, ?)");
 
-            st.setDate(1, Date.valueOf(train.getDepartDate()));
-            st.setDate(2, Date.valueOf(train.getArrivalDate()));
-            st.setInt(3, train.getAvailablePlaces());
-            st.setDouble(4, train.getPrice());
-            st.setString(5, train.getNumber());
-            st.setLong(6, train.getRoute().getId());
+
+            st.setDouble(1, train.getPrice());
+            st.setString(2, train.getNumber());
+            st.setLong(3, train.getRoute().getId());
 
             st.executeUpdate();
 
@@ -40,16 +36,12 @@ public class TrainDao implements Dao<Train> {
     @Override
     public void update(Train train) {
         try {
-            PreparedStatement st = con.prepareStatement("UPDATE station SET (depart_date, arrival_date, available_places, price, \" +\n" +
-                    "                    \"number, route_id)\" +\n" +
-                    "                    \" VALUES (?, ?, ?, ?, ?, ?) WHERE id = ?");
-            st.setDate(1, Date.valueOf(train.getDepartDate()));
-            st.setDate(2, Date.valueOf(train.getArrivalDate()));
-            st.setInt(3, train.getAvailablePlaces());
-            st.setDouble(4, train.getPrice());
-            st.setString(5, train.getNumber());
-            st.setLong(6, train.getRoute().getId());
-            st.setLong(7, train.getId());
+            PreparedStatement st = con.prepareStatement("UPDATE station SET (price, number, route_id) VALUES (?, ?, ?) WHERE id = ?");
+
+            st.setDouble(1, train.getPrice());
+            st.setString(2, train.getNumber());
+            st.setLong(3, train.getRoute().getId());
+            st.setLong(4, train.getId());
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -58,7 +50,10 @@ public class TrainDao implements Dao<Train> {
 
     @Override
     public Train find(String number) {
-        Train train = new Train();
+
+        throw new UnsupportedOperationException();
+
+       /* Train train = new Train();
 
         try {
 
@@ -81,7 +76,7 @@ public class TrainDao implements Dao<Train> {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return train;
+        return train;*/
     }
 
     @Override
@@ -100,10 +95,7 @@ public class TrainDao implements Dao<Train> {
 
             train.setId(rs.getLong("id"));
             train.setRoute(routeService.findById(rs.getLong("route_id")));
-            train.setArrivalDate(rs.getDate("arrival_date").toLocalDate());
-            train.setDepartDate(rs.getDate("depart_date").toLocalDate());
             train.setNumber(rs.getString("number"));
-            train.setAvailablePlaces(rs.getInt("available_places"));
             train.setPrice(rs.getDouble("price"));
 
         } catch (SQLException e) {
@@ -162,10 +154,7 @@ public class TrainDao implements Dao<Train> {
 
                 train.setId(rs.getLong("id"));
                 train.setRoute(routeService.findById(rs.getLong("route_id")));
-                train.setArrivalDate(rs.getDate("arrival_date").toLocalDate());
-                train.setDepartDate(rs.getDate("depart_date").toLocalDate());
                 train.setNumber(rs.getString("number"));
-                train.setAvailablePlaces(rs.getInt("available_places"));
                 train.setPrice(rs.getDouble("price"));
 
                 trains.add(train);

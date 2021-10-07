@@ -61,8 +61,6 @@ i
 0src/main/java/com/mospan/railway/model/Role.java,d\c\dc40fd2dd904a7a7eaa92750a850e22d31bb567b
 c
 3src/main/java/com/mospan/railway/dao/DetailDao.java,c\8\c8bf516fb26d3a116c63567916f671229ad7979e
-k
-;src/main/java/com/mospan/railway/service/DetailService.java,e\6\e6d85c9cdc9deb4975edfba132726be02b5e4c68
 a
 1src/main/java/com/mospan/railway/dao/UserDao.java,e\4\e467cbae1e1dc63d0dead18cf92066bdf2b26d3d
 b
@@ -73,11 +71,9 @@ Z
 *src/main/webapp/view/common/admin_menu.jsp,3\9\3938b12073b8a594715e28169c758a2c3552effd
 p
 @src/main/java/com/mospan/railway/web/command/CommandFactory.java,3\c\3ca486a26f4844e795c2e0ead8dee062cfa8ec6c
-]
--src/main/java/com/mospan/railway/dao/Dao.java,d\0\d040857597b15243e6333646e25d03d17bcac710
 j
 :src/main/java/com/mospan/railway/service/RouteService.java,a\8\a8861ad20123c1c664439698603b47f670389d8f
 l
 <src/main/java/com/mospan/railway/service/StationService.java,3\9\39bd6f963b20533519ccabc022fdbae9cc2ff29a
-j
-:src/main/java/com/mospan/railway/service/TrainService.java,c\3\c3f60a0af906711d4343ec132f6b71c0c156df65
+p
+@src/main/java/com/mospan/railway/controller/FrontController.java,2\c\2c952e0894e0ba8f95023b889cac610c96a760d0
