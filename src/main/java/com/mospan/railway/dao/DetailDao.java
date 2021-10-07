@@ -23,8 +23,8 @@ public class DetailDao implements Dao<Detail>{
             st = con.prepareStatement("INSERT INTO detail (first_name, last_name, email) VALUES (?, ?, ?)");
 
             st.setString(1, detail.getFirstName());
-            st.setString(1, detail.getLastName());
-            st.setString(1, detail.getEmail());
+            st.setString(2, detail.getLastName());
+            st.setString(3, detail.getEmail());
 
             st.executeUpdate();
 

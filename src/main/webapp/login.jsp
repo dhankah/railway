@@ -20,6 +20,7 @@
         <h4>password</h4><input type = "password" name = "password"/><br>
         <input type="submit" value = "log in"/>
     </form>
+    <a href="signup.jsp">I am not yet signed up</a>
 </div>
 </body>
 </html>

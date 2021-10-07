@@ -18,6 +18,7 @@ public class CommandFactory {
 
     static {
         commands.put("login", new LoginCommand());
+        commands.put("signup", new SignUpCommand());
 
         commands.put("stations", new AdminStationCommand());
         commands.put("editStation", new EditStationCommand());
