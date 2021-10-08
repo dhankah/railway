@@ -5,11 +5,22 @@ import java.time.LocalTime;
 
 public class Route extends Entity{
 
+    private double price;
+
+
     private Station startStation;
     private Station endStation;
 
     private LocalTime departTime;
     private LocalTime arrivalTime;
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     public Station getStartStation() {
         return startStation;

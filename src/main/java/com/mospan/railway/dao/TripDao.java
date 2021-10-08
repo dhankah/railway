@@ -5,6 +5,7 @@ import com.mospan.railway.model.Trip;
 import com.mospan.railway.service.TrainService;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -113,4 +114,27 @@ public class TripDao implements Dao<Trip>{
 
         return trips;
     }
+
+    public int getPlacesForDate(long trainId, LocalDate date) {
+
+        con = ConnectionPool.getInstance().getConnection();
+
+        int places = 0;
+        PreparedStatement st = null;
+        try {
+            st = con.prepareStatement("SELECT available_places FROM trip WHERE train_id = ? AND depart_date = ?");
+            st.setLong(1,trainId);
+            st.setDate(2, Date.valueOf(date));
+            ResultSet rs = st.executeQuery();
+            rs.next();
+
+            places = rs.getInt(1);
+
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return places;
+    }
+
 }

@@ -19,12 +19,11 @@ public class TrainDao implements Dao<Train> {
     public void insert(Train train) {
         PreparedStatement st = null;
         try {
-            st = con.prepareStatement("INSERT INTO train (price, number, route_id) VALUES (?, ?, ?)");
+            st = con.prepareStatement("INSERT INTO train (number, route_id) VALUES (?, ?)");
 
 
-            st.setDouble(1, train.getPrice());
-            st.setString(2, train.getNumber());
-            st.setLong(3, train.getRoute().getId());
+
+            st.setLong(1, train.getRoute().getId());
 
             st.executeUpdate();
 
@@ -36,12 +35,10 @@ public class TrainDao implements Dao<Train> {
     @Override
     public void update(Train train) {
         try {
-            PreparedStatement st = con.prepareStatement("UPDATE station SET (price, number, route_id) VALUES (?, ?, ?) WHERE id = ?");
+            PreparedStatement st = con.prepareStatement("UPDATE station SET (route_id) VALUES (?) WHERE id = ?");
 
-            st.setDouble(1, train.getPrice());
-            st.setString(2, train.getNumber());
-            st.setLong(3, train.getRoute().getId());
-            st.setLong(4, train.getId());
+            st.setLong(1, train.getRoute().getId());
+            st.setLong(2, train.getId());
             st.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -95,8 +92,7 @@ public class TrainDao implements Dao<Train> {
 
             train.setId(rs.getLong("id"));
             train.setRoute(routeService.findById(rs.getLong("route_id")));
-            train.setNumber(rs.getString("number"));
-            train.setPrice(rs.getDouble("price"));
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -154,8 +150,6 @@ public class TrainDao implements Dao<Train> {
 
                 train.setId(rs.getLong("id"));
                 train.setRoute(routeService.findById(rs.getLong("route_id")));
-                train.setNumber(rs.getString("number"));
-                train.setPrice(rs.getDouble("price"));
 
                 trains.add(train);
             }
@@ -166,4 +160,6 @@ public class TrainDao implements Dao<Train> {
 
         return trains;
     }
+
+
 }

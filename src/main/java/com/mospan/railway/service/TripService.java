@@ -4,11 +4,12 @@ import com.mospan.railway.dao.Dao;
 import com.mospan.railway.dao.TripDao;
 import com.mospan.railway.model.Trip;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 public class TripService {
 
-    Dao<Trip> dao = new TripDao();
+    TripDao dao = new TripDao();
 
     public void insert(Trip trip) {
         dao.insert(trip);
@@ -27,5 +28,8 @@ public class TripService {
     }
     public Collection<Trip> findAll() {
         return dao.findAll();
+    }
+    public int getPlacesForDate(long trainId, LocalDate date) {
+        return dao.getPlacesForDate(trainId, date);
     }
 }

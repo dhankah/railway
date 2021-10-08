@@ -18,6 +18,7 @@
 <table>
     <tr>
         <td><c:forEach items="${sessionScope.routes}" var="route">
+        ${route.startStation}
 
 
         </c:forEach></td>

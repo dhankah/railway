@@ -1,31 +1,14 @@
 package com.mospan.railway.model;
 
-import java.time.LocalDate;
 
 public class Train extends Entity{
 
 
-    private double price;
-    private String number;
+
     private Route route;
 
+    private int places = 50;
 
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
 
     public Route getRoute() {
         return route;
@@ -33,5 +16,13 @@ public class Train extends Entity{
 
     public void setRoute(Route route) {
         this.route = route;
+    }
+
+    public int getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(int places) {
+        this.places = places;
     }
 }
