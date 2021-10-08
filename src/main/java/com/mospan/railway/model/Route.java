@@ -7,7 +7,6 @@ public class Route extends Entity{
 
     private double price;
 
-
     private Station startStation;
     private Station endStation;
 

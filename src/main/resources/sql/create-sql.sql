@@ -89,22 +89,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `railway`.`train`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `railway`.`train` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `route_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `route_id`),
-  INDEX `fk_train_route1_idx` (`route_id` ASC) VISIBLE,
-  CONSTRAINT `fk_train_route1`
-    FOREIGN KEY (`route_id`)
-    REFERENCES `railway`.`route` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `railway`.`route_has_station`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `railway`.`route_has_station` (
@@ -134,13 +118,12 @@ CREATE TABLE IF NOT EXISTS `railway`.`trip` (
   `depart_date` DATE NOT NULL,
   `arrival_date` DATE NOT NULL,
   `available_places` INT NOT NULL,
-  `train_id` INT NOT NULL,
-  `train_route_id` INT NOT NULL,
-  PRIMARY KEY (`id`, `train_id`, `train_route_id`),
-  INDEX `fk_trip_train1_idx` (`train_id` ASC, `train_route_id` ASC) VISIBLE,
-  CONSTRAINT `fk_trip_train1`
-    FOREIGN KEY (`train_id` , `train_route_id`)
-    REFERENCES `railway`.`train` (`id` , `route_id`)
+  `route_id` INT NOT NULL,
+  PRIMARY KEY (`id`, `route_id`),
+  INDEX `fk_trip_route1_idx` (`route_id` ASC) VISIBLE,
+  CONSTRAINT `fk_trip_route1`
+    FOREIGN KEY (`route_id`)
+    REFERENCES `railway`.`route` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

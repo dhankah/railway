@@ -8,6 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 public class ClientMainCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return "client_main.jsp";
+        return "client_trains.jsp";
     }
 }

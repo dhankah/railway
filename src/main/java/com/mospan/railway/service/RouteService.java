@@ -29,7 +29,7 @@ public class RouteService {
     public Collection<Route> findAll() {
         return dao.findAll();
     }
-    public Route findByStations(String startStation, String endStation){
+    public Collection<Route> findByStations(String startStation, String endStation){
         return dao.findByStations(startStation, endStation);
     }
 }

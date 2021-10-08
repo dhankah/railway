@@ -132,8 +132,8 @@ public class RouteDao implements Dao<Route>{
         return routes;
     }
 
-    public Route findByStations(String startStation, String endStation) {
-        Route route = new Route();
+    public Collection<Route> findByStations(String startStation, String endStation) {
+        List<Route> routes = new ArrayList<>();
 
         try {
             PreparedStatement st = null;
@@ -144,21 +144,22 @@ public class RouteDao implements Dao<Route>{
 
             ResultSet rs = st.executeQuery();
 
-            rs.next();
-
-            route.setStartStation(stationService.findById(rs.getLong("start_station_id")));
-            route.setEndStation(stationService.findById(rs.getLong("end_station_id")));
-            route.setArrivalTime(rs.getTime("arrival_time").toLocalTime());
-            route.setDepartTime(rs.getTime("depart_time").toLocalTime());
-            route.setId(rs.getLong("id"));
-            route.setPrice(rs.getDouble("price"));
-
+            while (rs.next()) {
+                Route route = new Route();
+                route.setStartStation(stationService.findById(rs.getLong("start_station_id")));
+                route.setEndStation(stationService.findById(rs.getLong("end_station_id")));
+                route.setArrivalTime(rs.getTime("arrival_time").toLocalTime());
+                route.setDepartTime(rs.getTime("depart_time").toLocalTime());
+                route.setId(rs.getLong("id"));
+                route.setPrice(rs.getDouble("price"));
+                routes.add(route);
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return route;
+        return routes;
     }
 
 }

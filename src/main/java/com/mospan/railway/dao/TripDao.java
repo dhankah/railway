@@ -2,7 +2,7 @@ package com.mospan.railway.dao;
 
 
 import com.mospan.railway.model.Trip;
-import com.mospan.railway.service.TrainService;
+import com.mospan.railway.service.RouteService;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -13,16 +13,16 @@ import java.util.List;
 public class TripDao implements Dao<Trip>{
     Connection con;
 
-    TrainService trainService = new TrainService();
+    RouteService routeService = new RouteService();
 
     @Override
     public void insert(Trip trip) {
         con = ConnectionPool.getInstance().getConnection();
         PreparedStatement st = null;
         try {
-            st = con.prepareStatement("INSERT INTO trip (train_id, depart_date, arrival_date, available_places)" +
+            st = con.prepareStatement("INSERT INTO trip (route_id, depart_date, arrival_date, available_places)" +
                     " VALUES (?, ?, ?, ?)");
-            st.setLong(1, trip.getTrain().getId());
+            st.setLong(1, trip.getRoute().getId());
             st.setDate(2, Date.valueOf(trip.getDepartDate()));
             st.setDate(3, Date.valueOf(trip.getArrivalDate()));
             st.setInt(4, trip.getAvailablePlaces());
@@ -38,9 +38,9 @@ public class TripDao implements Dao<Trip>{
         con = ConnectionPool.getInstance().getConnection();
         PreparedStatement st = null;
         try {
-            st = con.prepareStatement("UPDATE trip SET (train_id, depart_date, arrival_date, available_places)" +
+            st = con.prepareStatement("UPDATE trip SET (route_id, depart_date, arrival_date, available_places)" +
                     " VALUES (?, ?, ?, ?) WHERE id = ?");
-            st.setLong(1, trip.getTrain().getId());
+            st.setLong(1, trip.getRoute().getId());
             st.setDate(2, Date.valueOf(trip.getDepartDate()));
             st.setDate(3, Date.valueOf(trip.getArrivalDate()));
             st.setInt(4, trip.getAvailablePlaces());
@@ -69,7 +69,7 @@ public class TripDao implements Dao<Trip>{
             ResultSet rs = st.executeQuery();
             rs.next();
 
-            trip.setTrain(trainService.findById(rs.getLong("train_id")));
+            trip.setRoute(routeService.findById(rs.getLong("train_id")));
             trip.setDepartDate(rs.getDate("depart_date").toLocalDate());
             trip.setArrivalDate(rs.getDate("arrival_date").toLocalDate());
             trip.setAvailablePlaces(rs.getInt("available_places"));
@@ -115,15 +115,15 @@ public class TripDao implements Dao<Trip>{
         return trips;
     }
 
-    public int getPlacesForDate(long trainId, LocalDate date) {
+    public int getPlacesForDate(long routeId, LocalDate date) {
 
         con = ConnectionPool.getInstance().getConnection();
 
         int places = 0;
         PreparedStatement st = null;
         try {
-            st = con.prepareStatement("SELECT available_places FROM trip WHERE train_id = ? AND depart_date = ?");
-            st.setLong(1,trainId);
+            st = con.prepareStatement("SELECT available_places FROM trip WHERE route_id = ? AND depart_date = ?");
+            st.setLong(1,routeId);
             st.setDate(2, Date.valueOf(date));
             ResultSet rs = st.executeQuery();
             rs.next();

@@ -4,10 +4,18 @@ import java.time.LocalDate;
 
 public class Trip extends Entity{
 
-    private Train train;
+    private Route route;
     private LocalDate departDate;
     private LocalDate arrivalDate;
     private int availablePlaces = 50;
+
+    public Route getRoute() {
+        return route;
+    }
+
+    public void setRoute(Route route) {
+        this.route = route;
+    }
 
     public LocalDate getDepartDate() {
         return departDate;
@@ -33,11 +41,5 @@ public class Trip extends Entity{
         this.availablePlaces = availablePlaces;
     }
 
-    public Train getTrain() {
-        return train;
-    }
 
-    public void setTrain(Train train) {
-        this.train = train;
-    }
 }
