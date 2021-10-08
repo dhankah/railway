@@ -18,6 +18,7 @@
 <form method="post" action="controller?action=editStation">
     <input type="text" name ="nameForNew">
     <input type="submit" value="add station">
+
 </form>
 <table>
     <tr>

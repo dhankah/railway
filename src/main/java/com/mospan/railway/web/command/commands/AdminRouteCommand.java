@@ -14,8 +14,14 @@ public class AdminRouteCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         RouteService routeService = new RouteService();
+        StationService stationService = new StationService();
+
         Collection<Route> routes = routeService.findAll();
         request.getSession().setAttribute("routes", routes);
+
+        Collection<Station> stations = stationService.findAll();
+        request.getSession().setAttribute("stations", stations);
+
         return "admin_routes.jsp";
     }
 }

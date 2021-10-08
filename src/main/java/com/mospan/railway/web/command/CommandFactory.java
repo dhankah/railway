@@ -23,6 +23,7 @@ public class CommandFactory {
         commands.put("stations", new AdminStationCommand());
         commands.put("editStation", new EditStationCommand());
         commands.put("routes", new AdminRouteCommand());
+        commands.put("editRoute", new EditRouteCommand());
 
         commands.put("client", new ClientMainCommand());
     }
