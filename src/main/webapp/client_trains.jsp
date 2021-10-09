@@ -15,7 +15,7 @@
 </head>
 <body>
 <h1>Dear CLIENT AHAHAHAHAHA</h1>
-<form action="controller?action=findTrains" method="post">
+<form action="controller?action=trains" method="post">
     <h4>from</h4>
     <select name="start_station">
         <c:forEach items="${sessionScope.stations}" var="station">
@@ -31,5 +31,22 @@
     <h4>Departure date</h4><input type="date" name="depart_date">
     <input type="submit" value="Find!">
 </form>
+<c:if test="${null != sessionScope.routes}">
+    <h3>These are the trains we have found for you</h3>
+    <c:forEach items="${sessionScope.routes}" var="route">
+        <h4>number</h4>
+        ${route.id}
+        <h4>from</h4>
+        ${route.startStation.name}
+        ${route.departTime}
+        <h4>to</h4>
+        ${route.endStation.name}
+        ${route.arrivalTime}
+        <h4>time in way</h4>
+        ${route.time}
+        <h4>price</h4>
+        ${route.price}
+    </c:forEach>
+</c:if>
 </body>
 </html>

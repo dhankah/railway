@@ -13,6 +13,9 @@ public class Route extends Entity{
     private LocalTime departTime;
     private LocalTime arrivalTime;
 
+    private int places = 50;
+    private String time;
+
     public double getPrice() {
         return price;
     }
@@ -51,5 +54,21 @@ public class Route extends Entity{
 
     public void setArrivalTime(LocalTime arrivalTime) {
         this.arrivalTime = arrivalTime;
+    }
+
+    public int getPlaces() {
+        return places;
+    }
+
+    public void setPlaces(int places) {
+        this.places = places;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

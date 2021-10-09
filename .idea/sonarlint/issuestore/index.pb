@@ -39,8 +39,6 @@ h
 8src/main/java/com/mospan/railway/dao/ConnectionPool.java,a\d\ad9796cf0b4cb4a561ada83c15222bb40b7ee3e2
 O
 src/main/webapp/WEB-INF/web.xml,2\e\2e22b6edd746fa3dc40ad7276c87c8d87d72a392
-O
-src/main/webapp/client_main.jsp,4\9\49fa5aa128ed377680d6628ac6ae80976e7822cd
 I
 src/main/webapp/index.jsp,8\e\8e6d3b70c9f5b02570779b0441540d45eceb0ded
 i
@@ -59,3 +57,33 @@ p
 -src/main/java/com/mospan/railway/dao/Dao.java,d\0\d040857597b15243e6333646e25d03d17bcac710
 k
 ;src/main/java/com/mospan/railway/service/DetailService.java,e\6\e6d85c9cdc9deb4975edfba132726be02b5e4c68
+I
+src/main/webapp/login.jsp,8\5\85ee523d01e5e19376db640e846c91bbcb0a1c22
+J
+src/main/webapp/signup.jsp,e\5\e5522cd3d0b3598d3702de2bf21f10cd7b094ad8
+x
+Hsrc/main/java/com/mospan/railway/web/command/commands/SignUpCommand.java,5\f\5f58171f8641feef0179cd512b3afcddca318be3
+k
+;src/main/java/com/mospan/railway/service/TicketService.java,f\6\f6c92debeb4faaa8f00f802e60e575ba6e6cd768
+c
+3src/main/java/com/mospan/railway/dao/DetailDao.java,c\8\c8bf516fb26d3a116c63567916f671229ad7979e
+}
+Msrc/main/java/com/mospan/railway/web/command/commands/EditStationCommand.java,5\a\5a6fdeaca5b1152347ec09882687dce9eff09f7a
+Q
+!src/main/webapp/admin_station.jsp,b\2\b2a7e2971946e5daaaa5d313d462ebf2084f93bb
+|
+Lsrc/main/java/com/mospan/railway/web/command/commands/AdminRouteCommand.java,6\0\607b345844a7b1cc8f76a12b8bf16ce28fd68945
+T
+$src/main/webapp/view/common/menu.jsp,f\1\f1fd64051e85dfecc6246cd453b077cf60b6a347
+Z
+*src/main/webapp/view/common/admin_menu.jsp,3\9\3938b12073b8a594715e28169c758a2c3552effd
+P
+ src/main/webapp/admin_routes.jsp,5\1\512754937fe3ba40a0ee20278501eba1d127a10e
+P
+ src/main/webapp/edit_station.jsp,7\3\733e16dd4086a3e4ec27269299b655b41fcd6971
+N
+src/main/webapp/edit_route.jsp,2\7\27b0238da005c4bfce5c115c85283cfeb8966a54
+{
+Ksrc/main/java/com/mospan/railway/web/command/commands/EditRouteCommand.java,e\b\ebf04f5784311957f16d335fbeae17f34cc2005e
+`
+0src/main/java/com/mospan/railway/model/User.java,4\2\421f207161a0eb08bf62ff79423cfa5580b4820b

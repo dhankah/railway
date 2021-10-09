@@ -31,7 +31,7 @@ public class LoginCommand implements Command {
         }
         else if (user.getRole().equals(Role.CLIENT)) {
             request.getSession().setAttribute("user", user);
-            return (new ClientMainCommand()).execute(request, response);
+            return (new FindTrainsCommand()).execute(request, response);
         }
         return "login.jsp";
     }
