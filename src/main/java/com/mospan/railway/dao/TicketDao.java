@@ -1,6 +1,7 @@
 package com.mospan.railway.dao;
 
 import com.mospan.railway.model.Ticket;
+import com.mospan.railway.model.Trip;
 import com.mospan.railway.service.TripService;
 import com.mospan.railway.service.UserService;
 
@@ -21,9 +22,10 @@ public class TicketDao implements Dao<Ticket>{
         con = ConnectionPool.getInstance().getConnection();
         PreparedStatement st = null;
         try {
-            st = con.prepareStatement("INSERT INTO ticket (user_id, trip_id) VALUES (?, ?)");
+            st = con.prepareStatement("INSERT INTO ticket (user_id, trip_id, seat) VALUES (?, ?, ?)");
             st.setLong(1, ticket.getUser().getId());
             st.setLong(2, ticket.getTrip().getId());
+            st.setInt(3, ticket.getSeat());
             st.executeUpdate();
             con.close();
         } catch (SQLException e) {
@@ -36,8 +38,12 @@ public class TicketDao implements Dao<Ticket>{
         con = ConnectionPool.getInstance().getConnection();
         PreparedStatement st = null;
         try {
-            st = con.prepareStatement("UPDATE ticket SET (user_id, trip_id) VALUES (?, ?) WHERE id = ?");
-            st.setLong(1, ticket.getId());
+            st = con.prepareStatement("UPDATE ticket SET (user_id, trip_id, seat) VALUES (?, ?, ?) WHERE id = ?");
+
+            st.setLong(1, ticket.getUser().getId());
+            st.setLong(2, ticket.getTrip().getId());
+            st.setInt(3, ticket.getSeat());
+            st.setLong(4, ticket.getId());
             st.executeUpdate();
             con.close();
         } catch (SQLException e) {
@@ -64,6 +70,7 @@ public class TicketDao implements Dao<Ticket>{
 
             ticket.setUser(userService.findById(rs.getLong("user_id")));
             ticket.setTrip(tripService.findById(rs.getLong("trip_id")));
+            ticket.setSeat(rs.getInt("seat"));
 
             con.close();
         } catch (SQLException e) {
@@ -104,5 +111,24 @@ public class TicketDao implements Dao<Ticket>{
         }
 
         return tickets;
+    }
+
+    public Collection<Integer> findSeats(Trip trip) {
+        List<Integer> seats = new ArrayList<>();
+        con = ConnectionPool.getInstance().getConnection();
+        PreparedStatement st = null;
+        try {
+            st = con.prepareStatement("SELECT seat FROM ticket WHERE trip_id = ?");
+            st.setLong(1, trip.getId());
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                seats.add(rs.getInt("seat"));
+            }
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return seats;
     }
 }

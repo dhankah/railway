@@ -25,7 +25,6 @@ public class CommandFactory {
         commands.put("routes", new AdminRouteCommand());
         commands.put("editRoute", new EditRouteCommand());
 
-        commands.put("client", new ClientMainCommand());
         commands.put("trains", new FindTrainsCommand());
     }
 

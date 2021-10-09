@@ -1,6 +1,7 @@
 package com.mospan.railway.model;
 
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Route extends Entity{
@@ -12,6 +13,11 @@ public class Route extends Entity{
 
     private LocalTime departTime;
     private LocalTime arrivalTime;
+
+    // temporary values stored only in objects, not in database
+
+    private LocalDate departDate;
+    private LocalDate arrivalDate;
 
     private int places = 50;
     private String time;
@@ -70,5 +76,21 @@ public class Route extends Entity{
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public LocalDate getDepartDate() {
+        return departDate;
+    }
+
+    public void setDepartDate(LocalDate departDate) {
+        this.departDate = departDate;
+    }
+
+    public LocalDate getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(LocalDate arrivalDate) {
+        this.arrivalDate = arrivalDate;
     }
 }

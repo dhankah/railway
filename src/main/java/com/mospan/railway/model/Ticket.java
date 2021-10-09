@@ -3,6 +3,7 @@ package com.mospan.railway.model;
 public class Ticket extends Entity {
     private User user;
     private Trip trip;
+    private int seat;
 
     public User getUser() {
         return user;
@@ -18,5 +19,13 @@ public class Ticket extends Entity {
 
     public void setTrip(Trip trip) {
         this.trip = trip;
+    }
+
+    public int getSeat() {
+        return seat;
+    }
+
+    public void setSeat(int seat) {
+        this.seat = seat;
     }
 }

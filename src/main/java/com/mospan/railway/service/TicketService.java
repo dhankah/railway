@@ -3,11 +3,12 @@ package com.mospan.railway.service;
 import com.mospan.railway.dao.Dao;
 import com.mospan.railway.dao.TicketDao;
 import com.mospan.railway.model.Ticket;
+import com.mospan.railway.model.Trip;
 
 import java.util.Collection;
 
 public class TicketService {
-    Dao<Ticket> dao = new TicketDao();
+    TicketDao dao = new TicketDao();
 
     public void insert(Ticket ticket) {
         dao.insert(ticket);
@@ -26,5 +27,8 @@ public class TicketService {
     }
     public Collection<Ticket> findAll() {
         return dao.findAll();
+    }
+    public Collection<Integer> findSeats(Trip trip) {
+        return dao.findSeats(trip);
     }
 }

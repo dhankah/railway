@@ -34,18 +34,23 @@
 <c:if test="${null != sessionScope.routes}">
     <h3>These are the trains we have found for you</h3>
     <c:forEach items="${sessionScope.routes}" var="route">
-        <h4>number</h4>
+        number
         ${route.id}
-        <h4>from</h4>
+        from
         ${route.startStation.name}
         ${route.departTime}
-        <h4>to</h4>
+        ${route.departDate}
+        to
         ${route.endStation.name}
         ${route.arrivalTime}
-        <h4>time in way</h4>
+        ${route.arrivalDate}
+        time in way
         ${route.time}
-        <h4>price</h4>
+        price
         ${route.price}
+        available places
+        ${route.places}
+        <a href="controller?action=buyTicket">Buy a ticket</a>
     </c:forEach>
 </c:if>
 </body>
