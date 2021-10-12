@@ -12,9 +12,6 @@ import java.util.List;
 
 public class TicketDao implements Dao<Ticket>{
 
-    UserService userService = new UserService();
-    TripService tripService = new TripService();
-
     Connection con;
 
     @Override
@@ -60,6 +57,8 @@ public class TicketDao implements Dao<Ticket>{
     public Ticket findById(long id) {
         con = ConnectionPool.getInstance().getConnection();
         Ticket ticket = new Ticket();
+        UserService userService = new UserService();
+        TripService tripService = new TripService();
         PreparedStatement st = null;
         try {
             st = con.prepareStatement("SELECT * FROM ticket WHERE id = ?");
@@ -67,7 +66,6 @@ public class TicketDao implements Dao<Ticket>{
 
             ResultSet rs = st.executeQuery();
             rs.next();
-
             ticket.setUser(userService.findById(rs.getLong("user_id")));
             ticket.setTrip(tripService.findById(rs.getLong("trip_id")));
             ticket.setSeat(rs.getInt("seat"));

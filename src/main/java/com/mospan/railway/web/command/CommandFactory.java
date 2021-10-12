@@ -26,6 +26,9 @@ public class CommandFactory {
         commands.put("editRoute", new EditRouteCommand());
 
         commands.put("trains", new FindTrainsCommand());
+        commands.put("selectSeat", new SelectSeatCommand());
+        commands.put("buyTicket", new BuyTicketCommand());
+
     }
 
 

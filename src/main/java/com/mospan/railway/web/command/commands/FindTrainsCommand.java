@@ -19,8 +19,10 @@ public class FindTrainsCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
         if (null == request.getParameter("depart_date")) {
+            System.out.println("i am executed at least once");
             StationService stationService = new StationService();
             request.getSession().setAttribute("stations", stationService.findAll());
+            request.getSession().setAttribute("routes", null);
             return "client_trains.jsp";
         }
 
@@ -31,31 +33,30 @@ public class FindTrainsCommand implements Command {
 
         for (Route route : routes) {
             route.setDepartDate(LocalDate.parse(request.getParameter("depart_date")));
-            int p = tripService.getPlacesForDate(route.getId(), LocalDate.parse(request.getParameter("depart_date")));
-            if (p != 0) {
-                route.setPlaces(p);
+            int p = tripService.getTripForDate(route.getId(), LocalDate.parse(request.getParameter("depart_date"))).getAvailablePlaces();
+            route.setPlaces(p);
+            LocalTime d = route.getDepartTime();
+            LocalTime a = route.getArrivalTime();
+            long t = Duration.between(d, a).toMinutes();
+
+            int hours = Math.abs((int) (t / 60));
+            int minutes = Math.abs((int) (t % 60));
+
+
+            String time = hours + " hours " + minutes + " minutes";
+            route.setTime(time);
+
+            if (t < 0) {
+                route.setArrivalDate(LocalDate.parse(request.getParameter("depart_date")).plusDays(1));
             }
-                LocalTime d = route.getDepartTime();
-                LocalTime a = route.getArrivalTime();
-                long t = Duration.between(d, a).toMinutes();
-
-                int hours = Math.abs((int) (t / 60));
-                int minutes = Math.abs((int) (t % 60));
-
-
-                String time = hours + " hours " + minutes + " minutes";
-                route.setTime(time);
-
-                if (t < 0) {
-                    route.setArrivalDate(LocalDate.parse(request.getParameter("depart_date")).plusDays(1));
-                }
-                else {
-                    route.setArrivalDate(LocalDate.parse(request.getParameter("depart_date")));
-                }
+            else {
+                route.setArrivalDate(LocalDate.parse(request.getParameter("depart_date")));
+            }
         }
 
 
         request.getSession().setAttribute("routes", routes);
+        request.getSession().setAttribute("depart_date", null);
         return "client_trains.jsp";
     }
 }

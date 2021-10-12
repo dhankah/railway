@@ -29,7 +29,7 @@ public class TripService {
     public Collection<Trip> findAll() {
         return dao.findAll();
     }
-    public int getPlacesForDate(long trainId, LocalDate date) {
-        return dao.getPlacesForDate(trainId, date);
+    public Trip getTripForDate(long routeId, LocalDate date) {
+        return dao.getTripForDate(routeId, date);
     }
 }

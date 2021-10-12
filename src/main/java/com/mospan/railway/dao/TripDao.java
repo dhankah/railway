@@ -38,8 +38,8 @@ public class TripDao implements Dao<Trip>{
         con = ConnectionPool.getInstance().getConnection();
         PreparedStatement st = null;
         try {
-            st = con.prepareStatement("UPDATE trip SET (route_id, depart_date, arrival_date, available_places)" +
-                    " VALUES (?, ?, ?, ?) WHERE id = ?");
+            st = con.prepareStatement("UPDATE trip SET route_id = ?, depart_date = ?, arrival_date = ?, available_places = ?" +
+                    " WHERE id = ?");
             st.setLong(1, trip.getRoute().getId());
             st.setDate(2, Date.valueOf(trip.getDepartDate()));
             st.setDate(3, Date.valueOf(trip.getArrivalDate()));
@@ -83,10 +83,12 @@ public class TripDao implements Dao<Trip>{
 
     @Override
     public void delete(Trip trip) {
+        con = ConnectionPool.getInstance().getConnection();
         try {
             PreparedStatement st = con.prepareStatement("DELETE FROM trip WHERE id = ?");
             st.setLong(1, trip.getId());
             st.executeUpdate();
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -94,6 +96,7 @@ public class TripDao implements Dao<Trip>{
 
     @Override
     public Collection<Trip> findAll() {
+        con = ConnectionPool.getInstance().getConnection();
         List<Trip> trips = new ArrayList<>();
 
         try {
@@ -107,34 +110,51 @@ public class TripDao implements Dao<Trip>{
                 trips.add(trip);
                 id++;
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        return trips;
-    }
-
-    public int getPlacesForDate(long routeId, LocalDate date) {
-
-        con = ConnectionPool.getInstance().getConnection();
-
-        int places = 0;
-        PreparedStatement st = null;
         try {
-            st = con.prepareStatement("SELECT available_places FROM trip WHERE route_id = ? AND depart_date = ?");
-            st.setLong(1,routeId);
-            st.setDate(2, Date.valueOf(date));
-            ResultSet rs = st.executeQuery();
-            rs.next();
-
-            places = rs.getInt(1);
-
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return places;
+        return trips;
+    }
+
+    public Trip getTripForDate(long routeId, LocalDate date) {
+        System.out.println("this is where dao begins");
+
+        con = ConnectionPool.getInstance().getConnection();
+        System.out.println("now i have a connection");
+        Trip trip = new Trip();
+
+        PreparedStatement st = null;
+        try {
+            System.out.println("i am inside the dao at the very beginning");
+            st = con.prepareStatement("SELECT * FROM trip WHERE route_id = ? AND depart_date = ?");
+            st.setLong(1,routeId);
+            st.setDate(2, Date.valueOf(date));
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            System.out.println("i am inside the dao");
+            trip.setId(rs.getLong("id"));
+            trip.setDepartDate(rs.getDate("depart_date").toLocalDate());
+            trip.setArrivalDate(rs.getDate("arrival_date").toLocalDate());
+            trip.setAvailablePlaces(rs.getInt("available_places"));
+            trip.setRoute(routeService.findById(rs.getLong("route_id")));
+            System.out.println("i am before catch in the dao");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            trip.setAvailablePlaces(36);
+            System.out.println("i am like inside the catch of the dao");
+        }
+        try {
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return trip;
     }
 
 }

@@ -50,7 +50,7 @@
         ${route.price}
         available places
         ${route.places}
-        <a href="controller?action=buyTicket">Buy a ticket</a>
+        <a href="controller?action=selectSeat&route=${route.id}&departDate=${route.departDate}&arrivalDate=${route.arrivalDate}">Buy a ticket</a>
     </c:forEach>
 </c:if>
 </body>
