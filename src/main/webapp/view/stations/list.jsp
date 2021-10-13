@@ -24,7 +24,7 @@
     <tr>
         <td><c:forEach items="${requestScope.stations}" var="station">
             ${station.name}
-            <a href="stations/${station.id}/edit">Edit</a>
+            <a href="${pageContext.request.contextPath}/stations/${station.id}/edit">Edit</a>
             <form action="${pageContext.request.contextPath}/stations/${station.id}" method="post">
                 <input type="hidden" name="_method" value="delete" />
                 <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">

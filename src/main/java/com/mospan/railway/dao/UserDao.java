@@ -15,12 +15,12 @@ import java.util.List;
 
 public class UserDao implements Dao<User>{
 
-    Connection con = ConnectionPool.getInstance().getConnection();
+    Connection con;
     DetailService detailService = new DetailService();
 
     @Override
     public void insert(User user) {
-
+        con = ConnectionPool.getInstance().getConnection();
         PreparedStatement st = null;
         try {
             st = con.prepareStatement("INSERT INTO user (login, password, role_id, detail_id)" +
@@ -43,10 +43,12 @@ public class UserDao implements Dao<User>{
             }
 
             st.executeUpdate();
+            con.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
     }
 
     @Override
@@ -88,6 +90,8 @@ public class UserDao implements Dao<User>{
     public User find(String login) {
         User user = new User();
 
+        con = ConnectionPool.getInstance().getConnection();
+
         try {
             PreparedStatement st = null;
             st = con.prepareStatement("SELECT * FROM user WHERE login = ?");
@@ -109,14 +113,18 @@ public class UserDao implements Dao<User>{
             } else {
                 user.setRole(Role.CLIENT);
             }
+            con.close();
+
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
         return user;
     }
 
     @Override
     public User findById(long id) {
+        con = ConnectionPool.getInstance().getConnection();
         User user = new User();
         try {
             PreparedStatement st = con.prepareStatement("SELECT * FROM user WHERE id = ?");
@@ -143,7 +151,7 @@ public class UserDao implements Dao<User>{
             rs.next();
 
             user.setDetails(detailService.findById(rs.getLong("detail_id")));
-
+            con.close();
 
         } catch (SQLException e) {
             e.printStackTrace();

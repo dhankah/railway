@@ -20,12 +20,12 @@
     </form>
     <c:choose>
         <c:when test="${not empty sessionScope.user}">
-            <form method="post" action="">
+            <form method="post" action="${pageContext.request.contextPath}/auth/logout">
                 <button type="submit">log out</button>
             </form>
         </c:when>
         <c:otherwise>
-            <form method="post" action="controller?action=login">
+            <form action="${pageContext.request.contextPath}/auth/login">
                 <button type="submit">log in</button>
 
             </form>

@@ -47,7 +47,12 @@ public abstract class ResourceController extends HttpServlet {
                 id = parts[0];
             }
         }
+
         Entity entity = (id != null) ? this.findModel(id) : null;
+        if (id != null && entity == null) {
+            resp.sendError(404, "Not found");
+            return;
+        }
 
         switch (method) {
             case "GET":
