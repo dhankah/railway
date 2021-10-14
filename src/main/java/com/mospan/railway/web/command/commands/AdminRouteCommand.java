@@ -22,6 +22,6 @@ public class AdminRouteCommand implements Command {
         Collection<Station> stations = stationService.findAll();
         request.getSession().setAttribute("stations", stations);
 
-        return "admin_routes.jsp";
+        return "list.jsp";
     }
 }

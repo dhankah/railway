@@ -31,21 +31,21 @@ public class FindTrainsCommand implements Command {
 
         Collection<Route> routes = routeService.findByStations(request.getParameter("start_station"), request.getParameter("end_station"));
 
-        for (Route route : routes) {
+      /*  for (Route route : routes) {
             route.setDepartDate(LocalDate.parse(request.getParameter("depart_date")));
             int p = tripService.getTripForDate(route.getId(), LocalDate.parse(request.getParameter("depart_date"))).getAvailablePlaces();
             route.setPlaces(p);
             LocalTime d = route.getDepartTime();
             LocalTime a = route.getArrivalTime();
-            long t = Duration.between(d, a).toMinutes();
+            long t = Duration.between(d, a).toMinutes();*/
 
-            int hours = Math.abs((int) (t / 60));
+           /* int hours = Math.abs((int) (t / 60));
             int minutes = Math.abs((int) (t % 60));
 
 
             String time = hours + " hours " + minutes + " minutes";
-            route.setTime(time);
-
+            route.setTime(time);*/
+/*
             if (t < 0) {
                 route.setArrivalDate(LocalDate.parse(request.getParameter("depart_date")).plusDays(1));
             }
@@ -56,7 +56,7 @@ public class FindTrainsCommand implements Command {
 
 
         request.getSession().setAttribute("routes", routes);
-        request.getSession().setAttribute("depart_date", null);
+        request.getSession().setAttribute("depart_date", null);*/
         return "client_trains.jsp";
     }
 }

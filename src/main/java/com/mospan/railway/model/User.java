@@ -42,4 +42,9 @@ public class User extends Entity{
     public boolean isAdmin() {
         return role.equals(Role.ADMIN);
     }
+
+    public boolean getIsAdmin() {
+        return isAdmin();
+    }
+
 }

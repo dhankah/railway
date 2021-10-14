@@ -18,14 +18,15 @@ public class RouteDao implements Dao<Route>{
     public void insert(Route route) {
         PreparedStatement st = null;
         try {
-            st = con.prepareStatement("INSERT INTO route (start_station_id, end_station_id, depart_time, arrival_time, price)" +
+            st = con.prepareStatement("INSERT INTO route (start_station_id, end_station_id, depart_time, time, price)" +
                     " VALUES (?, ?, ?, ?, ?)");
 
             st.setLong(1, route.getStartStation().getId());
             st.setLong(2, route.getEndStation().getId());
             st.setTime(3, Time.valueOf(route.getDepartTime()));
-            st.setTime(4, Time.valueOf(route.getArrivalTime()));
+            st.setTime(4, Time.valueOf(route.getTime()));
             st.setDouble(5, route.getPrice());
+
 
             st.executeUpdate();
 
@@ -40,12 +41,12 @@ public class RouteDao implements Dao<Route>{
         PreparedStatement st = null;
         try {
             st = con.prepareStatement("UPDATE route SET start_station_id = ?, end_station_id = ?, depart_time = ?, " +
-                    "arrival_time = ?, price = ? WHERE id = ?");
+                    "time = ?, price = ?, WHERE id = ?");
 
             st.setLong(1, route.getStartStation().getId());
             st.setLong(2, route.getEndStation().getId());
             st.setTime(3, Time.valueOf(route.getDepartTime()));
-            st.setTime(4, Time.valueOf(route.getArrivalTime()));
+            st.setTime(4, Time.valueOf(route.getTime()));
             st.setDouble(5, route.getPrice());
             st.setLong(6, route.getId());
 
@@ -78,9 +79,11 @@ public class RouteDao implements Dao<Route>{
 
             route.setStartStation(stationService.findById(rs.getLong("start_station_id")));
             route.setEndStation(stationService.findById(rs.getLong("end_station_id")));
-            route.setArrivalTime(rs.getTime("arrival_time").toLocalTime());
+            route.setTime(rs.getTime("time").toLocalTime());
             route.setDepartTime(rs.getTime("depart_time").toLocalTime());
             route.setPrice(rs.getDouble("price"));
+
+
             route.setId(id);
 
         } catch (SQLException e) {
@@ -115,7 +118,7 @@ public class RouteDao implements Dao<Route>{
 
                 route.setStartStation(stationService.findById(rs.getLong("start_station_id")));
                 route.setEndStation(stationService.findById(rs.getLong("end_station_id")));
-                route.setArrivalTime(rs.getTime("arrival_time").toLocalTime());
+                route.setTime(rs.getTime("time").toLocalTime());
                 route.setDepartTime(rs.getTime("depart_time").toLocalTime());
                 route.setPrice(rs.getDouble("price"));
                 route.setId(rs.getLong("id"));
@@ -148,7 +151,7 @@ public class RouteDao implements Dao<Route>{
                 Route route = new Route();
                 route.setStartStation(stationService.findById(rs.getLong("start_station_id")));
                 route.setEndStation(stationService.findById(rs.getLong("end_station_id")));
-                route.setArrivalTime(rs.getTime("arrival_time").toLocalTime());
+                route.setTime(rs.getTime("time").toLocalTime());
                 route.setDepartTime(rs.getTime("depart_time").toLocalTime());
                 route.setId(rs.getLong("id"));
                 route.setPrice(rs.getDouble("price"));
