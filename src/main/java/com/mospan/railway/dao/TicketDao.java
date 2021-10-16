@@ -66,6 +66,7 @@ public class TicketDao implements Dao<Ticket>{
 
             ResultSet rs = st.executeQuery();
             rs.next();
+            ticket.setId(rs.getLong("id"));
             ticket.setUser(userService.findById(rs.getLong("user_id")));
             ticket.setTrip(tripService.findById(rs.getLong("trip_id")));
             ticket.setSeat(rs.getInt("seat"));

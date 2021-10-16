@@ -23,7 +23,12 @@
             </c:forEach>
         </select>
         <h4>Departure time</h4><input type="time" name="depart_time">
-        <h4>Time in way</h4><input type="time" name="time">
+        <h4>Time in way</h4>
+
+        <input type="number" name="days"> days
+        <input type="number" name="hours"> hours
+        <input type="number" name="minutes"> minutes
+
         <h4>Price</h4><input type="number" name="price">
         <input type="submit" value="add route">
     </form>

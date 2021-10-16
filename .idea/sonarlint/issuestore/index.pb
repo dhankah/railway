@@ -23,8 +23,6 @@ l
 <.idea/libraries/Maven__mysql_mysql_connector_java_8_0_26.xml,0\8\0888291a6635232f0dc2294b462ee4049b21c388
 O
 .idea/artifacts/railway_war.xml,c\f\cf36457239594bdaf39e0f1d391d64e71ea58966
-T
-$src/main/webapp/META-INF/context.xml,c\b\cbfb0d2e9b2b9fbf9d54374577c894a38643c6d0
 b
 2src/main/java/com/mospan/railway/model/Detail.java,5\c\5ca28b0b71b89d3669321ec3ffba845a66b8c219
 h
@@ -32,20 +30,10 @@ h
 b
 2src/main/java/com/mospan/railway/model/Entity.java,5\7\57783ba2fcfa98af846c5cbf42568b0da9ca6523
 c
-3src/main/java/com/mospan/railway/dao/DetailDao.java,c\8\c8bf516fb26d3a116c63567916f671229ad7979e
-P
- src/main/webapp/admin_routes.jsp,5\1\512754937fe3ba40a0ee20278501eba1d127a10e
-c
 3src/main/java/com/mospan/railway/model/Station.java,3\a\3af67ca4c0d4defcaebf2880617d8fc2bae0e00d
-a
-1src/main/java/com/mospan/railway/dao/TripDao.java,5\c\5c48092f9d0991b2abeef10c372cf8430bd4c6e2
 :
 
 .gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
-c
-3src/main/java/com/mospan/railway/dao/TicketDao.java,b\e\be4e67707ed7581b1880e20e3cd2dc08b866261d
-Q
-!src/main/webapp/client_trains.jsp,b\a\ba33020060ed3fecdcfc44754e7c919d96bde48a
 k
 ;src/main/java/com/mospan/railway/service/DetailService.java,e\6\e6d85c9cdc9deb4975edfba132726be02b5e4c68
 l
@@ -58,10 +46,6 @@ Msrc/main/java/com/mospan/railway/web/command/commands/EditStationCommand.java,
 -src/main/java/com/mospan/railway/dao/Dao.java,d\0\d040857597b15243e6333646e25d03d17bcac710
 ~
 Nsrc/main/java/com/mospan/railway/web/command/commands/AdminStationCommand.java,9\5\959bb68abe512e4c7571e90d77fcc1f63f60725b
-;
-railway.iml,8\3\83a0902ae4ef24409b2ce706dcad370e5edf0c89
-X
-(.idea/artifacts/railway_war_exploded.xml,a\6\a67a9f41201ed3ec02d13310323e2d413f8538cc
 i
 9src/main/java/com/mospan/railway/web/command/Command.java,6\8\685f36f2036235f1372a68e2e31c4620929bc475
 p
@@ -70,11 +54,29 @@ N
 src/main/webapp/view/index.jsp,6\4\64c323aaf3cd584f2a11cc703dfa06cf9eb507c8
 }
 Msrc/main/java/com/mospan/railway/web/command/commands/auth/LogoutCommand.java,e\e\eea083923064ce714259546b256dd6046fbaf4e1
-7
-pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 
 Osrc/main/java/com/mospan/railway/web/command/commands/auth/RegisterCommand.java,9\a\9a7e62ed75ae63a27fa9e19021c05ed23cd3969d
-s
-Csrc/main/java/com/mospan/railway/controller/ResourceController.java,2\5\257274837a0d4bc6c3d8e69e9c7fd4af10420829
+Z
+*src/main/webapp/view/common/admin_menu.jsp,3\9\3938b12073b8a594715e28169c758a2c3552effd
+|
+Lsrc/main/java/com/mospan/railway/web/command/commands/AdminRouteCommand.java,6\0\607b345844a7b1cc8f76a12b8bf16ce28fd68945
+Y
+)src/main/webapp/view/common/bootstrap.jsp,c\9\c9d2d2c6a455742d3ab122e52f3414fc91459159
+[
++src/main/webapp/view/common/client_menu.jsp,9\0\90ce970463ae5b04dea1b4516b0c18ac49d6d700
+{
+Ksrc/main/java/com/mospan/railway/web/command/commands/EditRouteCommand.java,e\b\ebf04f5784311957f16d335fbeae17f34cc2005e
+V
+&src/main/webapp/view/auth/register.jsp,8\f\8f7a53361e4137e89859ada537532dd2aed7ecee
+`
+0src/main/java/com/mospan/railway/model/User.java,4\2\421f207161a0eb08bf62ff79423cfa5580b4820b
+`
+0src/main/java/com/mospan/railway/model/Role.java,d\c\dc40fd2dd904a7a7eaa92750a850e22d31bb567b
+`
+0src/main/java/com/mospan/railway/model/Seat.java,7\c\7c87d49ae8b2ba314aacc5af871bf4b7138a979d
+O
+src/main/webapp/WEB-INF/web.xml,2\e\2e22b6edd746fa3dc40ad7276c87c8d87d72a392
+W
+'src/main/webapp/WEB-INF/tags/layout.tag,5\c\5c05ecf42b07c90e2a101aa13adfda6e4f14294d
 d
 4src/main/java/com/mospan/railway/dao/StationDao.java,7\6\764bc92efce97efa908b0c303a57abb7ede984f9

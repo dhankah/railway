@@ -23,7 +23,7 @@ public class FindTrainsCommand implements Command {
             StationService stationService = new StationService();
             request.getSession().setAttribute("stations", stationService.findAll());
             request.getSession().setAttribute("routes", null);
-            return "client_trains.jsp";
+            return "list.jsp";
         }
 
         RouteService routeService = new RouteService();
@@ -57,6 +57,6 @@ public class FindTrainsCommand implements Command {
 
         request.getSession().setAttribute("routes", routes);
         request.getSession().setAttribute("depart_date", null);*/
-        return "client_trains.jsp";
+        return "list.jsp";
     }
 }
