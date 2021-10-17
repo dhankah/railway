@@ -27,8 +27,6 @@ O
 .idea/artifacts/railway_war.xml,c\f\cf36457239594bdaf39e0f1d391d64e71ea58966
 X
 (.idea/artifacts/railway_war_exploded.xml,a\6\a67a9f41201ed3ec02d13310323e2d413f8538cc
-T
-$src/main/webapp/META-INF/context.xml,c\b\cbfb0d2e9b2b9fbf9d54374577c894a38643c6d0
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
 b
