@@ -6,6 +6,7 @@ import com.mospan.railway.model.Ticket;
 import com.mospan.railway.model.Trip;
 
 import java.util.Collection;
+import java.util.List;
 
 public class TicketService {
     TicketDao dao = new TicketDao();
@@ -30,5 +31,8 @@ public class TicketService {
     }
     public Collection<Integer> findSeats(Trip trip) {
         return dao.findSeats(trip);
+    }
+    public List<Ticket> findAllForUser(long id) {
+        return dao.findAllForUser(id);
     }
 }

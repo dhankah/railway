@@ -2,6 +2,7 @@ package com.mospan.railway.service;
 
 import com.mospan.railway.dao.Dao;
 import com.mospan.railway.dao.TripDao;
+import com.mospan.railway.model.Route;
 import com.mospan.railway.model.Trip;
 
 import java.time.LocalDate;
@@ -31,5 +32,8 @@ public class TripService {
     }
     public Trip getTripForDate(long routeId, LocalDate date) {
         return dao.getTripForDate(routeId, date);
+    }
+    public Collection<Trip> findTrips(Route route, LocalDate date) {
+        return dao.findTrips(route, date);
     }
 }

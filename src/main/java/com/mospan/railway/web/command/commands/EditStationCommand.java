@@ -25,7 +25,7 @@ public class EditStationCommand implements Command {
         if (request.getParameter("stationName") != null) {
             Station station = stationService.find(request.getParameter("stationName"));
             request.getSession().setAttribute("station", station);
-            return "edit_station.jsp";
+            return "edit.jsp";
         }
         if (request.getParameter("name") != null) {
             Station station = stationService.find(request.getParameter("prevName"));

@@ -23,7 +23,7 @@ public class EditRouteCommand implements Command {
             route.setEndStation(stationService.find(request.getParameter("end_station")));
 
             route.setPrice(Double.parseDouble(request.getParameter("price")));
-            route.setArrivalTime(LocalTime.parse(request.getParameter("arrival_time")));
+//            route.setArrivalTime(LocalTime.parse(request.getParameter("arrival_time")));
             route.setDepartTime(LocalTime.parse(request.getParameter("depart_time")));
             routeService.insert(route);
         }
@@ -31,7 +31,7 @@ public class EditRouteCommand implements Command {
             Route route = routeService.findById(Long.parseLong(request.getParameter("id")));
             request.getSession().setAttribute("route", route);
 
-            return "edit_route.jsp";
+            return "edit.jsp";
         }
         else if (null != request.getParameter("idToDelete")) {
             Route route = routeService.findById(Long.parseLong(request.getParameter("idToDelete")));
@@ -44,7 +44,7 @@ public class EditRouteCommand implements Command {
             route.setEndStation(stationService.find(request.getParameter("end_station")));
 
             route.setPrice(Double.parseDouble(request.getParameter("price")));
-            route.setArrivalTime(LocalTime.parse(request.getParameter("arrival_time")));
+//            route.setArrivalTime(LocalTime.parse(request.getParameter("arrival_time")));
             route.setDepartTime(LocalTime.parse(request.getParameter("depart_time")));
 
             routeService.update(route);

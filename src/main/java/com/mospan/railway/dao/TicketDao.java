@@ -2,6 +2,7 @@ package com.mospan.railway.dao;
 
 import com.mospan.railway.model.Ticket;
 import com.mospan.railway.model.Trip;
+import com.mospan.railway.model.User;
 import com.mospan.railway.service.TripService;
 import com.mospan.railway.service.UserService;
 
@@ -66,6 +67,7 @@ public class TicketDao implements Dao<Ticket>{
 
             ResultSet rs = st.executeQuery();
             rs.next();
+            ticket.setId(rs.getLong("id"));
             ticket.setUser(userService.findById(rs.getLong("user_id")));
             ticket.setTrip(tripService.findById(rs.getLong("trip_id")));
             ticket.setSeat(rs.getInt("seat"));
@@ -79,10 +81,19 @@ public class TicketDao implements Dao<Ticket>{
 
     @Override
     public void delete(Ticket ticket) {
+        con = ConnectionPool.getInstance().getConnection();
+
         try {
             PreparedStatement st = con.prepareStatement("DELETE FROM ticket WHERE id = ?");
             st.setLong(1, ticket.getId());
             st.executeUpdate();
+
+            st = con.prepareStatement("UPDATE trip SET available_places = ? WHERE id = ?");
+            st.setLong(1, ticket.getTrip().getAvailablePlaces() + 1);
+            st.setLong(2, ticket.getTrip().getId());
+            st.executeUpdate();
+
+            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -91,6 +102,7 @@ public class TicketDao implements Dao<Ticket>{
     @Override
     public Collection<Ticket> findAll() {
         List<Ticket> tickets = new ArrayList<>();
+        con = ConnectionPool.getInstance().getConnection();
 
         try {
             PreparedStatement st = null;
@@ -102,6 +114,7 @@ public class TicketDao implements Dao<Ticket>{
                 Ticket ticket = findById(id);
                 tickets.add(ticket);
                 id++;
+                con.close();
             }
 
         } catch (SQLException e) {
@@ -128,5 +141,33 @@ public class TicketDao implements Dao<Ticket>{
             e.printStackTrace();
         }
         return seats;
+    }
+
+    public List<Ticket> findAllForUser(long id) {
+        con = ConnectionPool.getInstance().getConnection();
+        List<Ticket> tickets = new ArrayList<>();
+
+        try {
+            PreparedStatement st = null;
+            st = con.prepareStatement("SELECT * FROM ticket WHERE user_id = ?");
+            st.setLong(1, id);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Ticket ticket = new Ticket();
+                ticket.setId(rs.getLong("id"));
+                ticket.setUser(new UserService().findById(id));
+                ticket.setSeat(rs.getInt("seat"));
+                ticket.setTrip(new TripService().findById(rs.getLong("trip_id")));
+                tickets.add(ticket);
+            }
+
+            con.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return tickets;
     }
 }

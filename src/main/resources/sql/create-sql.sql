@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `railway`.`detail` (
   `email` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -51,11 +51,11 @@ CREATE TABLE IF NOT EXISTS `railway`.`route` (
   `start_station_id` INT NOT NULL,
   `end_station_id` INT NOT NULL,
   `depart_time` TIME NOT NULL,
-  `arrival_time` TIME NOT NULL,
+  `time` TIME NOT NULL,
   `price` INT NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
+AUTO_INCREMENT = 3
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `railway`.`station` (
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 9
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -105,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `railway`.`trip` (
     FOREIGN KEY (`route_id`)
     REFERENCES `railway`.`route` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 2
 DEFAULT CHARACTER SET = utf8mb3;
 
 
@@ -120,7 +120,6 @@ CREATE TABLE IF NOT EXISTS `railway`.`user` (
   `detail_id` INT NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `login_UNIQUE` (`login` ASC) VISIBLE,
-  UNIQUE INDEX `password_UNIQUE` (`password` ASC) VISIBLE,
   INDEX `fk_user_role1_idx` (`role_id` ASC) VISIBLE,
   INDEX `fk_user_detail1_idx` (`detail_id` ASC) VISIBLE,
   CONSTRAINT `fk_user_detail1`
@@ -130,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `railway`.`user` (
     FOREIGN KEY (`role_id`)
     REFERENCES `railway`.`role` (`id`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 3
+AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb3;
 
 
