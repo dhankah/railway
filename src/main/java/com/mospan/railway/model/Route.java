@@ -1,7 +1,7 @@
 package com.mospan.railway.model;
 
 
-import java.time.LocalDate;
+import java.time.Duration;
 import java.time.LocalTime;
 
 public class Route extends Entity{
@@ -12,15 +12,7 @@ public class Route extends Entity{
     private Station endStation;
 
     private LocalTime departTime;
-    private LocalTime arrivalTime;
-
-    // temporary values stored only in objects, not in database
-
-    private LocalDate departDate;
-    private LocalDate arrivalDate;
-
-    private int places = 50;
-    private String time;
+    private long time;
 
     public double getPrice() {
         return price;
@@ -54,43 +46,41 @@ public class Route extends Entity{
         this.departTime = departTime;
     }
 
-    public LocalTime getArrivalTime() {
-        return arrivalTime;
-    }
-
-    public void setArrivalTime(LocalTime arrivalTime) {
-        this.arrivalTime = arrivalTime;
-    }
-
-    public int getPlaces() {
-        return places;
-    }
-
-    public void setPlaces(int places) {
-        this.places = places;
-    }
-
-    public String getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(long time) {
         this.time = time;
     }
 
-    public LocalDate getDepartDate() {
-        return departDate;
+    public LocalTime getArrivalTime() {
+        return departTime.plus(Duration.ofSeconds(time));
     }
 
-    public void setDepartDate(LocalDate departDate) {
-        this.departDate = departDate;
+    private long[] timeUnits() {
+        long t = time;
+        long day = t / (24 * 3600);
+
+        t = t % (24 * 3600);
+        long hour = t / 3600;
+
+        t %= 3600;
+        long minute = t / 60 ;
+        return new long[]{day, hour, minute};
     }
 
-    public LocalDate getArrivalDate() {
-        return arrivalDate;
+
+    public long getDay() {
+        return timeUnits()[0];
     }
 
-    public void setArrivalDate(LocalDate arrivalDate) {
-        this.arrivalDate = arrivalDate;
+    public long getHour() {
+        return timeUnits()[1];
+    }
+
+    public long getMinute() {
+        return timeUnits()[2];
     }
 }
+

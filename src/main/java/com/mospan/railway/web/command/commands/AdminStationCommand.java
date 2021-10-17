@@ -15,6 +15,6 @@ public class AdminStationCommand implements Command {
         StationService stationService = new StationService();
         Collection<Station> stations = stationService.findAll();
         request.getSession().setAttribute("stations", stations);
-        return "admin_station.jsp";
+        return "list.jsp";
     }
 }

@@ -1,6 +1,7 @@
 package com.mospan.railway.dao;
 
 
+import com.mospan.railway.model.Route;
 import com.mospan.railway.model.Trip;
 import com.mospan.railway.service.RouteService;
 
@@ -69,7 +70,8 @@ public class TripDao implements Dao<Trip>{
             ResultSet rs = st.executeQuery();
             rs.next();
 
-            trip.setRoute(routeService.findById(rs.getLong("train_id")));
+            trip.setId(rs.getLong("id"));
+            trip.setRoute(routeService.findById(rs.getLong("route_id")));
             trip.setDepartDate(rs.getDate("depart_date").toLocalDate());
             trip.setArrivalDate(rs.getDate("arrival_date").toLocalDate());
             trip.setAvailablePlaces(rs.getInt("available_places"));
@@ -155,6 +157,36 @@ public class TripDao implements Dao<Trip>{
             e.printStackTrace();
         }
         return trip;
+    }
+
+    public Collection<Trip> findTrips(Route route, LocalDate date) {
+        con = ConnectionPool.getInstance().getConnection();
+        PreparedStatement st = null;
+        List<Trip> trips = new ArrayList<>();
+        try {
+            st = con.prepareStatement("SELECT * FROM trip WHERE route_id = ? AND depart_date = ?");
+            st.setLong(1, route.getId());
+            st.setDate(2, Date.valueOf(date));
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Trip trip = new Trip();
+                trip.setId(rs.getLong("id"));
+                trip.setRoute(route);
+                trip.setDepartDate(rs.getDate("depart_date").toLocalDate());
+                trip.setArrivalDate(rs.getDate("arrival_date").toLocalDate());
+                trip.setAvailablePlaces(rs.getInt("available_places"));
+                trips.add(trip);
+            }
+            if (trips.size() == 0) {
+                trips = null;
+            }
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            trips = null;
+        }
+        return trips;
     }
 
 }

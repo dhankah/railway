@@ -17,13 +17,11 @@ public class StationDao implements Dao<Station>{
     @Override
     public Station findById(long id) {
         con = ConnectionPool.getInstance().getConnection();
-
         Station station = new Station();
 
         try {
             PreparedStatement st = null;
             st = con.prepareStatement("SELECT * FROM station WHERE id = ?");
-
             st.setLong(1, id);
 
             ResultSet rs = st.executeQuery();
@@ -34,7 +32,9 @@ public class StationDao implements Dao<Station>{
             con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
+
         return station;
     }
 

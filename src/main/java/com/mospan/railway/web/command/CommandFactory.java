@@ -1,6 +1,7 @@
 package com.mospan.railway.web.command;
 
 import com.mospan.railway.web.command.commands.*;
+import com.mospan.railway.web.command.commands.auth.RegisterCommand;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,8 +18,7 @@ public class CommandFactory {
     }
 
     static {
-        commands.put("login", new LoginCommand());
-        commands.put("signup", new SignUpCommand());
+        commands.put("signup", new RegisterCommand());
 
         commands.put("stations", new AdminStationCommand());
         commands.put("editStation", new EditStationCommand());
