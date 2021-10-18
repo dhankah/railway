@@ -67,32 +67,14 @@ public class UserController extends ResourceController{
         resp.sendRedirect(req.getContextPath() + "/cabinet");
     }
 
-    /**
-     * GET /stations/{id}/edit
-     * Displays edit form for given station
-     */
     @Override
     protected void edit(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("utf8");
         req.getRequestDispatcher("/view/cabinet/edit.jsp").forward(req, resp);
     }
 
-    /**
-     * POST /stations
-     * Save new stations
-     */
-    @Override
-    protected void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Station station = new Station();
-        station.setName(req.getParameter("name"));
-        new StationService().insert(station);
-        resp.sendRedirect(req.getContextPath() + "/stations");
-    }
 
-    /**
-     * GET /stations
-     * Displays list of stations
-     */
+
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long id = ((User)req.getSession().getAttribute("user")).getId();
@@ -104,14 +86,18 @@ public class UserController extends ResourceController{
         req.getRequestDispatcher("/view/cabinet/cabinet.jsp").forward(req, resp);
     }
 
-    /**
-     * DELETE stations/{id}
-     * Removes specified station from db
-     */
+
     @Override
-    protected void delete(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        new StationService().delete((Station) entity);
-        resp.sendRedirect(req.getContextPath() + "/stations");
+    protected void delete(Entity user, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if (null != new TicketService().findAllForUser(user.getId())) {
+            String message = "You should first cancel your trips";
+            req.getSession().setAttribute("errorMessage", message);
+            resp.sendRedirect(req.getContextPath() + "/cabinet");
+            return;
+        }
+        new UserService().delete((User) user);
+        req.getSession().invalidate();
+        resp.sendRedirect(req.getContextPath() + "/auth/login");
     }
 
     @Override

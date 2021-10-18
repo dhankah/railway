@@ -9,47 +9,65 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags" %>
 <z:layout pageTitle="Trips">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/js/standalone/selectize.min.js" integrity="sha256-+C0A5Ilqmu4QcSPxrlGpaZxJ04VjsRjKu+G82kl5UJk=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+    <script>
+        $(document).ready(function () {
+            $('select').selectize({
+                sortField: 'text'
+            });
+        });
+    </script>
+    <div class="form-group m-5">
     <form action="${pageContext.request.contextPath}/trips">
-        <h4>from</h4>
-        <select name="depart_station">
+        <div class="col-sm-3">from</div>
+        <select name="depart_station" style="width: 220px">
             <c:forEach items="${requestScope.stations}" var="station">
-                <h4>Depart station</h4><option value = ${station.name}>${station.name}</option>
+               <option value = ${station.name}>${station.name}</option>
             </c:forEach>
         </select>
-        <h4>to</h4>
-        <select name="arrival_station">
+        <div class="col-sm-3">to</div>
+        <select name="arrival_station" style="width: 220px">
             <c:forEach items="${requestScope.stations}" var="station">
-                <h4>Arrival station</h4><option value = ${station.name}>${station.name}</option>
+               <option value = ${station.name}>${station.name}</option>
             </c:forEach>
         </select>
-        <h4>Departure date</h4><input type="date" name="depart_date">
-        <input type="submit" value="Find!">
+        <div class="col-sm-3">Departure date</div>
+        <input type="date" name="depart_date" value="${requestScope.date}" min="${requestScope.date}" max="${requestScope.max_date}">
+        <input type="submit" value="Find!" class="btn btn-primary">
     </form>
-
+    </div>
     <c:if test="${null != requestScope.trips}">
+        <ul class="list-group m-5">
         <h3>These are the trains we have found for you</h3>
-        <c:forEach items="${requestScope.trips}" var="trip">
-            number
-            ${trip.route.id}
-            from
-            ${trip.route.startStation.name}
-            ${trip.route.departTime}
-            ${trip.departDate}
-            to
-            ${trip.route.endStation.name}
-            ${trip.route.arrivalTime}
-            ${trip.arrivalDate}
-            time in way
-            ${trip.route.day} days
-            ${trip.route.hour} hours
-            ${trip.route.minute} minutes
-            price
-            ${trip.route.price}
-            available places
-            ${trip.availablePlaces}
-            <c:if test="${not empty sessionScope.user && !sessionScope.user.isAdmin}">
-                <a href="${pageContext.request.contextPath}/trips/${trip.id}/choose">Choose seat</a>
-            </c:if>
-        </c:forEach>
+            <c:forEach items="${requestScope.trips}" var="trip">
+                <li class="list-group-item">
+                    number
+                        ${trip.route.id}
+                    from
+                        ${trip.route.startStation.name}
+                        ${trip.route.departTime}
+                        ${trip.departDate}
+                    to
+                        ${trip.route.endStation.name}
+                        ${trip.route.arrivalTime}
+                        ${trip.arrivalDate}
+                    time in way
+                        ${trip.route.day} days
+                        ${trip.route.hour} hours
+                        ${trip.route.minute} minutes
+                    price
+                        ${trip.route.price}
+                    available places
+                        ${trip.availablePlaces}
+                    <c:if test="${not empty sessionScope.user && !sessionScope.user.isAdmin}">
+                        <a href="${pageContext.request.contextPath}/trips/${trip.id}/choose">Choose seat</a>
+                    </c:if>
+                </li>
+            </c:forEach>
+        </ul>
     </c:if>
 </z:layout>
+
+

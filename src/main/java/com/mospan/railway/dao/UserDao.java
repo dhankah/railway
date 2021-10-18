@@ -54,11 +54,12 @@ public class UserDao implements Dao<User>{
     @Override
     public void delete(User user) {
         con = ConnectionPool.getInstance().getConnection();
+        new DetailService().delete(user.getDetails());
         try {
             PreparedStatement st = con.prepareStatement("DELETE FROM user WHERE id = ?");
             st.setLong(1, user.getId());
 
-            detailService.delete(detailService.findById(user.getId()));
+
 
             st.executeUpdate();
             con.close();

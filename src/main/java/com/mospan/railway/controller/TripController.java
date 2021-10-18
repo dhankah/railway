@@ -5,13 +5,10 @@ import com.mospan.railway.service.RouteService;
 import com.mospan.railway.service.StationService;
 import com.mospan.railway.service.TicketService;
 import com.mospan.railway.service.TripService;
-import com.mospan.railway.web.command.commands.auth.LoginCommand;
-import com.mospan.railway.web.command.commands.auth.LogoutCommand;
-import com.mospan.railway.web.command.commands.auth.RegisterCommand;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -34,10 +31,6 @@ public class TripController extends ResourceController {
         }
     }
 
-    /**
-     * GET /stations
-     * Displays list of stations
-     */
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -47,13 +40,15 @@ public class TripController extends ResourceController {
             Collection<Route> routes = new RouteService().findByStations(req.getParameter("depart_station"), req.getParameter("arrival_station"));
 
             for (Route route : routes) {
-                System.out.println("looking for em trips");
                 Collection<Trip> tripsForRoute = new TripService().findTrips(route, LocalDate.parse(req.getParameter("depart_date")));
                 trips.addAll(tripsForRoute);
             }
             req.setAttribute("trips", trips);
         }
         req.setAttribute("stations", new StationService().findAll());
+        req.setAttribute("date", LocalDate.now());
+        req.setAttribute("max_date", LocalDate.now().plusDays(34));
+
         req.getRequestDispatcher("/view/trips/list.jsp").forward(req, resp);
     }
 

@@ -23,20 +23,7 @@ public class TicketController extends ResourceController{
             return null;
         }
     }
-    /**
-     * PUT /stations/{id}
-     * Updates specified station
-     */
 
-    /**
-     * GET /stations/{id}/edit
-     * Displays edit form for given station
-     */
-
-    /**
-     * POST /stations
-     * Save new stations
-     */
     @Override
     protected void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Ticket ticket = new Ticket();
@@ -50,10 +37,6 @@ public class TicketController extends ResourceController{
         resp.sendRedirect(req.getContextPath() + "/cabinet");
     }
 
-    /**
-     * GET /stations
-     * Displays list of stations
-     */
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Ticket> tickets = (List<Ticket>) new TicketService().findAllForUser(((User)req.getSession().getAttribute("user")).getId());
@@ -61,10 +44,6 @@ public class TicketController extends ResourceController{
         req.getRequestDispatcher("/view/cabinet.jsp").forward(req, resp);
     }
 
-    /**
-     * DELETE stations/{id}
-     * Removes specified station from db
-     */
     @Override
     protected void delete(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         new TicketService().delete((Ticket) entity);

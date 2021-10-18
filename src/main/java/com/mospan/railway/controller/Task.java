@@ -17,7 +17,7 @@ public class Task extends TimerTask {
         Collection<Route> routes = new RouteService().findAll();
         for (Route route : routes) {
             Trip trip = new Trip();
-            trip.setDepartDate(LocalDate.now().plusDays(20));
+            trip.setDepartDate(LocalDate.now().plusDays(34));
 
             LocalDateTime dt = trip.getDepartDate().atTime(route.getDepartTime());
             trip.setArrivalDate((dt.plusSeconds(route.getTime())).toLocalDate());
