@@ -39,7 +39,7 @@
                 <label for="password">Password</label>
             </div>
 
-            <button class="btn btn-lg btn-primary mt-2 w-100" type="submit">Log in</button>
+            <button class="btn btn-lg btn-primary mt-2 w-100 custom" type="submit">Log in</button>
         </form>
         <a href="${pageContext.request.contextPath}/auth/register">I am not yet signed up</a>
     </main>

@@ -77,6 +77,9 @@ public abstract class ResourceController extends HttpServlet {
                     case "change_password" :
                         this.changePassword(entity, req, resp);
                         return;
+                    case "route_info" :
+                        this.routeInfo(entity, req, resp);
+                        return;
                 }
 
                 break;
@@ -129,6 +132,10 @@ public abstract class ResourceController extends HttpServlet {
     }
 
     protected void changePassword(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.sendError(404, "Not found");
+    }
+
+    protected void routeInfo(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.sendError(404, "Not found");
     }
 

@@ -13,6 +13,6 @@
         <h4>name</h4>
         <input type="text" name = "name" value="${requestScope.station.name}">
         <br>
-        <input type="submit">
+        <input type="submit" value="Submit" class="custom">
     </form>
 </z:layout>

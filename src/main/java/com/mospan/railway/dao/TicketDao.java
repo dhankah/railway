@@ -12,12 +12,12 @@ import java.util.Collection;
 import java.util.List;
 
 public class TicketDao implements Dao<Ticket>{
-
+    ConnectionPool cp = ConnectionPool.getInstance();
     Connection con;
 
     @Override
     public void insert(Ticket ticket) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         PreparedStatement st = null;
         try {
             st = con.prepareStatement("INSERT INTO ticket (user_id, trip_id, seat) VALUES (?, ?, ?)");
@@ -25,15 +25,16 @@ public class TicketDao implements Dao<Ticket>{
             st.setLong(2, ticket.getTrip().getId());
             st.setInt(3, ticket.getSeat());
             st.executeUpdate();
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
     }
 
     @Override
     public void update(Ticket ticket) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         PreparedStatement st = null;
         try {
             st = con.prepareStatement("UPDATE ticket SET (user_id, trip_id, seat) VALUES (?, ?, ?) WHERE id = ?");
@@ -43,9 +44,10 @@ public class TicketDao implements Dao<Ticket>{
             st.setInt(3, ticket.getSeat());
             st.setLong(4, ticket.getId());
             st.executeUpdate();
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
     }
 
@@ -56,7 +58,7 @@ public class TicketDao implements Dao<Ticket>{
 
     @Override
     public Ticket findById(long id) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         Ticket ticket = new Ticket();
         UserService userService = new UserService();
         TripService tripService = new TripService();
@@ -72,16 +74,17 @@ public class TicketDao implements Dao<Ticket>{
             ticket.setTrip(tripService.findById(rs.getLong("trip_id")));
             ticket.setSeat(rs.getInt("seat"));
 
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
         return ticket;
     }
 
     @Override
     public void delete(Ticket ticket) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
 
         try {
             PreparedStatement st = con.prepareStatement("DELETE FROM ticket WHERE id = ?");
@@ -93,16 +96,17 @@ public class TicketDao implements Dao<Ticket>{
             st.setLong(2, ticket.getTrip().getId());
             st.executeUpdate();
 
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
     }
 
     @Override
     public Collection<Ticket> findAll() {
         List<Ticket> tickets = new ArrayList<>();
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
 
         try {
             PreparedStatement st = null;
@@ -114,7 +118,7 @@ public class TicketDao implements Dao<Ticket>{
                 Ticket ticket = findById(id);
                 tickets.add(ticket);
                 id++;
-                con.close();
+                cp.closeConnection(con);
             }
 
         } catch (SQLException e) {
@@ -126,7 +130,7 @@ public class TicketDao implements Dao<Ticket>{
 
     public Collection<Integer> findSeats(Trip trip) {
         List<Integer> seats = new ArrayList<>();
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         PreparedStatement st = null;
         try {
             st = con.prepareStatement("SELECT seat FROM ticket WHERE trip_id = ?");
@@ -136,15 +140,16 @@ public class TicketDao implements Dao<Ticket>{
             while (rs.next()) {
                 seats.add(rs.getInt("seat"));
             }
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
         return seats;
     }
 
     public List<Ticket> findAllForUser(long id) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         List<Ticket> tickets = new ArrayList<>();
 
         try {
@@ -165,11 +170,12 @@ public class TicketDao implements Dao<Ticket>{
             if (tickets.isEmpty()) {
                 tickets = null;
             }
-            con.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        } finally {
+            cp.closeConnection(con);
         }
         return tickets;
     }

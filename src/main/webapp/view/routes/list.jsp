@@ -30,7 +30,7 @@
         <input type="number" name="minutes"> minutes
 
         <h4>Price</h4><input type="number" name="price">
-        <input type="submit" value="add route">
+        <input type="submit" value="add route" class="btn btn-primary custom">
     </form>
     <table>
         <tr>
@@ -42,7 +42,7 @@
                     <a href="${pageContext.request.contextPath}/routes/${route.id}/edit">Edit</a>
                     <form action="${pageContext.request.contextPath}/routes/${route.id}" method="post">
                         <input type="hidden" name="_method" value="delete" />
-                        <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
+                        <input type="submit" value="Delete" onclick="return confirm('Are you sure?')" class="btn btn-primary danger">
                     </form>
                     <br>
             </c:forEach></td>

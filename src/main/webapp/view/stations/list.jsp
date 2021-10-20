@@ -11,7 +11,7 @@
 <z:layout pageTitle="Stations">
     <form name="edit" method="post" action="${pageContext.request.contextPath}/stations" onsubmit="return validateStationForm()">
         <input type="text" name="name">
-        <input type="submit" value="add station">
+        <input type="submit" value="add station" class="btn btn-primary custom">
 
     </form>
     <table>
@@ -21,7 +21,7 @@
                 <a href="${pageContext.request.contextPath}/stations/${station.id}/edit">Edit</a>
                 <form action="${pageContext.request.contextPath}/stations/${station.id}" method="post">
                     <input type="hidden" name="_method" value="delete" />
-                    <input type="submit" value="Delete" onclick="return confirm('Are you sure?')">
+                    <input type="submit" value="Delete" onclick="return confirm('Are you sure?')" class = "btn btn-primary danger">
                 </form>
                 <br>
             </c:forEach></td>

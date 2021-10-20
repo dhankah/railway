@@ -38,6 +38,6 @@
 
         <h4>Price</h4><input type="number" name="price" value="${requestScope.route.price}">
 
-        <input type="submit" value="Submit">
+        <input type="submit" value="Submit" class="btn btn-primary custom">
     </form>
     </z:layout>

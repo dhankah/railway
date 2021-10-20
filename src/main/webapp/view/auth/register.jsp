@@ -16,6 +16,6 @@
     <h4>first name</h4><input type = "text" name = "first_name"/><br>
     <h4>last name</h4><input type = "text" name = "last_name"/><br>
     <h4>email</h4><input type = "email" name = "email"/><br>
-    <input type="submit" value = "sign up"/>
+    <input type="submit" value = "sign up" class="btn btn-primary custom">
 </form>
     </z:layout>

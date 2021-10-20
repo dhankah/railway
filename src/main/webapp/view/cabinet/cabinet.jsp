@@ -57,11 +57,11 @@
 
             <div class="row">
                 <div class="col-sm-12">
-                    <a class="btn btn-info " href="${pageContext.request.contextPath}/cabinet/${sessionScope.user.id}/edit">Edit</a>
-                    <a class="btn btn-info " href="${pageContext.request.contextPath}/cabinet/${sessionScope.user.id}/change_password">Change password</a>
+                    <a class="btn btn-info custom" href="${pageContext.request.contextPath}/cabinet/${sessionScope.user.id}/edit">Edit</a>
+                    <a class="btn btn-info custom" href="${pageContext.request.contextPath}/cabinet/${sessionScope.user.id}/change_password">Change password</a>
                     <form action="${pageContext.request.contextPath}/cabinet/${sessionScope.user.id}" method="post">
                         <input type="hidden" name="_method" value="delete" />
-                        <input type="submit" value="Delete your profile" class="btn btn-danger my-1" onclick="return confirm('Are you sure?')">
+                        <input type="submit" value="Delete your profile" class="btn btn-danger my-1 danger" onclick="return confirm('Are you sure?')">
                     </form>
             </div>
         </div>
@@ -80,9 +80,9 @@
                     </ul>
                     <form class="m-3" action="${pageContext.request.contextPath}/ticket/${ticket.id}" method="post">
                         <input type="hidden" name="_method" value="delete" />
-                        <input type="submit" class="btn btn-primary" value="Cancel purchase" onclick="return confirm('Are you sure?')">
+                        <input type="submit" class="btn btn-primary custom" value="Cancel purchase" onclick="return confirm('Are you sure?')">
                     </form>
-                    <a href="${pageContext.request.contextPath}/download/${ticket.id}" class="btn btn-primary">Download ticket</a>
+                    <a href="${pageContext.request.contextPath}/download/${ticket.id}" class="btn btn-primary custom">Download ticket</a>
                 </div>
             </div>
         </c:forEach>

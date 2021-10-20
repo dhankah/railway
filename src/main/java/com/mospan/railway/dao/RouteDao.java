@@ -10,13 +10,14 @@ import java.util.Collection;
 import java.util.List;
 
 public class RouteDao implements Dao<Route>{
-
+    ConnectionPool cp = ConnectionPool.getInstance();
     Connection con;
+
     StationService stationService = new StationService();
 
     @Override
     public void insert(Route route) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         PreparedStatement st = null;
         try {
             st = con.prepareStatement("INSERT INTO route (start_station_id, end_station_id, depart_time, time, price)" +
@@ -30,16 +31,17 @@ public class RouteDao implements Dao<Route>{
 
 
             st.executeUpdate();
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            cp.closeConnection(con);
         }
 
     }
 
     @Override
     public void update(Route route) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         PreparedStatement st = null;
         try {
             st = con.prepareStatement("UPDATE route SET start_station_id = ?, end_station_id = ?, depart_time = ?, " +
@@ -53,9 +55,10 @@ public class RouteDao implements Dao<Route>{
             st.setLong(6, route.getId());
 
             st.executeUpdate();
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            cp.closeConnection(con);
         }
     }
 
@@ -66,7 +69,7 @@ public class RouteDao implements Dao<Route>{
 
     @Override
     public Route findById(long id) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         Route route = new Route();
 
         try {
@@ -87,29 +90,31 @@ public class RouteDao implements Dao<Route>{
 
 
             route.setId(id);
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            cp.closeConnection(con);
         }
         return route;
     }
 
     @Override
     public void delete(Route route) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         try {
             PreparedStatement st = con.prepareStatement("DELETE FROM route WHERE id = ?");
             st.setLong(1, route.getId());
             st.executeUpdate();
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            cp.closeConnection(con);
         }
     }
 
     @Override
     public Collection<Route> findAll() {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         List<Route> routes = new ArrayList<>();
 
         try {
@@ -132,16 +137,17 @@ public class RouteDao implements Dao<Route>{
 
             }
 
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            cp.closeConnection(con);
         }
 
         return routes;
     }
 
     public Collection<Route> findByStations(String startStation, String endStation) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         List<Route> routes = new ArrayList<>();
 
         try {
@@ -163,9 +169,13 @@ public class RouteDao implements Dao<Route>{
                 route.setPrice(rs.getDouble("price"));
                 routes.add(route);
             }
-        con.close();
+            if (routes.isEmpty()) {
+                return null;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
+        }  finally {
+            cp.closeConnection(con);
         }
 
         return routes;

@@ -11,12 +11,12 @@ import java.util.Collection;
 import java.util.List;
 
 public class StationDao implements Dao<Station>{
-
+    ConnectionPool cp = ConnectionPool.getInstance();
     Connection con;
 
     @Override
     public Station findById(long id) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         Station station = new Station();
 
         try {
@@ -29,10 +29,11 @@ public class StationDao implements Dao<Station>{
 
             station.setName(rs.getString("name"));
             station.setId(id);
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        } finally {
+            cp.closeConnection(con);
         }
 
         return station;
@@ -40,53 +41,52 @@ public class StationDao implements Dao<Station>{
 
     @Override
     public void insert(Station station) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         PreparedStatement st = null;
         try {
             st = con.prepareStatement("INSERT INTO station (name)" +
                     " VALUES (?)");
             st.setString(1, station.getName());
             st.executeUpdate();
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
     }
 
     @Override
     public void update(Station station) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         try {
             PreparedStatement st = con.prepareStatement("UPDATE station SET name = ? WHERE id = ?");
             st.setString(1, station.getName());
             st.setLong(2, station.getId());
             st.executeUpdate();
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
     }
 
 
     @Override
     public Station find(String name) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         Station station = new Station();
-
         try {
             PreparedStatement st = null;
             st = con.prepareStatement("SELECT * FROM station WHERE name = ?");
+                st.setString(1, name);
 
-            st.setString(1, name);
-
-            ResultSet rs = st.executeQuery();
-            rs.next();
+            ResultSet rs = st.executeQuery();rs.next();
             station.setName(name);
             station.setId(rs.getLong("id"));
-            con.close();
-
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
 
         return station;
@@ -94,20 +94,21 @@ public class StationDao implements Dao<Station>{
 
     @Override
     public void delete(Station station) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         try {
             PreparedStatement st = con.prepareStatement("DELETE FROM station WHERE id = ?");
             st.setLong(1, station.getId());
             st.executeUpdate();
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
     }
 
     @Override
     public Collection<Station> findAll() {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         List<Station> stations = new ArrayList<>();
 
         try {
@@ -122,10 +123,11 @@ public class StationDao implements Dao<Station>{
 
                 stations.add(station);
             }
-            con.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
 
         return stations;

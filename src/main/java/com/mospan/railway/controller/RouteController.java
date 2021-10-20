@@ -80,6 +80,7 @@ public class RouteController extends ResourceController{
         resp.sendRedirect(req.getContextPath() + "/routes");
     }
 
+
     private long convertTime(HttpServletRequest req) {
         Long days = (!"".equals(req.getParameter("days"))) ? Long.parseLong(req.getParameter("days")) : 0;
         Long hours = (!"".equals(req.getParameter("hours"))) ? Long.parseLong(req.getParameter("hours")) : 0;

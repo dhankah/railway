@@ -2,7 +2,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags" %>
 <z:layout pageTitle="Select seat">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/select_seat.css">
 <form method="post" action="${pageContext.request.contextPath}/ticket" onsubmit="return validateSeatForm()">
     <table>
         <tr>
@@ -39,6 +39,6 @@
         </tr>
     </table>
     <input type="hidden" name="trip" value="${requestScope.trip.id}">
-    <input type="submit">
+    <input type="submit"  class="btn btn-primary custom" value="Purchase">
 </form>
 </z:layout>

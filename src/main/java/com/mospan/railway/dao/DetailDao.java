@@ -13,12 +13,12 @@ import java.util.Collection;
 import java.util.List;
 
 public class DetailDao implements Dao<Detail>{
-
+    ConnectionPool cp = ConnectionPool.getInstance();
     Connection con;
 
     @Override
     public void insert(Detail detail) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         PreparedStatement st = null;
         try {
             st = con.prepareStatement("INSERT INTO detail (first_name, last_name, email) VALUES (?, ?, ?)");
@@ -28,15 +28,16 @@ public class DetailDao implements Dao<Detail>{
             st.setString(3, detail.getEmail());
 
             st.executeUpdate();
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
     }
 
     @Override
     public void update(Detail detail) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         PreparedStatement st = null;
         try {
             st = con.prepareStatement("UPDATE detail " +
@@ -49,15 +50,16 @@ public class DetailDao implements Dao<Detail>{
             st.setLong(4, detail.getId());
 
             st.executeUpdate();
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
     }
 
     @Override
     public Detail find(String email) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         Detail detail = new Detail();
 
         try {
@@ -73,9 +75,10 @@ public class DetailDao implements Dao<Detail>{
             detail.setLastName(rs.getString("last_name"));
             detail.setEmail(email);
             detail.setId(rs.getLong("id"));
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
         return detail;
 
@@ -83,7 +86,7 @@ public class DetailDao implements Dao<Detail>{
 
     @Override
     public Detail findById(long id) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         Detail detail = new Detail();
 
         try {
@@ -99,29 +102,31 @@ public class DetailDao implements Dao<Detail>{
             detail.setLastName(rs.getString("last_name"));
             detail.setEmail(rs.getString("email"));
             detail.setId(id);
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
         return detail;
     }
 
     @Override
     public void delete(Detail detail) {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         try {
             PreparedStatement st = con.prepareStatement("DELETE FROM detail WHERE id = ?");
             st.setLong(1, detail.getId());
             st.executeUpdate();
-            con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
     }
 
     @Override
     public Collection<Detail> findAll() {
-        con = ConnectionPool.getInstance().getConnection();
+        con = cp.getConnection();
         List<Detail> details = new ArrayList<>();
 
         try {
@@ -136,11 +141,11 @@ public class DetailDao implements Dao<Detail>{
                 id++;
             }
 
-        con.close();
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
         }
-
         return details;
     }
 }
