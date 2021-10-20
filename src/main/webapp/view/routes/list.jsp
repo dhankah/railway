@@ -10,7 +10,7 @@
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags" %>
 
 <z:layout pageTitle="Routes">
-    <form method="post" action="${pageContext.request.contextPath}/routes">
+    <form name="edit" method="post" action="${pageContext.request.contextPath}/routes" onsubmit="return validateRouteForm()">
         <input name="add" style="display: none">
         <h4>from</h4><select name="start_station">
             <c:forEach items="${requestScope.stations}" var="station">
@@ -22,7 +22,7 @@
                 <h4>Arrival station</h4><option value = ${station.name}>${station.name}</option>
             </c:forEach>
         </select>
-        <h4>Departure time</h4><input type="time" name="depart_time">
+        <h4>Departure time</h4><input type="time" name="depart_time" value="${requestScope.time}">
         <h4>Time in way</h4>
 
         <input type="number" name="days"> days

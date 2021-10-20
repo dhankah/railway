@@ -12,7 +12,7 @@
 
 <z:layout pageTitle="Edit route">
 
-    <form method="post" action="${pageContext.request.contextPath}/routes/${requestScope.route.id}">
+    <form name ="edit" method="post" action="${pageContext.request.contextPath}/routes/${requestScope.route.id}" name="edit" onsubmit="return validateRouteForm()">
         <input type="hidden" name="_method" value="put" />
         <h4>from</h4>
         <select name="start_station">
@@ -30,7 +30,12 @@
         </c:forEach>
     </select>
         <h4>Departure time</h4><input type="time" name="depart_time" value="${requestScope.route.departTime}">
-        <h4>Time in way</h4><input type="time" name="time" value="${requestScope.route.time}">
+        <h4>Time in way</h4>
+
+        <input type="number" name="days" value="${requestScope.route.day}"> days
+        <input type="number" name="hours" value="${requestScope.route.hour}"> hours
+        <input type="number" name="minutes" value="${requestScope.route.minute}"> minutes
+
         <h4>Price</h4><input type="number" name="price" value="${requestScope.route.price}">
 
         <input type="submit" value="Submit">

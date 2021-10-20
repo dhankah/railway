@@ -67,6 +67,7 @@
           <element id="library" level="project" name="Maven: org.codehaus.plexus:plexus-java:0.9.10" />
           <element id="library" level="project" name="Maven: org.ow2.asm:asm:6.2" />
           <element id="library" level="project" name="Maven: com.thoughtworks.qdox:qdox:2.0-M8" />
+          <element id="library" level="project" name="Maven: com.itextpdf:itextpdf:5.5.13.2" />
         </element>
       </element>
       <element id="directory" name="META-INF">

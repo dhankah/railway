@@ -82,6 +82,7 @@
                         <input type="hidden" name="_method" value="delete" />
                         <input type="submit" class="btn btn-primary" value="Cancel purchase" onclick="return confirm('Are you sure?')">
                     </form>
+                    <a href="${pageContext.request.contextPath}/download/${ticket.id}" class="btn btn-primary">Download ticket</a>
                 </div>
             </div>
         </c:forEach>

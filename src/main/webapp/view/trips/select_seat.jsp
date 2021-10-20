@@ -1,19 +1,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%--
-  Created by IntelliJ IDEA.
-  User: Dana
-  Date: 12.10.2021
-  Time: 15:55
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
+<%@ taglib prefix="z" tagdir="/WEB-INF/tags" %>
+<z:layout pageTitle="Select seat">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/style.css">
-    <title>Title</title>
-</head>
-<body>
-<form method="post" action="${pageContext.request.contextPath}/ticket">
+<form method="post" action="${pageContext.request.contextPath}/ticket" onsubmit="return validateSeatForm()">
     <table>
         <tr>
             <c:forEach items = "${requestScope.seats}" var="seat" begin="0" end="8">
@@ -51,5 +41,4 @@
     <input type="hidden" name="trip" value="${requestScope.trip.id}">
     <input type="submit">
 </form>
-</body>
-</html>
+</z:layout>

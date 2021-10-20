@@ -10,7 +10,7 @@
 <z:layout pageTitle="Register">
 <h1>sign up</h1>
 <br>
-<form method="post" action="${pageContext.request.contextPath}/auth/register">
+<form name="edit" method="post" action="${pageContext.request.contextPath}/auth/register" onsubmit="return  validateRegisterForm()">
     <h4>login</h4><input type = "text" name = "login"/><br>
     <h4>password</h4><input type = "password" name = "password"/><br>
     <h4>first name</h4><input type = "text" name = "first_name"/><br>

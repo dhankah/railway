@@ -9,7 +9,7 @@
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <z:layout pageTitle="Stations">
-    <form method="post" action="${pageContext.request.contextPath}/stations">
+    <form name="edit" method="post" action="${pageContext.request.contextPath}/stations" onsubmit="return validateStationForm()">
         <input type="text" name="name">
         <input type="submit" value="add station">
 

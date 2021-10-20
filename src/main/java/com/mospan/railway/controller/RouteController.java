@@ -67,7 +67,7 @@ public class RouteController extends ResourceController{
 
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        req.setAttribute("time", LocalTime.MIDNIGHT);
         req.setAttribute("stations", new StationService().findAll());
         req.setAttribute("routes", new RouteService().findAll());
         req.getRequestDispatcher("/view/routes/list.jsp").forward(req, resp);
@@ -81,8 +81,8 @@ public class RouteController extends ResourceController{
     }
 
     private long convertTime(HttpServletRequest req) {
-        Long days = (null != req.getParameter("days")) ? Long.parseLong(req.getParameter("days")) : 0;
-        Long hours = (null != req.getParameter("hours")) ? Long.parseLong(req.getParameter("hours")) : 0;
+        Long days = (!"".equals(req.getParameter("days"))) ? Long.parseLong(req.getParameter("days")) : 0;
+        Long hours = (!"".equals(req.getParameter("hours"))) ? Long.parseLong(req.getParameter("hours")) : 0;
         Long minutes = Long.parseLong(req.getParameter("minutes"));
 
         hours += days * 24;

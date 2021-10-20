@@ -34,7 +34,7 @@
             </div>
         </div>
     </c:if>
-    <form method="post" action="${pageContext.request.contextPath}/cabinet/${sessionScope.user.id}">
+    <form name="edit" method="post" action="${pageContext.request.contextPath}/cabinet/${sessionScope.user.id}" onsubmit="return validateUserEditForm()">
     <input type="hidden" name="_method" value="put" />
     <div class="col-lg-8">
         <div class="card">

@@ -158,7 +158,6 @@ public class TicketDao implements Dao<Ticket>{
                 ticket.setId(rs.getLong("id"));
                 ticket.setUser(new UserService().findById(id));
                 ticket.setSeat(rs.getInt("seat"));
-                System.out.println(rs.getInt("seat"));
                 ticket.setTrip(new TripService().findById(rs.getLong("trip_id")));
                 tickets.add(ticket);
             }
