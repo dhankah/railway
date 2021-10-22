@@ -4,6 +4,7 @@ import com.mospan.railway.model.*;
 import com.mospan.railway.service.StationService;
 import com.mospan.railway.service.TicketService;
 import com.mospan.railway.service.UserService;
+import com.mospan.railway.validator.Validator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @WebServlet (value = "/cabinet/*")
 public class UserController extends ResourceController{
-
+Validator validator = new Validator();
     @Override
     Entity findModel(String id) {
         try {
@@ -54,6 +55,15 @@ public class UserController extends ResourceController{
             return;
         }
 
+        if (!validator.validateUser((User) user)) {
+
+            req.getSession().setAttribute("errorMessage", "User with such login or email already exists");
+            resp.sendRedirect(req.getContextPath() + "/cabinet/" + user.getId() + "/edit");
+            return;
+        }
+
+        String message = "Your profile was updated successfully";
+        req.getSession().setAttribute("message", message);
 
         Detail detail = ((User) user).getDetails();
 

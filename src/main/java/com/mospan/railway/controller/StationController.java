@@ -3,6 +3,8 @@ package com.mospan.railway.controller;
 import com.mospan.railway.model.Entity;
 import com.mospan.railway.model.Station;
 import com.mospan.railway.service.StationService;
+import com.mospan.railway.validator.Validator;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,7 @@ import java.util.List;
 
 @WebServlet (value = "/stations/*")
 public class StationController extends ResourceController {
+    Validator validator = new Validator();
 
     @Override
     Entity findModel(String id) {
@@ -27,9 +30,14 @@ public class StationController extends ResourceController {
      * Updates specified station
      */
     @Override
-    protected void update(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ((Station) entity).setName(req.getParameter("name"));
-        new StationService().update((Station) entity);
+    protected void update(Entity station, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ((Station) station).setName(req.getParameter("name"));
+        if (validator.validateStations((Station)station)) {
+            new StationService().update((Station) station);
+            resp.sendRedirect(req.getContextPath() + "/stations");
+            return;
+        }
+        req.getSession().setAttribute("errorMessage", "Station with such name already exists");
         resp.sendRedirect(req.getContextPath() + "/stations");
     }
 
@@ -51,7 +59,12 @@ public class StationController extends ResourceController {
     protected void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Station station = new Station();
         station.setName(req.getParameter("name"));
-        new StationService().insert(station);
+        if (validator.validateStations((Station)station)) {
+            new StationService().insert(station);
+            resp.sendRedirect(req.getContextPath() + "/stations");
+            return;
+        }
+        req.getSession().setAttribute("errorMessage", "Station with such name already exists");
         resp.sendRedirect(req.getContextPath() + "/stations");
     }
 

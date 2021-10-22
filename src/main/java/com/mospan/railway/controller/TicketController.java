@@ -10,9 +10,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 
-@WebServlet (value = "/ticket/*")
+@WebServlet (value = "/tickets/*")
 public class TicketController extends ResourceController{
 
     @Override
@@ -26,6 +27,20 @@ public class TicketController extends ResourceController{
 
     @Override
     protected void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        User user = (User) req.getSession().getAttribute("user");
+        Collection<Ticket> tickets = new TicketService().findAllForUser(user.getId());
+        if (null != tickets) {
+
+            for (Ticket ticket : tickets) {
+                Trip trip = new TripService().findById(Long.parseLong(req.getParameter("trip")));
+                if (ticket.getTrip().getId() == trip.getId()) {
+                    req.getSession().setAttribute("message", "You can buy only one ticket per trip");
+                    resp.sendRedirect(req.getContextPath() + "/trips/" + trip.getId() + "/choose");
+                    return;
+                }
+            }
+        }
         Ticket ticket = new Ticket();
         ticket.setUser((User) req.getSession().getAttribute("user"));
         Trip trip = new TripService().findById(Long.parseLong(req.getParameter("trip")));
@@ -49,5 +64,8 @@ public class TicketController extends ResourceController{
         new TicketService().delete((Ticket) entity);
         resp.sendRedirect(req.getContextPath() + "/cabinet");
     }
+
+
+
 
 }

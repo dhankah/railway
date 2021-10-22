@@ -4,6 +4,7 @@ import com.mospan.railway.model.Detail;
 import com.mospan.railway.model.Role;
 import com.mospan.railway.model.User;
 import com.mospan.railway.service.DetailService;
+import com.mospan.railway.validator.Validator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class UserDao implements Dao<User>{
+    Validator validator = new Validator();
     ConnectionPool cp = ConnectionPool.getInstance();
     Connection con;
     DetailService detailService = new DetailService();

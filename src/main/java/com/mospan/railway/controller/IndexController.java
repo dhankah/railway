@@ -1,11 +1,7 @@
 package com.mospan.railway.controller;
 
-import com.mospan.railway.dao.ConnectionPool;
-import com.mospan.railway.model.Role;
-import com.mospan.railway.model.User;
-import com.mospan.railway.web.command.Command;
-import com.mospan.railway.web.command.CommandFactory;
 
+import com.mospan.railway.model.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Timer;
 
 @WebServlet (value = "/")
 public class IndexController extends HttpServlet {

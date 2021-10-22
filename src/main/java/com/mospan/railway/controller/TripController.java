@@ -48,11 +48,11 @@ public class TripController extends ResourceController {
                 }
                 if (trips.isEmpty()) {
                     req.getSession().removeAttribute("trips");
-                    req.getSession().setAttribute("message", "We could not find any trains for your request");
+                    req.getSession().setAttribute("errorMessage", "We could not find any trains for your request");
                 }
             } else {
                 req.getSession().removeAttribute("trips");
-                req.getSession().setAttribute("message", "We do not have such a route");
+                req.getSession().setAttribute("errorMessage", "We do not have such a route");
             }
 
             req.getSession().setAttribute("date", req.getParameter("depart_date"));
