@@ -47,11 +47,13 @@ public abstract class ResourceController extends HttpServlet {
                 id = parts[0];
             }
         }
-
-        Entity entity = (id != null) ? this.findModel(id) : null;
-        if (id != null && entity == null) {
-            resp.sendError(404, "Not found");
-            return;
+        Entity entity = null;
+        if (!"page".equals(action)) {
+            entity = (id != null) ? this.findModel(id) : null;
+            if (id != null && entity == null) {
+                resp.sendError(404, "Not found");
+                return;
+            }
         }
 
         switch (method) {
@@ -79,6 +81,9 @@ public abstract class ResourceController extends HttpServlet {
                         return;
                     case "route_info" :
                         this.routeInfo(entity, req, resp);
+                        return;
+                    case "page" :
+                        this.goToPage(Long.parseLong(id), req, resp);
                         return;
                 }
 
@@ -136,6 +141,10 @@ public abstract class ResourceController extends HttpServlet {
     }
 
     protected void routeInfo(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.sendError(404, "Not found");
+    }
+
+    protected void goToPage(long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.sendError(404, "Not found");
     }
 

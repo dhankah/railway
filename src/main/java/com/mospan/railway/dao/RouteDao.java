@@ -1,6 +1,7 @@
 package com.mospan.railway.dao;
 
 import com.mospan.railway.model.Route;
+import com.mospan.railway.model.Station;
 import com.mospan.railway.service.StationService;
 
 
@@ -180,5 +181,41 @@ public class RouteDao implements Dao<Route>{
 
         return routes;
     }
+
+    public Collection<Route> findRecords(long id) {
+        con = cp.getConnection();
+        List<Route> routes = new ArrayList<>();
+
+        if (id != 1){
+            id = id - 1;
+            id = id * 10 + 1;
+        }
+
+
+        try {
+            PreparedStatement st = null;
+            st = con.prepareStatement("SELECT * FROM route LIMIT ?, 10");
+            st.setLong(1, id - 1);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Route route = new Route();
+                route.setId(rs.getLong("id"));
+                route.setStartStation(new StationService().findById(rs.getLong("start_station_id")));
+                route.setEndStation(new StationService().findById(rs.getLong("end_station_id")));
+                route.setDepartTime(rs.getTime("depart_time").toLocalTime());
+                route.setTime(rs.getLong("time"));
+                route.setPrice(rs.getDouble("price"));
+                routes.add(route);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
+        }
+
+        return routes;
+    }
+
 
 }

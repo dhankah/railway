@@ -30,15 +30,16 @@ public class StationController extends ResourceController {
      * Updates specified station
      */
     @Override
-    protected void update(Entity station, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ((Station) station).setName(req.getParameter("name"));
-        if (validator.validateStations((Station)station)) {
-            new StationService().update((Station) station);
-            resp.sendRedirect(req.getContextPath() + "/stations");
+    protected void update(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Station station = ((Station) entity);
+        station.setName(req.getParameter("name"));
+        if (validator.validateStations(station)) {
+            new StationService().update(station);
+            resp.sendRedirect(req.getContextPath() + "/stations/1/page");
             return;
         }
         req.getSession().setAttribute("errorMessage", "Station with such name already exists");
-        resp.sendRedirect(req.getContextPath() + "/stations");
+        resp.sendRedirect(req.getContextPath() + "/stations/1/page");
     }
 
     /**
@@ -59,13 +60,13 @@ public class StationController extends ResourceController {
     protected void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Station station = new Station();
         station.setName(req.getParameter("name"));
-        if (validator.validateStations((Station)station)) {
+        if (validator.validateStations(station)) {
             new StationService().insert(station);
-            resp.sendRedirect(req.getContextPath() + "/stations");
+            resp.sendRedirect(req.getContextPath() + "/stations/1/page");
             return;
         }
         req.getSession().setAttribute("errorMessage", "Station with such name already exists");
-        resp.sendRedirect(req.getContextPath() + "/stations");
+        resp.sendRedirect(req.getContextPath() + "/stations/1/page");
     }
 
     /**
@@ -86,6 +87,17 @@ public class StationController extends ResourceController {
     @Override
     protected void delete(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         new StationService().delete((Station) entity);
-        resp.sendRedirect(req.getContextPath() + "/stations");
+        resp.sendRedirect(req.getContextPath() + "/stations/1/page");
+    }
+
+    @Override
+    protected void goToPage(long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int size = new StationService().findAll().size();
+        int pages = size % 10 == 0 ? size / 10 : size / 10 + 1;
+        req.setAttribute("pages", pages);
+
+        List<Station> stations = (List<Station>) new StationService().findRecords(id);
+        req.setAttribute("stations", stations);
+        req.getRequestDispatcher("/view/stations/list.jsp").forward(req, resp);
     }
 }

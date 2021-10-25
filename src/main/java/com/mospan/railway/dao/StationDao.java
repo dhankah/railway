@@ -78,7 +78,7 @@ public class StationDao implements Dao<Station>{
         try {
             PreparedStatement st = null;
             st = con.prepareStatement("SELECT * FROM station WHERE name = ?");
-                st.setString(1, name);
+            st.setString(1, name);
 
             ResultSet rs = st.executeQuery();rs.next();
             station.setName(name);
@@ -132,4 +132,37 @@ public class StationDao implements Dao<Station>{
 
         return stations;
     }
+
+    public Collection<Station> findRecords(long id) {
+        con = cp.getConnection();
+        List<Station> stations = new ArrayList<>();
+
+        if (id != 1){
+          id = id - 1;
+          id = id * 10 + 1;
+        }
+
+
+        try {
+            PreparedStatement st = null;
+            st = con.prepareStatement("SELECT * FROM station LIMIT ?, 10");
+            st.setLong(1, id - 1);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Station station = new Station();
+                station.setName(rs.getString("name"));
+                station.setId(rs.getLong("id"));
+
+                stations.add(station);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
+        }
+
+        return stations;
+    }
+
 }

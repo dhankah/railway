@@ -15,7 +15,7 @@ import java.util.List;
 
 @WebServlet (value = "/cabinet/*")
 public class UserController extends ResourceController{
-Validator validator = new Validator();
+    Validator validator = new Validator();
     @Override
     Entity findModel(String id) {
         try {
@@ -36,7 +36,7 @@ Validator validator = new Validator();
 
         if (null != req.getParameter("password")) {
             if (req.getParameter("old_password").equals(new UserService().find(((User) user).getLogin()).getPassword())
-            && req.getParameter("password").equals(req.getParameter("re_password"))) {
+                    && req.getParameter("password").equals(req.getParameter("re_password"))) {
                 ((User) user).setPassword(req.getParameter("password"));
                 new UserService().update((User) user);
                 String message = "Password updated successfully";

@@ -2,6 +2,7 @@ package com.mospan.railway.controller;
 
 import com.mospan.railway.model.Entity;
 import com.mospan.railway.model.Route;
+import com.mospan.railway.model.Station;
 import com.mospan.railway.service.RouteService;
 import com.mospan.railway.service.StationService;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalTime;
+import java.util.List;
 
 
 @WebServlet (value = "/routes/*")
@@ -39,7 +41,7 @@ public class RouteController extends ResourceController{
         ((Route) route).setPrice(Double.parseDouble(req.getParameter("price")));
 
         new RouteService().update((Route) route);
-        resp.sendRedirect(req.getContextPath() + "/routes");
+        resp.sendRedirect(req.getContextPath() + "/routes/1/page");
     }
 
 
@@ -62,7 +64,7 @@ public class RouteController extends ResourceController{
         ((Route) route).setEndStation(new StationService().find(req.getParameter("end_station")));
         ((Route) route).setPrice(Double.parseDouble(req.getParameter("price")));
         new RouteService().insert(route);
-        resp.sendRedirect(req.getContextPath() + "/routes");
+        resp.sendRedirect(req.getContextPath() + "/routes/1/page");
     }
 
     @Override
@@ -77,7 +79,7 @@ public class RouteController extends ResourceController{
     @Override
     protected void delete(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         new RouteService().delete((Route) entity);
-        resp.sendRedirect(req.getContextPath() + "/routes");
+        resp.sendRedirect(req.getContextPath() + "/routes/1/page");
     }
 
 
@@ -91,4 +93,16 @@ public class RouteController extends ResourceController{
         return minutes * 60;
 
     }
+
+    @Override
+    protected void goToPage(long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int size = new RouteService().findAll().size();
+        int pages = size % 10 == 0 ? size / 10 : size / 10 + 1;
+        req.setAttribute("pages", pages);
+
+        List<Route> routes = (List<Route>) new RouteService().findRecords(id);
+        req.setAttribute("routes", routes);
+        req.getRequestDispatcher("/view/routes/list.jsp").forward(req, resp);
+    }
+
 }

@@ -29,3 +29,6 @@
     </table>
 
 </z:layout>
+<%for ( int pageNum = 1; pageNum <= (Integer)request.getAttribute("pages"); pageNum++){ %>
+<a href="${pageContext.request.contextPath}/stations/<%=pageNum%>/page"><%=pageNum%></a>
+<%}%>

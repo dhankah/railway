@@ -32,4 +32,7 @@ public class RouteService {
     public Collection<Route> findByStations(String startStation, String endStation){
         return dao.findByStations(startStation, endStation);
     }
+    public Collection<Route> findRecords(long id) {
+        return dao.findRecords(id);
+    }
 }

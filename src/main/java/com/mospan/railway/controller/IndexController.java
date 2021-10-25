@@ -25,7 +25,7 @@ public class IndexController extends HttpServlet {
         User user = (User) req.getSession().getAttribute("user");
 
         if (user != null && user.isAdmin()){
-            resp.sendRedirect(req.getContextPath() + "/stations");
+            resp.sendRedirect(req.getContextPath() + "/stations/1/page");
         } else {
             resp.sendRedirect(req.getContextPath() + "/trips");
         }

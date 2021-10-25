@@ -20,7 +20,7 @@
         });
     </script>
     <div class="form-group m-5">
-    <form action="${pageContext.request.contextPath}/trips" name="edit" onsubmit="validateSearchForm()">
+    <form action="${pageContext.request.contextPath}/trips/1/page" name="edit" onsubmit="validateSearchForm()">
         <div class="col-sm-3">from</div>
         <select name="depart_station" style="width: 220px">
             <c:forEach items="${requestScope.stations}" var="station">
@@ -74,5 +74,3 @@
         </ul>
     </c:if>
 </z:layout>
-
-

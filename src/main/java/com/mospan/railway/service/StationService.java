@@ -7,7 +7,7 @@ import com.mospan.railway.model.Station;
 import java.util.Collection;
 
 public class StationService {
-    Dao<Station> dao = new StationDao();
+    StationDao dao = new StationDao();
 
     public void insert(Station station) {
         dao.insert(station);
@@ -26,6 +26,9 @@ public class StationService {
     }
     public Collection<Station> findAll() {
         return dao.findAll();
+    }
+    public Collection<Station> findRecords(long id) {
+        return dao.findRecords(id);
     }
 
 }
