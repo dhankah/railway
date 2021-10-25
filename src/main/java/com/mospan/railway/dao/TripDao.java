@@ -4,6 +4,7 @@ package com.mospan.railway.dao;
 import com.mospan.railway.model.Route;
 import com.mospan.railway.model.Trip;
 import com.mospan.railway.service.RouteService;
+import com.mospan.railway.service.StationService;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -182,4 +183,39 @@ public class TripDao implements Dao<Trip>{
         return trips;
     }
 
+    public Collection<Trip> findRecords(Route route, LocalDate date, long id) {
+        con = cp.getConnection();
+        List<Trip> trips = new ArrayList<>();
+
+        if (id != 1){
+            id = id - 1;
+            id = id * 10 + 1;
+        }
+
+
+        try {
+            PreparedStatement st = null;
+            st = con.prepareStatement("SELECT * FROM trip WHERE route_id = ? AND depart_date = ? LIMIT ?, 10");
+            st.setLong(1, route.getId());
+            st.setDate(2, Date.valueOf(date));
+            st.setLong(3, id - 1);
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Trip trip = new Trip();
+                trip.setId(rs.getLong("id"));
+                trip.setDepartDate(rs.getDate("depart_date").toLocalDate());
+                trip.setArrivalDate(rs.getDate("arrival_date").toLocalDate());
+                trip.setRoute(new RouteService().findById(rs.getLong("route_id")));
+                trip.setAvailablePlaces(rs.getInt("available_places"));
+                trips.add(trip);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
+        }
+
+        return trips;
+    }
 }

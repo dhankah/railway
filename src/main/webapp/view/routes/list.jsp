@@ -49,6 +49,8 @@
         </tr>
     </table>
 </z:layout>
+<c:if test="${not empty requestScope.pages}">
 <%for ( int pageNum = 1; pageNum <= (Integer)request.getAttribute("pages"); pageNum++){ %>
 <a href="${pageContext.request.contextPath}/routes/<%=pageNum%>/page"><%=pageNum%></a>
 <%}%>
+</c:if>

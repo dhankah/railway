@@ -36,4 +36,7 @@ public class TripService {
     public Collection<Trip> findTrips(Route route, LocalDate date) {
         return dao.findTrips(route, date);
     }
+    public Collection<Trip> findRecords(Route route, LocalDate date, long id) {
+        return dao.findRecords(route, date, id);
+    }
 }
