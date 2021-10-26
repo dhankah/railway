@@ -2,7 +2,7 @@ package com.mospan.railway.controller;
 
 import com.mospan.railway.model.Entity;
 import com.mospan.railway.model.Route;
-import com.mospan.railway.model.Station;
+
 import com.mospan.railway.service.RouteService;
 import com.mospan.railway.service.StationService;
 
@@ -96,6 +96,11 @@ public class RouteController extends ResourceController{
 
     @Override
     protected void goToPage(long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        req.setAttribute("time", LocalTime.MIDNIGHT);
+        req.setAttribute("stations", new StationService().findAll());
+        req.setAttribute("routes", new RouteService().findAll());
+
         int size = new RouteService().findAll().size();
         int pages = size % 10 == 0 ? size / 10 : size / 10 + 1;
         req.setAttribute("pages", pages);

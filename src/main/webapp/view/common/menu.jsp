@@ -1,4 +1,5 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/common.css">
 <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
@@ -7,34 +8,34 @@
         </a>
 
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="${pageContext.request.contextPath}/trips" class="nav-link px-2 link-dark">Trips</a></li>
+            <li><a href="${pageContext.request.contextPath}/trips" class="nav-link px-2 link-dark"><fmt:message key="trips"/></a></li>
             <c:if test="${sessionScope.user.isAdmin}">
-                <li><a href="${pageContext.request.contextPath}/stations/1/page" class="nav-link px-2 link-dark">Stations</a></li>
-                <li><a href="${pageContext.request.contextPath}/routes/1/page" class="nav-link px-2 link-dark">Routes</a></li>
+                <li><a href="${pageContext.request.contextPath}/stations/1/page" class="nav-link px-2 link-dark"><fmt:message key="stations"/></a></li>
+                <li><a href="${pageContext.request.contextPath}/routes/1/page" class="nav-link px-2 link-dark"><fmt:message key="routes"/></a></li>
             </c:if>
         </ul>
 
         <div class="align-items-center col-md-3 d-flex justify-content-end text-end">
             <c:choose>
                 <c:when test="${not empty sessionScope.user}">
-                    <a href="${pageContext.request.contextPath}/cabinet" class="btn btn-primary mx-2 custom" role="button" >Cabinet</a>
+                    <a href="${pageContext.request.contextPath}/cabinet" class="btn btn-primary mx-2 custom" role="button" ><fmt:message key="cabinet"/></a>
                     <form method="post" action="${pageContext.request.contextPath}/auth/logout" class="m-0">
-                        <button type="submit" class="btn btn-primary custom">log out</button>
+                        <button type="submit" class="btn btn-primary custom"><fmt:message key="logout"/></button>
                     </form>
                 </c:when>
                 <c:otherwise>
                     <form action="${pageContext.request.contextPath}/auth/login" class="m-0">
-                        <button type="submit" class="btn btn-primary custom">log in</button>
+                        <button type="submit" class="btn btn-primary custom"><fmt:message key="log_in"/></button>
                     </form>
                 </c:otherwise>
             </c:choose>
         </div>
     </header>
 </div>
-<%--<div>--%>
-<%--    <form method="post" action="">--%>
-<%--        <button type="submit" name="en">EN</button>--%>
-<%--        <button type="submit" name="ua">UA</button>--%>
-<%--    </form>--%>
+<div>
+    <form action="${pageContext.request.contextPath}/language">
+        <button type="submit" name="language" value="en">EN</button>
+        <button type="submit" name="language" value="ua">UA</button>
+    </form>
 
-<%--</div>--%>
+</div>

@@ -49,7 +49,7 @@ public class Validator {
 
 
         } catch (SQLException e) {
-
+            System.out.println("somehoe it");
             return true;
             //validation was successful, there is no user with such credentials
         } finally {

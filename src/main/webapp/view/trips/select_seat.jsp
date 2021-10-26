@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <z:layout pageTitle="Select seat">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/select_seat.css">
     <c:if test="${not empty sessionScope.message}">
@@ -52,6 +53,6 @@
         </tr>
     </table>
     <input type="hidden" name="trip" value="${requestScope.trip.id}">
-    <input type="submit"  class="btn btn-primary custom" value="Purchase">
+    <input type="submit"  class="btn btn-primary custom" value="<fmt:message key="purchase"/>">
 </form>
 </z:layout>

@@ -14,9 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import java.time.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 
 @WebServlet (value = "/trips/*")
@@ -33,12 +31,11 @@ public class TripController extends ResourceController {
 
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Collection<Trip> trips = new ArrayList<>();
+
         req.getSession().setAttribute("date", LocalDate.now());
         req.setAttribute("stations", new StationService().findAll());
         req.setAttribute("min_date", LocalDate.now());
         req.setAttribute("max_date", LocalDate.now().plusDays(34));
-
 
         req.getRequestDispatcher("/view/trips/list.jsp").forward(req, resp);
     }
@@ -74,6 +71,15 @@ public class TripController extends ResourceController {
 
     @Override
     protected void goToPage(long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
+        ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
+
+        req.getSession().setAttribute("date", LocalDate.now());
+        req.setAttribute("stations", new StationService().findAll());
+        req.setAttribute("min_date", LocalDate.now());
+        req.setAttribute("max_date", LocalDate.now().plusDays(34));
+
         int size = new TripService().findAll().size();
         int pages = size % 10 == 0 ? size / 10 : size / 10 + 1;
         req.setAttribute("pages", pages);
@@ -90,11 +96,20 @@ public class TripController extends ResourceController {
             }
             if (trips.isEmpty()) {
                 req.getSession().removeAttribute("trips");
-                req.getSession().setAttribute("errorMessage", "We could not find any trains for your request");
+                if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
+                    req.getSession().setAttribute("errorMessage", ua.getString("no_trains_error"));
+                } else {
+                    req.getSession().setAttribute("errorMessage", en.getString("no_trains_error"));
+                }
             }
         } else {
             req.getSession().removeAttribute("trips");
-            req.getSession().setAttribute("errorMessage", "We do not have such a route");
+            if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
+                req.getSession().setAttribute("errorMessage", ua.getString("no_route_error"));
+            } else {
+                req.getSession().setAttribute("errorMessage", en.getString("no_route_error"));
+            }
+
         }
 
         req.getSession().setAttribute("date", req.getParameter("depart_date"));

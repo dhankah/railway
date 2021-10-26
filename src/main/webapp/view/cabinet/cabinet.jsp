@@ -1,13 +1,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <z:layout pageTitle="Cabinet">
 <div class="col-md-8">
     <div class="card mb-3">
         <div class="card-body">
             <div class="row">
                 <div class="col-sm-3">
-                    <h6 class="mb-0">Login</h6>
+                    <h6 class="mb-0"> <fmt:message key="login"/></h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
                         ${sessionScope.user.login}
@@ -16,7 +17,7 @@
             <hr>
             <div class="row">
                 <div class="col-sm-3">
-                    <h6 class="mb-0">First name</h6>
+                    <h6 class="mb-0"> <fmt:message key="first_name"/></h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
                         ${sessionScope.user.details.firstName}
@@ -25,7 +26,7 @@
             <hr>
             <div class="row">
                 <div class="col-sm-3">
-                    <h6 class="mb-0">Last name</h6>
+                    <h6 class="mb-0"> <fmt:message key="last_name"/></h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
                         ${sessionScope.user.details.lastName}
@@ -34,7 +35,7 @@
             <hr>
             <div class="row">
                 <div class="col-sm-3">
-                    <h6 class="mb-0">e-mail</h6>
+                    <h6 class="mb-0"> <fmt:message key="email"/></h6>
                 </div>
                 <div class="col-sm-9 text-secondary">
                         ${sessionScope.user.details.email}
@@ -44,11 +45,11 @@
 
             <div class="row">
                 <div class="col-sm-12">
-                    <a class="btn btn-info custom" href="${pageContext.request.contextPath}/cabinet/${sessionScope.user.id}/edit">Edit</a>
-                    <a class="btn btn-info custom" href="${pageContext.request.contextPath}/cabinet/${sessionScope.user.id}/change_password">Change password</a>
+                    <a class="btn btn-info custom" href="${pageContext.request.contextPath}/cabinet/${sessionScope.user.id}/edit"> <fmt:message key="edit"/></a>
+                    <a class="btn btn-info custom" href="${pageContext.request.contextPath}/cabinet/${sessionScope.user.id}/change_password"> <fmt:message key="change_password"/></a>
                     <form action="${pageContext.request.contextPath}/cabinet/${sessionScope.user.id}" method="post">
                         <input type="hidden" name="_method" value="delete" />
-                        <input type="submit" value="Delete your profile" class="btn btn-danger my-1 danger" onclick="return confirm('Are you sure?')">
+                        <input type="submit" value=" <fmt:message key="delete_profile"/>" class="btn btn-danger my-1 danger" onclick="return confirm('<fmt:message key="confirm"/>')">
                     </form>
             </div>
         </div>
@@ -58,18 +59,18 @@
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Passenger name: ${ticket.user.details.firstName} ${ticket.user.details.lastName}</li>
-                        <li class="list-group-item">Train number: ${ticket.trip.route.id}</li>
-                        <li class="list-group-item">Depart station: ${ticket.trip.route.startStation.name}</li>
-                        <li class="list-group-item">Arrival station: ${ticket.trip.route.endStation.name}</li>
-                        <li class="list-group-item">Departure: ${ticket.trip.departDate} ${ticket.trip.route.departTime}</li>
-                        <li class="list-group-item">Arrival: ${ticket.trip.arrivalDate} ${ticket.trip.route.arrivalTime}</li>
+                        <li class="list-group-item"> <fmt:message key="passenger_name"/>: ${ticket.user.details.firstName} ${ticket.user.details.lastName}</li>
+                        <li class="list-group-item"> <fmt:message key="train_number"/>: ${ticket.trip.route.id}</li>
+                        <li class="list-group-item"> <fmt:message key="depart_station"/>: ${ticket.trip.route.startStation.name}</li>
+                        <li class="list-group-item"> <fmt:message key="arrival_station"/>: ${ticket.trip.route.endStation.name}</li>
+                        <li class="list-group-item"> <fmt:message key="departure"/>: ${ticket.trip.departDate} ${ticket.trip.route.departTime}</li>
+                        <li class="list-group-item"> <fmt:message key="arrival"/>: ${ticket.trip.arrivalDate} ${ticket.trip.route.arrivalTime}</li>
                     </ul>
-                    <form class="m-3" action="${pageContext.request.contextPath}/ticket/${ticket.id}" method="post">
+                    <form class="m-3" action="${pageContext.request.contextPath}/tickets/${ticket.id}" method="post">
                         <input type="hidden" name="_method" value="delete" />
-                        <input type="submit" class="btn btn-primary custom" value="Cancel purchase" onclick="return confirm('Are you sure?')">
+                        <input type="submit" class="btn btn-primary custom" value="<fmt:message key="cancel_purchase"/>" onclick="return confirm('<fmt:message key="confirm"/>')">
                     </form>
-                    <a href="${pageContext.request.contextPath}/download/${ticket.id}" class="btn btn-primary custom">Download ticket</a>
+                    <a href="${pageContext.request.contextPath}/download/${ticket.id}" class="btn btn-primary custom"> <fmt:message key="download"/></a>
                 </div>
             </div>
         </c:forEach>

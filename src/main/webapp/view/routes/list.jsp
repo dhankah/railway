@@ -8,29 +8,30 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <z:layout pageTitle="Routes">
     <form name="edit" method="post" action="${pageContext.request.contextPath}/routes" onsubmit="return validateRouteForm()">
         <input name="add" style="display: none">
-        <h4>from</h4><select name="start_station">
+        <h4><fmt:message key="from"/></h4><select name="start_station">
             <c:forEach items="${requestScope.stations}" var="station">
-            <h4>Depart station</h4><option value = ${station.name}>${station.name}</option>
+            <h4><fmt:message key="depart_station"/></h4><option value = ${station.name}>${station.name}</option>
             </c:forEach>
         </select>
-        <h4>to</h4><select name="end_station">
+        <h4><fmt:message key="to"/></h4><select name="end_station">
             <c:forEach items="${requestScope.stations}" var="station">
-                <h4>Arrival station</h4><option value = ${station.name}>${station.name}</option>
+                <h4><fmt:message key="arrival_station"/></h4><option value = ${station.name}>${station.name}</option>
             </c:forEach>
         </select>
-        <h4>Departure time</h4><input type="time" name="depart_time" value="${requestScope.time}">
+        <h4><fmt:message key="time"/></h4><input type="time" name="depart_time" value="${requestScope.time}">
         <h4>Time in way</h4>
 
-        <input type="number" name="days"> days
-        <input type="number" name="hours"> hours
-        <input type="number" name="minutes"> minutes
+        <input type="number" name="days"> <fmt:message key="days"/>
+        <input type="number" name="hours"> <fmt:message key="hours"/>
+        <input type="number" name="minutes"> <fmt:message key="minutes"/>
 
-        <h4>Price</h4><input type="number" name="price">
-        <input type="submit" value="add route" class="btn btn-primary custom">
+        <h4><fmt:message key="price"/></h4><input type="number" name="price">
+        <input type="submit" value="<fmt:message key="add"/>" class="btn btn-primary custom">
     </form>
     <table>
         <tr>
@@ -39,10 +40,10 @@
                     ${route.startStation.name}-${route.endStation.name}
                     ${route.departTime}-${route.arrivalTime}
                     ${route.price}
-                    <a href="${pageContext.request.contextPath}/routes/${route.id}/edit">Edit</a>
+                    <a href="${pageContext.request.contextPath}/routes/${route.id}/edit"><fmt:message key="edit"/></a>
                     <form action="${pageContext.request.contextPath}/routes/${route.id}" method="post">
                         <input type="hidden" name="_method" value="delete" />
-                        <input type="submit" value="Delete" onclick="return confirm('Are you sure?')" class="btn btn-primary danger">
+                        <input type="submit" value="<fmt:message key="delete"/>" onclick="return confirm('<fmt:message key="confirm"/>')" class="btn btn-primary danger">
                     </form>
                     <br>
             </c:forEach></td>

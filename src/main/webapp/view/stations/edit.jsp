@@ -7,12 +7,13 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <z:layout pageTitle="Edit station">
     <form name = "edit" action="${pageContext.request.contextPath}/stations/${requestScope.station.id}" method="post" onsubmit="return validateStationForm()">
         <input type="hidden" name="_method" value="put" />
-        <h4>name</h4>
+        <h4><fmt:message key="name"/></h4>
         <input type="text" name = "name" value="${requestScope.station.name}">
         <br>
-        <input type="submit" value="Submit" class="custom">
+        <input type="submit" value="<fmt:message key="save"/>" class="custom">
     </form>
 </z:layout>

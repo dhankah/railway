@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="z" tagdir="/WEB-INF/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <z:layout pageTitle="Route info"><div class="col-md-8">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/routeinfo.css">
     <div class="container py-5">
@@ -20,5 +21,5 @@
             </div>
         </div>
     </div>
-    <a href="${pageContext.request.contextPath}/trips" class="btn btn-primary custom">Back</a>
+    <a href="${pageContext.request.contextPath}/trips" class="btn btn-primary custom"><fmt:message key="back"/></a>
 </z:layout>

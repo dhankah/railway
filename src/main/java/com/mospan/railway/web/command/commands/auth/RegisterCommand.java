@@ -9,11 +9,17 @@ import com.mospan.railway.web.command.Command;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class RegisterCommand implements Command {
     Validator validator = new Validator();
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+
+
+        ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
+        ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
 
         User user = new User();
         user.setLogin(request.getParameter("login"));
@@ -28,7 +34,13 @@ public class RegisterCommand implements Command {
         user.setRole(Role.CLIENT);
 
         if (!validator.validateUser(user)) {
-            request.getSession().setAttribute("errorMessage", "User with such login or email already exists");
+
+            if (request.getSession().getAttribute("defaultLocale").equals("ua")) {
+                request.getSession().setAttribute("errorMessage", ua.getString("login_email_exists"));
+            } else {
+                request.getSession().setAttribute("errorMessage", en.getString("login_email_exists"));
+            }
+
             return request.getContextPath() + "/auth/register";
         }
         UserService userService = new UserService();

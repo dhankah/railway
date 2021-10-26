@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @WebServlet (value = "/tickets/*")
 public class TicketController extends ResourceController{
@@ -27,6 +29,8 @@ public class TicketController extends ResourceController{
 
     @Override
     protected void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
+        ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
 
         User user = (User) req.getSession().getAttribute("user");
         Collection<Ticket> tickets = new TicketService().findAllForUser(user.getId());
@@ -35,7 +39,11 @@ public class TicketController extends ResourceController{
             for (Ticket ticket : tickets) {
                 Trip trip = new TripService().findById(Long.parseLong(req.getParameter("trip")));
                 if (ticket.getTrip().getId() == trip.getId()) {
-                    req.getSession().setAttribute("message", "You can buy only one ticket per trip");
+                    if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
+                        req.getSession().setAttribute("errorMessage", ua.getString("ticket_error"));
+                    } else {
+                        req.getSession().setAttribute("errorMessage", en.getString("ticket_error"));
+                    }
                     resp.sendRedirect(req.getContextPath() + "/trips/" + trip.getId() + "/choose");
                     return;
                 }

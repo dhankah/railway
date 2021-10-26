@@ -14,7 +14,7 @@ public abstract class ResourceController extends HttpServlet {
     private static final String ACTION_CREATE = "create";
     private static final String ACTION_EDIT = "edit";
 
-    private static ResourceBundle lStrings = ResourceBundle.getBundle("javax.servlet.http.LocalStrings");
+
 
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String method = req.getMethod();
@@ -48,6 +48,8 @@ public abstract class ResourceController extends HttpServlet {
             }
         }
         Entity entity = null;
+
+
         if (!"page".equals(action)) {
             entity = (id != null) ? this.findModel(id) : null;
             if (id != null && entity == null) {
@@ -58,6 +60,7 @@ public abstract class ResourceController extends HttpServlet {
 
         switch (method) {
             case "GET":
+                System.out.println("its get");
                 if (action == null) {
                     if (id != null) {
                         this.view(entity, req, resp);

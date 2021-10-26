@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @WebServlet (value = "/stations/*")
 public class StationController extends ResourceController {
@@ -38,7 +40,14 @@ public class StationController extends ResourceController {
             resp.sendRedirect(req.getContextPath() + "/stations/1/page");
             return;
         }
-        req.getSession().setAttribute("errorMessage", "Station with such name already exists");
+        ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
+        ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
+
+        if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
+            req.getSession().setAttribute("errorMessage", ua.getString("station_exists"));
+        } else {
+            req.getSession().setAttribute("errorMessage", en.getString("station_exists"));
+        }
         resp.sendRedirect(req.getContextPath() + "/stations/1/page");
     }
 
@@ -65,7 +74,15 @@ public class StationController extends ResourceController {
             resp.sendRedirect(req.getContextPath() + "/stations/1/page");
             return;
         }
-        req.getSession().setAttribute("errorMessage", "Station with such name already exists");
+        ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
+        ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
+
+        if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
+            req.getSession().setAttribute("errorMessage", ua.getString("station_exists"));
+        } else {
+            req.getSession().setAttribute("errorMessage", en.getString("station_exists"));
+        }
+
         resp.sendRedirect(req.getContextPath() + "/stations/1/page");
     }
 
@@ -92,6 +109,10 @@ public class StationController extends ResourceController {
 
     @Override
     protected void goToPage(long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        List<Station> stationsForList = (List<Station>) new StationService().findAll();
+        req.setAttribute("stations", stationsForList);
+
         int size = new StationService().findAll().size();
         int pages = size % 10 == 0 ? size / 10 : size / 10 + 1;
         req.setAttribute("pages", pages);

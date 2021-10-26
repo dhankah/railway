@@ -12,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 @WebServlet (value = "/cabinet/*")
 public class UserController extends ResourceController{
@@ -32,6 +34,10 @@ public class UserController extends ResourceController{
     @Override
     protected void update(Entity user, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+
+        ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
+        ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
+
         req.setCharacterEncoding("UTF-8");
 
         if (null != req.getParameter("password")) {
@@ -39,17 +45,36 @@ public class UserController extends ResourceController{
                     && req.getParameter("password").equals(req.getParameter("re_password"))) {
                 ((User) user).setPassword(req.getParameter("password"));
                 new UserService().update((User) user);
-                String message = "Password updated successfully";
-                req.getSession().setAttribute("message", message);
+
+                if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
+                    req.getSession().setAttribute("message", ua.getString("password_updated"));
+                } else {
+                    req.getSession().setAttribute("message", en.getString("password_updated"));
+                }
             } else if (!req.getParameter("old_password").equals(new UserService().find(((User) user).getLogin()).getPassword())) {
-                String message = "Wrong old password";
-                req.getSession().setAttribute("errorMessage", message);
+
+                if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
+                    req.getSession().setAttribute("errorMessage", ua.getString("wrong_old_pass"));
+                } else {
+                    req.getSession().setAttribute("errorMessage", en.getString("wrong_old_pass"));
+                }
+
             } else if (!req.getParameter("password").equals(req.getParameter("re_password"))) {
-                String message = "Passwords are not the same";
-                req.getSession().setAttribute("errorMessage", message);
+
+                if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
+                    req.getSession().setAttribute("errorMessage", ua.getString("not_same+passwords"));
+                } else {
+                    req.getSession().setAttribute("errorMessage", en.getString("not_same+passwords"));
+                }
+
             } else {
-                String message = "You typed something wrong";
-                req.getSession().setAttribute("errorMessage", message);
+
+                if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
+                    req.getSession().setAttribute("errorMessage", ua.getString("sth_wrong"));
+                } else {
+                    req.getSession().setAttribute("errorMessage", en.getString("sth_wrong"));
+                }
+
             }
             resp.sendRedirect(req.getContextPath() + "/cabinet/" + user.getId() +"/change_password");
             return;
@@ -57,13 +82,20 @@ public class UserController extends ResourceController{
 
         if (!validator.validateUser((User) user)) {
 
-            req.getSession().setAttribute("errorMessage", "User with such login or email already exists");
+            if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
+                req.getSession().setAttribute("errorMessage", ua.getString("login_email_exists"));
+            } else {
+                req.getSession().setAttribute("errorMessage", en.getString("login_email_exists"));
+            }
             resp.sendRedirect(req.getContextPath() + "/cabinet/" + user.getId() + "/edit");
             return;
         }
 
-        String message = "Your profile was updated successfully";
-        req.getSession().setAttribute("message", message);
+        if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
+            req.getSession().setAttribute("message", ua.getString("profile_updated"));
+        } else {
+            req.getSession().setAttribute("message", en.getString("profile_updated"));
+        }
 
         Detail detail = ((User) user).getDetails();
 
@@ -100,8 +132,16 @@ public class UserController extends ResourceController{
     @Override
     protected void delete(Entity user, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (null != new TicketService().findAllForUser(user.getId())) {
-            String message = "You should first cancel your trips";
-            req.getSession().setAttribute("errorMessage", message);
+
+            ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
+            ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
+
+            if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
+                req.getSession().setAttribute("errorMessage", ua.getString("should_cancel_trip"));
+            } else {
+                req.getSession().setAttribute("errorMessage", en.getString("should_cancel_trip"));
+            }
+
             resp.sendRedirect(req.getContextPath() + "/cabinet");
             return;
         }
