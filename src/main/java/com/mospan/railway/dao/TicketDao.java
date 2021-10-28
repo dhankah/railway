@@ -7,6 +7,8 @@ import com.mospan.railway.service.TripService;
 import com.mospan.railway.service.UserService;
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -148,10 +150,15 @@ public class TicketDao implements Dao<Ticket>{
         return seats;
     }
 
-    public List<Ticket> findAllForUser(long id) {
-        con = cp.getConnection();
-        List<Ticket> tickets = new ArrayList<>();
 
+
+
+    public List<List<Ticket>> findAllForUser(long id) {
+
+        con = cp.getConnection();
+        List<List<Ticket>> tickets = new ArrayList<>();
+        List<Ticket> upcomingTickets = new ArrayList<>();
+        List<Ticket> oldTickets = new ArrayList<>();
         try {
             PreparedStatement st = null;
             st = con.prepareStatement("SELECT * FROM ticket WHERE user_id = ?");
@@ -164,8 +171,22 @@ public class TicketDao implements Dao<Ticket>{
                 ticket.setUser(new UserService().findById(id));
                 ticket.setSeat(rs.getInt("seat"));
                 ticket.setTrip(new TripService().findById(rs.getLong("trip_id")));
-                tickets.add(ticket);
+
+                if (ticket.getTrip().getDepartDate().isBefore(LocalDate.now())) {
+
+                    oldTickets.add(ticket);
+                } else if (ticket.getTrip().getDepartDate().isAfter(LocalDate.now())) {
+
+                    upcomingTickets.add(ticket);
+                } else if (ticket.getTrip().getRoute().getDepartTime().isBefore(LocalTime.now())) {
+
+                    oldTickets.add(ticket);
+                } else {
+                    upcomingTickets.add(ticket);
+                }
             }
+            tickets.add(oldTickets);
+            tickets.add(upcomingTickets);
 
             if (tickets.isEmpty()) {
                 tickets = null;

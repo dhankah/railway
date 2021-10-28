@@ -54,27 +54,52 @@
             </div>
         </div>
     </div>
-    <div class="card-group">
-        <c:forEach items="${requestScope.tickets}" var="ticket">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item"> <fmt:message key="passenger_name"/>: ${ticket.user.details.firstName} ${ticket.user.details.lastName}</li>
-                        <li class="list-group-item"> <fmt:message key="train_number"/>: ${ticket.trip.route.id}</li>
-                        <li class="list-group-item"> <fmt:message key="depart_station"/>: ${ticket.trip.route.startStation.name}</li>
-                        <li class="list-group-item"> <fmt:message key="arrival_station"/>: ${ticket.trip.route.endStation.name}</li>
-                        <li class="list-group-item"> <fmt:message key="departure"/>: ${ticket.trip.departDate} ${ticket.trip.route.departTime}</li>
-                        <li class="list-group-item"> <fmt:message key="arrival"/>: ${ticket.trip.arrivalDate} ${ticket.trip.route.arrivalTime}</li>
-                    </ul>
-                    <form class="m-3" action="${pageContext.request.contextPath}/tickets/${ticket.id}" method="post">
-                        <input type="hidden" name="_method" value="delete" />
-                        <input type="submit" class="btn btn-primary custom" value="<fmt:message key="cancel_purchase"/>" onclick="return confirm('<fmt:message key="confirm"/>')">
-                    </form>
-                    <a href="${pageContext.request.contextPath}/download/${ticket.id}" class="btn btn-primary custom"> <fmt:message key="download"/></a>
+    <c:if test="${not empty requestScope.upcoming_tickets}">
+        <h4>Upcoming tickets</h4>
+        <div class="card-group">
+            <c:forEach items="${requestScope.upcoming_tickets}" var="ticket">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"> <fmt:message key="passenger_name"/>: ${ticket.user.details.firstName} ${ticket.user.details.lastName}</li>
+                            <li class="list-group-item"> <fmt:message key="train_number"/>: ${ticket.trip.route.id}</li>
+                            <li class="list-group-item"> <fmt:message key="depart_station"/>: ${ticket.trip.route.startStation.name}</li>
+                            <li class="list-group-item"> <fmt:message key="arrival_station"/>: ${ticket.trip.route.endStation.name}</li>
+                            <li class="list-group-item"> <fmt:message key="departure"/>: ${ticket.trip.departDate} ${ticket.trip.route.departTime}</li>
+                            <li class="list-group-item"> <fmt:message key="arrival"/>: ${ticket.trip.arrivalDate} ${ticket.trip.route.arrivalTime}</li>
+                        </ul>
+                        <form class="m-3" action="${pageContext.request.contextPath}/tickets/${ticket.id}" method="post">
+                            <input type="hidden" name="_method" value="delete" />
+                            <input type="submit" class="btn btn-primary custom" value="<fmt:message key="cancel_purchase"/>" onclick="return confirm('<fmt:message key="confirm"/>')">
+                        </form>
+                        <a href="${pageContext.request.contextPath}/download/${ticket.id}" class="btn btn-primary custom"> <fmt:message key="download"/></a>
+                    </div>
                 </div>
-            </div>
-        </c:forEach>
-    </div>
-
-
+            </c:forEach>
+        </div>
+    </c:if>
+    <c:if test="${not empty requestScope.old_tickets}">
+        <h4>Old tickets</h4>
+        <div class="card-group">
+            <c:forEach items="${requestScope.old_tickets}" var="ticket">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"> <fmt:message key="passenger_name"/>: ${ticket.user.details.firstName} ${ticket.user.details.lastName}</li>
+                            <li class="list-group-item"> <fmt:message key="train_number"/>: ${ticket.trip.route.id}</li>
+                            <li class="list-group-item"> <fmt:message key="depart_station"/>: ${ticket.trip.route.startStation.name}</li>
+                            <li class="list-group-item"> <fmt:message key="arrival_station"/>: ${ticket.trip.route.endStation.name}</li>
+                            <li class="list-group-item"> <fmt:message key="departure"/>: ${ticket.trip.departDate} ${ticket.trip.route.departTime}</li>
+                            <li class="list-group-item"> <fmt:message key="arrival"/>: ${ticket.trip.arrivalDate} ${ticket.trip.route.arrivalTime}</li>
+                        </ul>
+                        <form class="m-3" action="${pageContext.request.contextPath}/tickets/${ticket.id}" method="post">
+                            <input type="hidden" name="_method" value="delete" />
+                            <input type="submit" class="btn btn-primary custom" value="<fmt:message key="cancel_purchase"/>" onclick="return confirm('<fmt:message key="confirm"/>')">
+                        </form>
+                        <a href="${pageContext.request.contextPath}/download/${ticket.id}" class="btn btn-primary custom"> <fmt:message key="download"/></a>
+                    </div>
+                </div>
+            </c:forEach>
+        </div>
+    </c:if>
 </z:layout>

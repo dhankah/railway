@@ -32,7 +32,8 @@ public class TicketService {
     public Collection<Integer> findSeats(Trip trip) {
         return dao.findSeats(trip);
     }
-    public List<Ticket> findAllForUser(long id) {
+    public List<List<Ticket>> findAllForUser(long id) {
         return dao.findAllForUser(id);
     }
+
 }

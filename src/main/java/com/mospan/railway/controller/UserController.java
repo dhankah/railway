@@ -118,14 +118,6 @@ public class UserController extends ResourceController{
             req.getSession().setAttribute("message", en.getString("profile_updated"));
         }
 
-        /*Detail detail = ((User) user).getDetails();
-
-        detail.setFirstName(req.getParameter("first_name"));
-        detail.setLastName(req.getParameter("last_name"));
-        detail.setEmail(req.getParameter("email"));
-        ((User) user).setDetails(detail);
-        ((User) user).setLogin(req.getParameter("login"));*/
-
         new UserService().update(userUpd);
         resp.sendRedirect(req.getContextPath() + "/cabinet");
     }
@@ -142,9 +134,11 @@ public class UserController extends ResourceController{
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long id = ((User)req.getSession().getAttribute("user")).getId();
         req.getSession().setAttribute("user", new UserService().findById(id));
+        List<Ticket> upcomingTickets = new TicketService().findAllForUser(((User)req.getSession().getAttribute("user")).getId()).get(1);
+        List<Ticket> oldTickets = new TicketService().findAllForUser(((User)req.getSession().getAttribute("user")).getId()).get(0);
 
-        List<Ticket> tickets = (List<Ticket>) new TicketService().findAllForUser(((User)req.getSession().getAttribute("user")).getId());
-        req.setAttribute("tickets", tickets);
+        req.setAttribute("upcoming_tickets", upcomingTickets);
+        req.setAttribute("old_tickets", oldTickets);
 
         req.getRequestDispatcher("/view/cabinet/cabinet.jsp").forward(req, resp);
     }

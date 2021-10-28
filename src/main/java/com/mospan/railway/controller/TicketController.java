@@ -33,7 +33,7 @@ public class TicketController extends ResourceController{
         ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
 
         User user = (User) req.getSession().getAttribute("user");
-        Collection<Ticket> tickets = new TicketService().findAllForUser(user.getId());
+        Collection<Ticket> tickets = (new TicketService().findAllForUser(user.getId()).get(1));
         if (null != tickets) {
 
             for (Ticket ticket : tickets) {
@@ -62,8 +62,12 @@ public class TicketController extends ResourceController{
 
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Ticket> tickets = (List<Ticket>) new TicketService().findAllForUser(((User)req.getSession().getAttribute("user")).getId());
-        req.setAttribute("tickets", tickets);
+        List<Ticket> upcomingTickets = ((List<Ticket>) new TicketService().findAllForUser(((User)req.getSession().getAttribute("user")).getId()).get(1));
+        List<Ticket> oldTickets = ((List<Ticket>) new TicketService().findAllForUser(((User)req.getSession().getAttribute("user")).getId()).get(1));
+
+        req.setAttribute("upcoming_tickets", upcomingTickets);
+        req.setAttribute("old_tickets", oldTickets);
+
         req.getRequestDispatcher("/view/cabinet.jsp").forward(req, resp);
     }
 

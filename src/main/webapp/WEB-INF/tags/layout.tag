@@ -11,7 +11,7 @@
 
     </head>
     <body>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/select_seat.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/select.css">
 
         <jsp:include page="../../view/common/menu.jsp"/>
     <%--    error--%>

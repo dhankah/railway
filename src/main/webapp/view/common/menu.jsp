@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/common.css">
 <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
+        <a href="${pageContext.request.contextPath}/trips" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
             Rail<b>Way</b>
         </a>
 
@@ -16,6 +16,10 @@
         </ul>
 
         <div class="align-items-center col-md-3 d-flex justify-content-end text-end">
+            <form class="m-1" action="${pageContext.request.contextPath}/language">
+                <button class="btn" type="submit" name="language" value="en">EN</button>
+                <button class="btn" type="submit" name="language" value="ua">UA</button>
+            </form>
             <c:choose>
                 <c:when test="${not empty sessionScope.user}">
                     <a href="${pageContext.request.contextPath}/cabinet" class="btn btn-primary mx-2 custom" role="button" ><fmt:message key="cabinet"/></a>
@@ -33,9 +37,5 @@
     </header>
 </div>
 <div>
-    <form action="${pageContext.request.contextPath}/language">
-        <button type="submit" name="language" value="en">EN</button>
-        <button type="submit" name="language" value="ua">UA</button>
-    </form>
 
 </div>

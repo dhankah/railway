@@ -7,6 +7,10 @@
     background-color: #C05D78;
     border-color: #C05D78;
 }
+.custom:enabled {
+    background-color: #C05D78;
+    border-color: #C05D78;
+}
 
 .danger {
     color: #000000;
@@ -18,3 +22,8 @@
     background-color: #6F9B91;
     border-color: #6F9B91;
 }
+.danger:enabled{
+    background-color: #6F9B91;
+    border-color: #6F9B91;
+}
+

@@ -2,9 +2,10 @@ label {
     float: left;
     display: block;
     margin: 5px;
-    background: #4CAF50;
-    width: 100px;
-    height: 140px;
+    padding: 5px;
+    background: #E38597;
+    width: 30px;
+    height: 50px;
 }
 
 .seat-select {
@@ -12,9 +13,9 @@ label {
 }
 
 .seat-select:checked+label {
-    background: #F44336;
+    background: #6F9B91;
 }
 
 .occupied {
-    background: #d9d9d9;
+    background: #ADC9C3;
 }
