@@ -86,7 +86,7 @@ public class RouteController extends ResourceController{
     private long convertTime(HttpServletRequest req) {
         Long days = (!"".equals(req.getParameter("days"))) ? Long.parseLong(req.getParameter("days")) : 0;
         Long hours = (!"".equals(req.getParameter("hours"))) ? Long.parseLong(req.getParameter("hours")) : 0;
-        Long minutes = Long.parseLong(req.getParameter("minutes"));
+        Long minutes = (!"".equals(req.getParameter("minutes"))) ? Long.parseLong(req.getParameter("minutes")) : 0;
 
         hours += days * 24;
         minutes += hours * 60;

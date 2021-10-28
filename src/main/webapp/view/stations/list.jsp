@@ -11,7 +11,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <z:layout pageTitle="Stations">
     <form name="edit" method="post" action="${pageContext.request.contextPath}/stations" onsubmit="return validateStationForm()">
-        <input type="text" name="<fmt:message key="name"/>">
+        <input type="text" name="name">
         <input type="submit" value="<fmt:message key="add"/>" class="btn btn-primary custom">
 
     </form>

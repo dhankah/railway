@@ -23,9 +23,8 @@
                 <h4><fmt:message key="arrival_station"/></h4><option value = ${station.name}>${station.name}</option>
             </c:forEach>
         </select>
-        <h4><fmt:message key="time"/></h4><input type="time" name="depart_time" value="${requestScope.time}">
-        <h4>Time in way</h4>
-
+        <h4><fmt:message key="departure_time"/></h4>
+        <input type="time" name="depart_time" value="00:00">        <h4><fmt:message key="time"/></h4>
         <input type="number" name="days"> <fmt:message key="days"/>
         <input type="number" name="hours"> <fmt:message key="hours"/>
         <input type="number" name="minutes"> <fmt:message key="minutes"/>

@@ -33,7 +33,7 @@ public class RegisterCommand implements Command {
         user.setDetails(detail);
         user.setRole(Role.CLIENT);
 
-        if (!validator.validateUser(user)) {
+        if (!validator.validateRegisterUser(user)) {
 
             if (request.getSession().getAttribute("defaultLocale").equals("ua")) {
                 request.getSession().setAttribute("errorMessage", ua.getString("login_email_exists"));

@@ -1,7 +1,7 @@
 package com.mospan.railway.controller;
 
 import com.mospan.railway.model.*;
-import com.mospan.railway.service.StationService;
+
 import com.mospan.railway.service.TicketService;
 import com.mospan.railway.service.UserService;
 import com.mospan.railway.validator.Validator;
@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
 
 @WebServlet (value = "/cabinet/*")
 public class UserController extends ResourceController{
@@ -40,6 +41,8 @@ public class UserController extends ResourceController{
 
         req.setCharacterEncoding("UTF-8");
 
+
+        //update password
         if (null != req.getParameter("password")) {
             if (req.getParameter("old_password").equals(new UserService().find(((User) user).getLogin()).getPassword())
                     && req.getParameter("password").equals(req.getParameter("re_password"))) {
@@ -80,7 +83,21 @@ public class UserController extends ResourceController{
             return;
         }
 
-        if (!validator.validateUser((User) user)) {
+        //update user info
+        User userUpd = new User();
+        userUpd.setId(user.getId());
+        userUpd.setPassword(((User)user).getPassword());
+        userUpd.setLogin(req.getParameter("login"));
+        Detail detailUpd = new Detail();
+        detailUpd.setId(user.getId());
+        detailUpd.setFirstName(req.getParameter("first_name"));
+
+        detailUpd.setLastName(req.getParameter("last_name"));
+        detailUpd.setEmail(req.getParameter("email"));
+        userUpd.setDetails(detailUpd);
+
+
+        if (validator.validateUser((User) user, userUpd).equals("false")) {
 
             if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
                 req.getSession().setAttribute("errorMessage", ua.getString("login_email_exists"));
@@ -88,6 +105,10 @@ public class UserController extends ResourceController{
                 req.getSession().setAttribute("errorMessage", en.getString("login_email_exists"));
             }
             resp.sendRedirect(req.getContextPath() + "/cabinet/" + user.getId() + "/edit");
+            return;
+        } else if (validator.validateUser((User) user, userUpd).equals("no_change")) {
+
+            resp.sendRedirect(req.getContextPath() + "/cabinet");
             return;
         }
 
@@ -97,15 +118,15 @@ public class UserController extends ResourceController{
             req.getSession().setAttribute("message", en.getString("profile_updated"));
         }
 
-        Detail detail = ((User) user).getDetails();
+        /*Detail detail = ((User) user).getDetails();
 
         detail.setFirstName(req.getParameter("first_name"));
         detail.setLastName(req.getParameter("last_name"));
         detail.setEmail(req.getParameter("email"));
         ((User) user).setDetails(detail);
-        ((User) user).setLogin(req.getParameter("login"));
+        ((User) user).setLogin(req.getParameter("login"));*/
 
-        new UserService().update((User) user);
+        new UserService().update(userUpd);
         resp.sendRedirect(req.getContextPath() + "/cabinet");
     }
 

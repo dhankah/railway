@@ -63,13 +63,10 @@ function validateRouteForm() {
 
 
     if (start_station == end_station) {
-        alert("You can't set the same station for depart and arrival");
+        alert("Departure and arrival stations can't be the same");
         return false;
     }
-    if (minutes == 0 || minutes == "") {
-        alert("You have to set valid time");
-        return false;
-    }
+
     if (minutes < 0 || hours < 0 || days < 0 || price < 0) {
         alert("The values can't be negative");
         return false;
@@ -78,6 +75,15 @@ function validateRouteForm() {
         alert("You have to set valid price");
         return false;
     }
+
+    if ((minutes != 0 || minutes != "") || (hours != 0 || hours != "") || (days != 0 || days != "")) {
+        return true;
+    } else {
+        alert("You have to set valid time");
+        return false;
+    }
+
+
 }
 function validateStationForm() {
     let name = document.forms["edit"]["name"].value;
@@ -91,7 +97,7 @@ function validateSearchForm() {
     let end_station = document.forms["edit"]["arrival_station"].value;
 
     if (start_station == end_station) {
-        alert("You can't set the same station for depart and arrival");
+        alert("Departure and arrival stations can't be the same");
         return false;
     }
 }
