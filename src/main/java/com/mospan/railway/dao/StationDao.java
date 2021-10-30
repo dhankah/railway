@@ -1,6 +1,8 @@
 package com.mospan.railway.dao;
 
+import com.mospan.railway.model.Route;
 import com.mospan.railway.model.Station;
+import com.mospan.railway.service.RouteService;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -94,6 +96,11 @@ public class StationDao implements Dao<Station>{
 
     @Override
     public void delete(Station station) {
+        Collection<Route> routes = new RouteService().findByStation(station);
+
+        for (Route route : routes) {
+            new RouteService().delete(route);
+        }
         con = cp.getConnection();
         try {
             PreparedStatement st = con.prepareStatement("DELETE FROM station WHERE id = ?");

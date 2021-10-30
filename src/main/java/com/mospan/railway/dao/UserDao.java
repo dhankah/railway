@@ -77,7 +77,6 @@ public class UserDao implements Dao<User>{
         try {
             st = con.prepareStatement("UPDATE user SET login = ?, password = ? WHERE id = ?");
 
-
             st.setString(1, user.getLogin());
             st.setString(2, user.getPassword());
             st.setLong(3, user.getId());

@@ -6,8 +6,8 @@
     <head>
         <title>${pageTitle}</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/bootstrap.min.css">
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/common.css">
-        <script src="${pageContext.request.contextPath}/view/js/validation.js"></script>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/button_style.css">
+        <script src="${pageContext.request.contextPath}/view/js/validate.js"></script>
 
     </head>
     <body>
@@ -42,6 +42,7 @@
             </div>
         </div>
     </c:if>
+    <input id='lang' type='hidden' value='${sessionScope.defaultLocale}'/>
         <jsp:doBody/>
     </body>
 </html>

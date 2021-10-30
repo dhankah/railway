@@ -2,7 +2,9 @@ package com.mospan.railway.dao;
 
 import com.mospan.railway.model.Route;
 import com.mospan.railway.model.Station;
+import com.mospan.railway.model.Trip;
 import com.mospan.railway.service.StationService;
+import com.mospan.railway.service.TripService;
 
 
 import java.sql.*;
@@ -102,6 +104,10 @@ public class RouteDao implements Dao<Route>{
     @Override
     public void delete(Route route) {
         con = cp.getConnection();
+        Collection<Trip> trips = new TripService().findTripsForRoute(route);
+        for (Trip trip : trips) {
+            new TripService().delete(trip);
+        }
         try {
             PreparedStatement st = con.prepareStatement("DELETE FROM route WHERE id = ?");
             st.setLong(1, route.getId());
@@ -214,6 +220,41 @@ public class RouteDao implements Dao<Route>{
             cp.closeConnection(con);
         }
 
+        return routes;
+    }
+
+    public Collection<Route> findByStation(Station station) {
+        con = cp.getConnection();
+        List<Route> routes = new ArrayList<>();
+
+        try {
+            PreparedStatement st = null;
+            st = con.prepareStatement("SELECT * FROM route WHERE start_station_id = ? UNION SELECT * FROM route WHERE end_station_id = ?");
+
+            st.setLong(1, station.getId());
+            st.setLong(2, station.getId());
+
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+
+                Route route = new Route();
+                route.setStartStation(stationService.findById(rs.getLong("start_station_id")));
+                route.setEndStation(stationService.findById(rs.getLong("end_station_id")));
+                route.setTime(rs.getLong("time"));
+                route.setDepartTime(rs.getTime("depart_time").toLocalTime());
+                route.setId(rs.getLong("id"));
+                route.setPrice(rs.getDouble("price"));
+                routes.add(route);
+            }
+            if (routes.isEmpty()) {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }  finally {
+            cp.closeConnection(con);
+        }
         return routes;
     }
 

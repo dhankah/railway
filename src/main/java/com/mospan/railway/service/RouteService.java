@@ -35,4 +35,7 @@ public class RouteService {
     public Collection<Route> findRecords(long id) {
         return dao.findRecords(id);
     }
+    public Collection<Route> findByStation(Station station) {
+        return dao.findByStation(station);
+    }
 }

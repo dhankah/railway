@@ -3,6 +3,8 @@ package com.mospan.railway.controller;
 
 import com.mospan.railway.model.User;
 
+import org.apache.log4j.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,7 +14,7 @@ import java.io.IOException;
 
 @WebServlet (value = "/")
 public class IndexController extends HttpServlet {
-
+    private static final Logger logger = Logger.getLogger(IndexController.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -25,9 +27,12 @@ public class IndexController extends HttpServlet {
         }
         User user = (User) req.getSession().getAttribute("user");
 
+
         if (user != null && user.isAdmin()){
+            logger.info("redirecting to the trips page");
             resp.sendRedirect(req.getContextPath() + "/stations/1/page");
         } else {
+            logger.info("redirecting to the trips page");
             resp.sendRedirect(req.getContextPath() + "/trips");
         }
     }

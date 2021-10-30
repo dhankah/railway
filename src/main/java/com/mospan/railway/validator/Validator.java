@@ -1,7 +1,9 @@
 package com.mospan.railway.validator;
 
+import com.mospan.railway.controller.IndexController;
 import com.mospan.railway.dao.ConnectionPool;
 import com.mospan.railway.model.*;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,10 +12,12 @@ import java.sql.SQLException;
 
 public class Validator {
 
+    private static final Logger logger = Logger.getLogger(Validator.class);
     ConnectionPool cp = ConnectionPool.getInstance();
     Connection con;
 
     public boolean validateStations(Station station) {
+        logger.info("Starting station form validation");
         con = cp.getConnection();
         PreparedStatement st = null;
         try {
@@ -23,19 +27,23 @@ public class Validator {
             rs.next();
             String temp = rs.getString("name");
         } catch (SQLException e) {
+            logger.info("Station form validation successfully passed");
             return true;
         } finally {
             cp.closeConnection(con);
         }
+        logger.info("Station form validation failed");
         return false;
     }
 
     public String validateUser(User user, User userUpd) {
+        logger.info("Starting user edit form validation");
         con = cp.getConnection();
         PreparedStatement st = null;
         if (user.getLogin().equals(userUpd.getLogin()) && user.getDetails().getEmail().equals(userUpd.getDetails().getEmail())
         && user.getDetails().getFirstName().equals(userUpd.getDetails().getFirstName()) &&
                 user.getDetails().getLastName().equals(userUpd.getDetails().getLastName())) {
+            logger.info("No changes were made in user edit form");
             return "no_change";
         }
         try {
@@ -47,6 +55,7 @@ public class Validator {
                 rs = st.executeQuery();
                 rs.next();
                 String temp = rs.getString("login");
+                logger.info("User edit form validation failed");
                 return "false";
             } else if (!user.getDetails().getEmail().equals(userUpd.getDetails().getEmail())) {
                 System.out.println("user " + user.getDetails().getEmail() + "new" + userUpd.getDetails().getEmail());
@@ -55,11 +64,13 @@ public class Validator {
                 rs = st.executeQuery();
                 rs.next();
                 String temp = rs.getString("email");
+                logger.info("User edit form validation failed");
                 return "false";
             }
 
         } catch (SQLException e) {
             //validation was successful, there is no user with such credentials
+            logger.info("User edit form validation successfully passed");
             return "true";
         } finally {
             cp.closeConnection(con);
@@ -70,9 +81,9 @@ public class Validator {
 
 
     public boolean validateRegisterUser(User user) {
+        logger.info("Starting user register form validation");
         con = cp.getConnection();
         PreparedStatement st = null;
-
         try {
             ResultSet rs;
             st = con.prepareStatement("SELECT * FROM user WHERE login = ?");
@@ -80,24 +91,39 @@ public class Validator {
             rs = st.executeQuery();
             rs.next();
             String temp = rs.getString("login");
-
-
-            st = con.prepareStatement("SELECT * FROM detail WHERE email = ?");
-            st.setString(1, user.getDetails().getEmail());
-            rs = st.executeQuery();
-            rs.next();
-            temp = rs.getString("email");
-
         } catch (SQLException e) {
-            return true;
-            //validation was successful, there is no user with such credentials
+            logger.info("Login validation passed, going to email validation");
+            return validateEmailRegister(user);
         } finally {
             cp.closeConnection(con);
         }
         //validation was not successful, there are users with such credentials
+        logger.info("User register form validation failed on checking login");
         return false;
     }
 
+    public boolean validateEmailRegister(User user) {
+        logger.info("Starting user register form validation");
+        con = cp.getConnection();
+        PreparedStatement st = null;
+        System.out.println(user.getLogin());
+        try {
+            st = con.prepareStatement("SELECT * FROM detail WHERE email = ?");
+            st.setString(1, user.getDetails().getEmail());
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            String temp = rs.getString("email");
 
+        } catch (SQLException e) {
+            //validation was successful, there is no user with such credentials
+            logger.info("User register form validation successfully passed");
+            return true;
+        } finally {
+            cp.closeConnection(con);
+        }
+        //validation was not successful, there are users with such credentials
+        logger.info("User register form validation failed on checking email");
+        return false;
+    }
 
 }

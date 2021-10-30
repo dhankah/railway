@@ -183,6 +183,35 @@ public class TripDao implements Dao<Trip>{
         return trips;
     }
 
+    public Collection<Trip> findTripsForRoute(Route route){
+        con = cp.getConnection();
+        PreparedStatement st = null;
+        List<Trip> trips = new ArrayList<>();
+        try {
+            st = con.prepareStatement("SELECT * FROM trip WHERE route_id = ?");
+            st.setLong(1, route.getId());
+            ResultSet rs = st.executeQuery();
+            while (rs.next()) {
+                Trip trip = new Trip();
+                trip.setId(rs.getLong("id"));
+                trip.setRoute(route);
+                trip.setDepartDate(rs.getDate("depart_date").toLocalDate());
+                trip.setArrivalDate(rs.getDate("arrival_date").toLocalDate());
+                trip.setAvailablePlaces(rs.getInt("available_places"));
+                trips.add(trip);
+            }
+            if (trips.isEmpty()) {
+                trips = null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            trips = null;
+        } finally {
+            cp.closeConnection(con);
+        }
+        return trips;
+    }
+
     public Collection<Trip> findRecords(Route route, LocalDate date, long id) {
         con = cp.getConnection();
         List<Trip> trips = new ArrayList<>();

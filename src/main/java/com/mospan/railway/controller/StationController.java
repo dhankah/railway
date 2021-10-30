@@ -33,8 +33,11 @@ public class StationController extends ResourceController {
      */
     @Override
     protected void update(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
+
         Station station = ((Station) entity);
         station.setName(req.getParameter("name"));
+        System.out.println(req.getParameter("name"));
         if (validator.validateStations(station)) {
             new StationService().update(station);
             resp.sendRedirect(req.getContextPath() + "/stations/1/page");
@@ -57,6 +60,7 @@ public class StationController extends ResourceController {
      */
     @Override
     protected void edit(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         req.setAttribute("station", (Station) entity);
         req.getRequestDispatcher("/view/stations/edit.jsp").forward(req, resp);
     }
@@ -92,6 +96,7 @@ public class StationController extends ResourceController {
      */
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         List<Station> stations = (List<Station>) new StationService().findAll();
         req.setAttribute("stations", stations);
         req.getRequestDispatcher("/view/stations/list.jsp").forward(req, resp);
