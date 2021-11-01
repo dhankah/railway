@@ -1,8 +1,10 @@
 package com.mospan.railway.dao;
 
+import com.mospan.railway.controller.TicketController;
 import com.mospan.railway.model.Detail;
 import com.mospan.railway.model.Station;
 import com.mospan.railway.model.User;
+import org.apache.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class DetailDao implements Dao<Detail>{
+    private static final Logger logger = Logger.getLogger(DetailDao.class);
     ConnectionPool cp = ConnectionPool.getInstance();
     Connection con;
 
@@ -29,6 +32,7 @@ public class DetailDao implements Dao<Detail>{
 
             st.executeUpdate();
         } catch (SQLException e) {
+            logger.info("insert failed");
             e.printStackTrace();
         } finally {
             cp.closeConnection(con);
@@ -51,6 +55,7 @@ public class DetailDao implements Dao<Detail>{
 
             st.executeUpdate();
         } catch (SQLException e) {
+            logger.info("update failed");
             e.printStackTrace();
         } finally {
             cp.closeConnection(con);
@@ -76,6 +81,7 @@ public class DetailDao implements Dao<Detail>{
             detail.setEmail(email);
             detail.setId(rs.getLong("id"));
         } catch (SQLException e) {
+            logger.info("search by email failed");
             e.printStackTrace();
         } finally {
             cp.closeConnection(con);
@@ -103,6 +109,7 @@ public class DetailDao implements Dao<Detail>{
             detail.setEmail(rs.getString("email"));
             detail.setId(id);
         } catch (SQLException e) {
+            logger.info("search by id failed");
             e.printStackTrace();
         } finally {
             cp.closeConnection(con);
@@ -118,6 +125,7 @@ public class DetailDao implements Dao<Detail>{
             st.setLong(1, detail.getId());
             st.executeUpdate();
         } catch (SQLException e) {
+            logger.info("deletion failed");
             e.printStackTrace();
         } finally {
             cp.closeConnection(con);

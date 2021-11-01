@@ -3,19 +3,24 @@ package com.mospan.railway.dao;
 import com.mospan.railway.model.Route;
 import com.mospan.railway.model.Station;
 import com.mospan.railway.model.Trip;
+import com.mospan.railway.service.RouteService;
 import com.mospan.railway.service.StationService;
 import com.mospan.railway.service.TripService;
+import org.apache.log4j.Logger;
 
 
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class RouteDao implements Dao<Route>{
+public class RouteDao implements Dao<Route> {
     ConnectionPool cp = ConnectionPool.getInstance();
     Connection con;
-
+    private static final Logger logger = Logger.getLogger(RouteDao.class);
     StationService stationService = new StationService();
 
     @Override
@@ -34,9 +39,14 @@ public class RouteDao implements Dao<Route>{
 
 
             st.executeUpdate();
+
+            route.setId(findByParams(route.getStartStation(), route.getEndStation(), route.getDepartTime(), route.getTime()));
+            System.out.println("here i looked and what ive found: " + route.getId());
+            createTripsForRoute(route);
         } catch (SQLException e) {
+            logger.info("insert failed");
             e.printStackTrace();
-        }  finally {
+        } finally {
             cp.closeConnection(con);
         }
 
@@ -59,8 +69,9 @@ public class RouteDao implements Dao<Route>{
 
             st.executeUpdate();
         } catch (SQLException e) {
+            logger.info("update failed");
             e.printStackTrace();
-        }  finally {
+        } finally {
             cp.closeConnection(con);
         }
     }
@@ -94,8 +105,9 @@ public class RouteDao implements Dao<Route>{
 
             route.setId(id);
         } catch (SQLException e) {
+            logger.info("search by id failed");
             e.printStackTrace();
-        }  finally {
+        } finally {
             cp.closeConnection(con);
         }
         return route;
@@ -113,8 +125,9 @@ public class RouteDao implements Dao<Route>{
             st.setLong(1, route.getId());
             st.executeUpdate();
         } catch (SQLException e) {
+            logger.info("deletion failed");
             e.printStackTrace();
-        }  finally {
+        } finally {
             cp.closeConnection(con);
         }
     }
@@ -145,8 +158,9 @@ public class RouteDao implements Dao<Route>{
             }
 
         } catch (SQLException e) {
+            logger.info("search for all failed");
             e.printStackTrace();
-        }  finally {
+        } finally {
             cp.closeConnection(con);
         }
 
@@ -180,8 +194,9 @@ public class RouteDao implements Dao<Route>{
                 return null;
             }
         } catch (SQLException e) {
+            logger.info("search by stations failed");
             e.printStackTrace();
-        }  finally {
+        } finally {
             cp.closeConnection(con);
         }
 
@@ -192,7 +207,7 @@ public class RouteDao implements Dao<Route>{
         con = cp.getConnection();
         List<Route> routes = new ArrayList<>();
 
-        if (id != 1){
+        if (id != 1) {
             id = id - 1;
             id = id * 10 + 1;
         }
@@ -215,6 +230,7 @@ public class RouteDao implements Dao<Route>{
             }
 
         } catch (SQLException e) {
+            logger.info("opening page failed");
             e.printStackTrace();
         } finally {
             cp.closeConnection(con);
@@ -252,11 +268,48 @@ public class RouteDao implements Dao<Route>{
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        }  finally {
+        } finally {
             cp.closeConnection(con);
         }
         return routes;
     }
 
+    public void createTripsForRoute(Route route) {
+        for (int i = 0; i < 35; i++) {
+            Trip trip = new Trip();
+            trip.setRoute(route);
+            trip.setAvailablePlaces(36);
+            trip.setDepartDate(LocalDate.now().plusDays(i));
 
+            LocalDateTime dt = trip.getDepartDate().atTime(route.getDepartTime());
+            trip.setArrivalDate((dt.plusSeconds(route.getTime())).toLocalDate());
+
+            new TripService().insert(trip);
+        }
+    }
+
+    public long findByParams(Station s1, Station s2, LocalTime depTime, long time) {
+        con = cp.getConnection();
+        long id = 0;
+        try {
+            PreparedStatement st = null;
+            st = con.prepareStatement("SELECT id FROM route WHERE start_station_id = ? AND end_station_id = ? AND " +
+                    "depart_time = ? AND time = ?");
+
+            st.setLong(1, s1.getId());
+            st.setLong(2, s2.getId());
+            st.setTime(3, Time.valueOf(depTime));
+            st.setLong(4, time);
+
+            ResultSet rs = st.executeQuery();
+
+            rs.next();
+            id = rs.getLong("id");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
+        }
+        return id;
+    }
 }

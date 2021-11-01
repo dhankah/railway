@@ -188,9 +188,10 @@ public class TicketDao implements Dao<Ticket>{
             tickets.add(oldTickets);
             tickets.add(upcomingTickets);
 
-            if (tickets.isEmpty()) {
-                tickets = null;
+            if (tickets.get(1).isEmpty()) {
+                tickets.set(1, null);
             }
+
 
         } catch (SQLException e) {
             e.printStackTrace();

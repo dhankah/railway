@@ -22,6 +22,8 @@ public class TripDao implements Dao<Trip>{
     public void insert(Trip trip) {
         con = cp.getConnection();
         PreparedStatement st = null;
+        System.out.println("route id " + trip.getRoute().getId());
+        System.out.println("route stations " + trip.getRoute().getStartStation() + " " + trip.getRoute().getEndStation());
         try {
             st = con.prepareStatement("INSERT INTO trip (route_id, depart_date, arrival_date, available_places)" +
                     " VALUES (?, ?, ?, ?)");

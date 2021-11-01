@@ -4,6 +4,7 @@ import com.mospan.railway.model.Entity;
 import com.mospan.railway.model.Station;
 import com.mospan.railway.service.StationService;
 import com.mospan.railway.validator.Validator;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,6 +17,7 @@ import java.util.ResourceBundle;
 
 @WebServlet (value = "/stations/*")
 public class StationController extends ResourceController {
+    private static final Logger logger = Logger.getLogger(StationController.class);
     Validator validator = new Validator();
 
     @Override
@@ -33,19 +35,20 @@ public class StationController extends ResourceController {
      */
     @Override
     protected void update(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("updating station " + entity.getId());
         req.setCharacterEncoding("UTF-8");
-
         Station station = ((Station) entity);
         station.setName(req.getParameter("name"));
-        System.out.println(req.getParameter("name"));
+
         if (validator.validateStations(station)) {
+            logger.info("updated station " + station.getId() + " successfuly");
             new StationService().update(station);
             resp.sendRedirect(req.getContextPath() + "/stations/1/page");
             return;
         }
         ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
         ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
-
+        logger.info("updating station " + station.getId() + " failed");
         if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
             req.getSession().setAttribute("errorMessage", ua.getString("station_exists"));
         } else {
@@ -60,6 +63,7 @@ public class StationController extends ResourceController {
      */
     @Override
     protected void edit(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("forwarding to station edit page");
         req.setCharacterEncoding("UTF-8");
         req.setAttribute("station", (Station) entity);
         req.getRequestDispatcher("/view/stations/edit.jsp").forward(req, resp);
@@ -71,9 +75,11 @@ public class StationController extends ResourceController {
      */
     @Override
     protected void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("saving station");
         Station station = new Station();
         station.setName(req.getParameter("name"));
         if (validator.validateStations(station)) {
+            logger.info("station " + station.getName() + " saved successfully");
             new StationService().insert(station);
             resp.sendRedirect(req.getContextPath() + "/stations/1/page");
             return;
@@ -81,6 +87,7 @@ public class StationController extends ResourceController {
         ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
         ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
 
+        logger.info("saving station " + station.getName() + " failed");
         if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
             req.getSession().setAttribute("errorMessage", ua.getString("station_exists"));
         } else {
@@ -108,13 +115,14 @@ public class StationController extends ResourceController {
      */
     @Override
     protected void delete(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("deleting station " + ((Station) entity).getName());
         new StationService().delete((Station) entity);
         resp.sendRedirect(req.getContextPath() + "/stations/1/page");
     }
 
     @Override
     protected void goToPage(long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        logger.info("forwarding to page " + id + " of stations");
         List<Station> stationsForList = (List<Station>) new StationService().findAll();
         req.setAttribute("stations", stationsForList);
 

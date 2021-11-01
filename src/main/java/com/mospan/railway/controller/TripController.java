@@ -5,6 +5,7 @@ import com.mospan.railway.service.RouteService;
 import com.mospan.railway.service.StationService;
 import com.mospan.railway.service.TicketService;
 import com.mospan.railway.service.TripService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -19,7 +20,7 @@ import java.util.*;
 
 @WebServlet (value = "/trips/*")
 public class TripController extends ResourceController {
-
+    private static final Logger logger = Logger.getLogger(TripController.class);
     @Override
     Entity findModel(String id) {
         try {
@@ -43,6 +44,8 @@ public class TripController extends ResourceController {
 
     @Override
     protected void choose(Entity trip, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("viewing page for seat selection");
+
         List<Seat> seats = new ArrayList<>();
 
         TicketService ticketService = new TicketService();
@@ -64,6 +67,7 @@ public class TripController extends ResourceController {
 
     @Override
     protected void routeInfo(Entity trip, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("viewing info about route " + ((Trip)trip).getRoute().getId());
         req.setAttribute("route", ((Trip)trip).getRoute());
         req.getRequestDispatcher("/view/routes/route_info.jsp").forward(req, resp);
     }
@@ -71,7 +75,7 @@ public class TripController extends ResourceController {
 
     @Override
     protected void goToPage(long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        logger.info("forwarding to page " + id + " of trips");
         ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
         ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
 
@@ -95,6 +99,7 @@ public class TripController extends ResourceController {
                 }
             }
             if (trips.isEmpty()) {
+                logger.info("found no trips for user's request");
                 req.getSession().removeAttribute("trips");
                 if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
                     req.getSession().setAttribute("errorMessage", ua.getString("no_trains_error"));
@@ -104,6 +109,7 @@ public class TripController extends ResourceController {
             }
         } else {
             req.getSession().removeAttribute("trips");
+            logger.info("found no route for user's request");
             if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
                 req.getSession().setAttribute("errorMessage", ua.getString("no_route_error"));
             } else {
@@ -111,7 +117,7 @@ public class TripController extends ResourceController {
             }
 
         }
-
+        logger.info("search for trips was successful");
         req.getSession().setAttribute("date", req.getParameter("depart_date"));
         req.getSession().setAttribute("depart_station", (new StationService().find(req.getParameter("depart_station"))).getId());
         req.getSession().setAttribute("arrival_station", (new StationService().find(req.getParameter("arrival_station"))).getId());

@@ -4,6 +4,7 @@ import com.mospan.railway.model.*;
 import com.mospan.railway.service.StationService;
 import com.mospan.railway.service.TicketService;
 import com.mospan.railway.service.TripService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +18,7 @@ import java.util.ResourceBundle;
 
 @WebServlet (value = "/tickets/*")
 public class TicketController extends ResourceController{
-
+    private static final Logger logger = Logger.getLogger(TicketController.class);
     @Override
     Entity findModel(String id) {
         try {
@@ -29,6 +30,7 @@ public class TicketController extends ResourceController{
 
     @Override
     protected void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("purchasing ticket");
         ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
         ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
 
@@ -39,6 +41,7 @@ public class TicketController extends ResourceController{
             for (Ticket ticket : tickets) {
                 Trip trip = new TripService().findById(Long.parseLong(req.getParameter("trip")));
                 if (ticket.getTrip().getId() == trip.getId()) {
+                    logger.info("purchasing ticket failed: user already has ticket on this trip");
                     if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
                         req.getSession().setAttribute("errorMessage", ua.getString("ticket_error"));
                     } else {
@@ -57,11 +60,13 @@ public class TicketController extends ResourceController{
         ticket.setTrip(trip);
         ticket.setSeat(Integer.parseInt(req.getParameter("number")));
         new TicketService().insert(ticket);
+        logger.info("ticket purchased successfully");
         resp.sendRedirect(req.getContextPath() + "/cabinet");
     }
 
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("viewing tickets");
         List<Ticket> upcomingTickets = ((List<Ticket>) new TicketService().findAllForUser(((User)req.getSession().getAttribute("user")).getId()).get(1));
         List<Ticket> oldTickets = ((List<Ticket>) new TicketService().findAllForUser(((User)req.getSession().getAttribute("user")).getId()).get(1));
 
@@ -73,6 +78,7 @@ public class TicketController extends ResourceController{
 
     @Override
     protected void delete(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("deleting ticket " + entity.getId());
         new TicketService().delete((Ticket) entity);
         resp.sendRedirect(req.getContextPath() + "/cabinet");
     }

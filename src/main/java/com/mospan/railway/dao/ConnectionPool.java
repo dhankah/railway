@@ -1,36 +1,40 @@
 package com.mospan.railway.dao;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import javax.sql.DataSource;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+
+
 import java.sql.Connection;
 import java.sql.SQLException;
 
+
 public class ConnectionPool {
-    private ConnectionPool() {
-        //private constructor
-    }
+    private static ConnectionPool instance;
+    private ComboPooledDataSource cpds;
 
-    private static ConnectionPool instance = null;
-
-    public static ConnectionPool getInstance() {
+    public static synchronized ConnectionPool getInstance() {
         if (instance == null)
             instance = new ConnectionPool();
         return instance;
     }
-    public Connection getConnection(){
-        Context ctx;
-        Connection c = null;
+
+    private ConnectionPool() {
         try {
-            ctx = new InitialContext();
-            DataSource ds = (DataSource)ctx.lookup("java:comp/env/jdbc/railway");
-            c = ds.getConnection();
-        } catch (NamingException | SQLException e) {
+            createPool();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return c;
     }
+
+    public Connection getConnection() {
+        Connection con = null;
+        try {
+            con = this.cpds.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return con;
+    }
+
 
     public void closeConnection(Connection con) {
         try {
@@ -41,4 +45,12 @@ public class ConnectionPool {
     }
 
 
+    private void createPool() throws Exception {
+        cpds = new ComboPooledDataSource();
+        cpds.setDriverClass("com.mysql.jdbc.Driver");
+        cpds.setJdbcUrl("jdbc:mysql://localhost:3306/railway?useUnicode=true&characterEncoding=utf8");
+        cpds.setUser("root");
+        cpds.setPassword("root");
+        cpds.setMaxStatements(180);
+    }
 }

@@ -5,6 +5,7 @@ import com.mospan.railway.model.Route;
 
 import com.mospan.railway.service.RouteService;
 import com.mospan.railway.service.StationService;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @WebServlet (value = "/routes/*")
 public class RouteController extends ResourceController{
-
+    private static final Logger logger = Logger.getLogger(RouteController.class);
     @Override
     Entity findModel(String id) {
         try {
@@ -31,7 +32,7 @@ public class RouteController extends ResourceController{
     @Override
     protected void update(Entity route, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-
+        logger.info("updating route " + route.getId());
         ((Route) route).setDepartTime(LocalTime.parse(req.getParameter("depart_time")));
         ((Route) route).setTime(convertTime(req));
 
@@ -47,7 +48,7 @@ public class RouteController extends ResourceController{
 
     @Override
     protected void edit(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        logger.info("redirecting to route edit page");
         req.setAttribute("route", (Route) entity);
         req.setAttribute("stations", new StationService().findAll());
         req.getRequestDispatcher("/view/routes/edit.jsp").forward(req, resp);
@@ -55,6 +56,7 @@ public class RouteController extends ResourceController{
 
     @Override
     protected void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("saving a new route");
         Route route = new Route();
 
         ((Route) route).setDepartTime(LocalTime.parse(req.getParameter("depart_time")));
@@ -69,6 +71,7 @@ public class RouteController extends ResourceController{
 
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         req.setAttribute("time", LocalTime.MIDNIGHT);
         req.setAttribute("stations", new StationService().findAll());
         req.setAttribute("routes", new RouteService().findAll());
@@ -78,6 +81,7 @@ public class RouteController extends ResourceController{
 
     @Override
     protected void delete(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        logger.info("deleting route " + entity.getId());
         new RouteService().delete((Route) entity);
         resp.sendRedirect(req.getContextPath() + "/routes/1/page");
     }
@@ -96,7 +100,7 @@ public class RouteController extends ResourceController{
 
     @Override
     protected void goToPage(long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+        logger.info("forwarding to page " + id + " of routes");
         req.setAttribute("time", LocalTime.MIDNIGHT);
         req.setAttribute("stations", new StationService().findAll());
         req.setAttribute("routes", new RouteService().findAll());

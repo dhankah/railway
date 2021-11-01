@@ -1,6 +1,8 @@
 package com.mospan.railway.controller;
 
+import com.mospan.railway.validator.Validator;
 import com.mysql.cj.Session;
+import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,7 +15,7 @@ import java.io.IOException;
 
 @WebServlet(value = "/language")
 public class LanguageController extends HttpServlet {
-
+    private static final Logger logger = Logger.getLogger(Validator.class);
 
         @Override
         protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -22,7 +24,7 @@ public class LanguageController extends HttpServlet {
             String defaultLocale = "defaultLocale";
 
             Config.set(session, fmtLocale, request.getParameter("language"));
-
+            logger.info("setting locale: " + request.getParameter("language"));
             session.setAttribute(defaultLocale, request.getParameter("language"));
 
             String referer = request.getHeader("Referer");

@@ -3,6 +3,8 @@ package com.mospan.railway.controller;
 import com.mospan.railway.web.command.commands.auth.LoginCommand;
 import com.mospan.railway.web.command.commands.auth.LogoutCommand;
 import com.mospan.railway.web.command.commands.auth.RegisterCommand;
+import org.apache.log4j.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -12,16 +14,18 @@ import java.io.IOException;
 
 @WebServlet(value = {"/auth/*"})
 public class AuthController extends HttpServlet {
-
+    private static final Logger logger = Logger.getLogger(AuthController.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         String path = req.getPathInfo();
 
         if (path.equals("/login")) {
+            logger.info("forwarding to the login page");
             req.getRequestDispatcher("/view/auth/login.jsp").forward(req, resp);
         }
         else if (path.equals("/register")) {
+            logger.info("forwarding to the register page");
             req.getRequestDispatcher("/view/auth/register.jsp").forward(req, resp);
         } else {
             resp.sendError(404, "Not found");

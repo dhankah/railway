@@ -1,6 +1,6 @@
 package com.mospan.railway.validator;
 
-import com.mospan.railway.controller.IndexController;
+
 import com.mospan.railway.dao.ConnectionPool;
 import com.mospan.railway.model.*;
 import org.apache.log4j.Logger;

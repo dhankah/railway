@@ -72,7 +72,6 @@
                             <input type="hidden" name="_method" value="delete" />
                             <input type="submit" class="btn btn-primary custom" value="<fmt:message key="cancel_purchase"/>" onclick="return confirm('<fmt:message key="confirm"/>')">
                         </form>
-                        <a href="${pageContext.request.contextPath}/download/${ticket.id}" class="btn btn-primary custom"> <fmt:message key="download"/></a>
                     </div>
                 </div>
             </c:forEach>
@@ -96,7 +95,6 @@
                             <input type="hidden" name="_method" value="delete" />
                             <input type="submit" class="btn btn-primary custom" value="<fmt:message key="cancel_purchase"/>" onclick="return confirm('<fmt:message key="confirm"/>')">
                         </form>
-                        <a href="${pageContext.request.contextPath}/download/${ticket.id}" class="btn btn-primary custom"> <fmt:message key="download"/></a>
                     </div>
                 </div>
             </c:forEach>

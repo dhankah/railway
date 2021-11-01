@@ -60,7 +60,6 @@ public abstract class ResourceController extends HttpServlet {
 
         switch (method) {
             case "GET":
-
                 if (action == null) {
                     if (id != null) {
                         this.view(entity, req, resp);
