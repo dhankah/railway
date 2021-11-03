@@ -214,22 +214,17 @@ public class TripDao implements Dao<Trip>{
         return trips;
     }
 
-    public Collection<Trip> findRecords(Route route, LocalDate date, long id) {
+    public Collection<Trip> findRecords(Route route, LocalDate date) {
         con = cp.getConnection();
         List<Trip> trips = new ArrayList<>();
 
-        if (id != 1){
-            id = id - 1;
-            id = id * 10 + 1;
-        }
 
 
         try {
             PreparedStatement st = null;
-            st = con.prepareStatement("SELECT * FROM trip WHERE route_id = ? AND depart_date = ? LIMIT ?, 10");
+            st = con.prepareStatement("SELECT * FROM trip WHERE route_id = ? AND depart_date = ?");
             st.setLong(1, route.getId());
             st.setDate(2, Date.valueOf(date));
-            st.setLong(3, id - 1);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {
                 Trip trip = new Trip();

@@ -5,6 +5,7 @@ import com.mospan.railway.model.Station;
 import com.mospan.railway.model.Trip;
 import com.mospan.railway.service.RouteService;
 import com.mospan.railway.service.StationService;
+import com.mospan.railway.service.TicketService;
 import com.mospan.railway.service.TripService;
 import org.apache.log4j.Logger;
 
@@ -115,11 +116,8 @@ public class RouteDao implements Dao<Route> {
 
     @Override
     public void delete(Route route) {
+
         con = cp.getConnection();
-        Collection<Trip> trips = new TripService().findTripsForRoute(route);
-        for (Trip trip : trips) {
-            new TripService().delete(trip);
-        }
         try {
             PreparedStatement st = con.prepareStatement("DELETE FROM route WHERE id = ?");
             st.setLong(1, route.getId());

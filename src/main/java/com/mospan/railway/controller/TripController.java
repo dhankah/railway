@@ -79,22 +79,28 @@ public class TripController extends ResourceController {
         ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
         ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
 
+
+
         req.getSession().setAttribute("date", LocalDate.now());
         req.setAttribute("stations", new StationService().findAll());
         req.setAttribute("min_date", LocalDate.now());
         req.setAttribute("max_date", LocalDate.now().plusDays(34));
 
-        int size = new TripService().findAll().size();
-        int pages = size % 10 == 0 ? size / 10 : size / 10 + 1;
-        req.setAttribute("pages", pages);
+
         Collection<Trip> trips = new ArrayList<>();
-        Collection<Route> routes = new RouteService().findByStations(req.getParameter("depart_station"), req.getParameter("arrival_station"));
+        Collection<Route> routes = new RouteService().findByStations((req.getParameter("depart_station")), req.getParameter("arrival_station"));
 
         if (routes != null) {
             for (Route route : routes) {
-                Collection<Trip> tripsForRoute = new TripService().findRecords(route, LocalDate.parse(req.getParameter("depart_date")), id);
+                Collection<Trip> tripsForRoute = new TripService().findRecords(route, LocalDate.parse(req.getParameter("depart_date")));
                 if (tripsForRoute != null) {
-                    trips.addAll(tripsForRoute);
+                    for (Trip trip : tripsForRoute) {
+                       if (trip.getDepartDate().isEqual(LocalDate.now()) && trip.getRoute().getDepartTime().isBefore(LocalTime.now())) {
+                           continue;
+                       }
+                       trips.add(trip);
+                    }
+
                     req.getSession().setAttribute("trips", trips);
                 }
             }
@@ -106,6 +112,8 @@ public class TripController extends ResourceController {
                 } else {
                     req.getSession().setAttribute("errorMessage", en.getString("no_trains_error"));
                 }
+            } else {
+                logger.info("search for trips was successful");
             }
         } else {
             req.getSession().removeAttribute("trips");
@@ -117,7 +125,7 @@ public class TripController extends ResourceController {
             }
 
         }
-        logger.info("search for trips was successful");
+
         req.getSession().setAttribute("date", req.getParameter("depart_date"));
         req.getSession().setAttribute("depart_station", (new StationService().find(req.getParameter("depart_station"))).getId());
         req.getSession().setAttribute("arrival_station", (new StationService().find(req.getParameter("arrival_station"))).getId());

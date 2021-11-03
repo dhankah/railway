@@ -3,8 +3,10 @@ package com.mospan.railway.controller;
 import com.mospan.railway.model.Entity;
 import com.mospan.railway.model.Route;
 
+import com.mospan.railway.model.Trip;
 import com.mospan.railway.service.RouteService;
 import com.mospan.railway.service.StationService;
+
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -12,8 +14,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+
 import java.time.LocalTime;
+
 import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 
 @WebServlet (value = "/routes/*")
@@ -80,9 +86,10 @@ public class RouteController extends ResourceController{
 
 
     @Override
-    protected void delete(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("deleting route " + entity.getId());
-        new RouteService().delete((Route) entity);
+    protected void delete(Entity route, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        logger.info("deleting route " + route.getId());
+        new RouteService().delete((Route) route);
         resp.sendRedirect(req.getContextPath() + "/routes/1/page");
     }
 
@@ -113,5 +120,6 @@ public class RouteController extends ResourceController{
         req.setAttribute("routes", routes);
         req.getRequestDispatcher("/view/routes/list.jsp").forward(req, resp);
     }
+
 
 }

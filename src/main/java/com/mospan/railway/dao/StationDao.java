@@ -96,11 +96,7 @@ public class StationDao implements Dao<Station>{
 
     @Override
     public void delete(Station station) {
-        Collection<Route> routes = new RouteService().findByStation(station);
 
-        for (Route route : routes) {
-            new RouteService().delete(route);
-        }
         con = cp.getConnection();
         try {
             PreparedStatement st = con.prepareStatement("DELETE FROM station WHERE id = ?");

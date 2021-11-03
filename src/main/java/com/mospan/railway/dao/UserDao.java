@@ -189,4 +189,23 @@ public class UserDao implements Dao<User>{
 
         return users;
     }
+
+    public String getEmailSenderData() {
+        con = cp.getConnection();
+        String p = null;
+        try {
+            PreparedStatement st = null;
+            st = con.prepareStatement("SELECT password FROM email_data where email = 'railway.service@outlook.com'");
+
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            p = rs.getString("password");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            cp.closeConnection(con);
+        }
+
+        return p;
+    }
 }

@@ -167,7 +167,11 @@ public class UserController extends ResourceController{
         }
         new UserService().delete((User) user);
         logger.info("user's profile " + user.getId() + " deleted successfully");
+
+        String locale = (String) req.getSession().getAttribute("defaultLocale");
+
         req.getSession().invalidate();
+        req.getSession().setAttribute("defaultLocale", locale);
         resp.sendRedirect(req.getContextPath() + "/auth/login");
     }
 

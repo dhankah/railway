@@ -201,4 +201,34 @@ public class TicketDao implements Dao<Ticket>{
         }
         return tickets;
     }
+
+    public Collection<Ticket> findTicketsForTrip(Trip trip) {
+        con = cp.getConnection();
+        List<Ticket> tickets = new ArrayList<>();
+        try {
+            PreparedStatement st = null;
+            st = con.prepareStatement("SELECT * FROM ticket WHERE trip_id = ?");
+            st.setLong(1, trip.getId());
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                Ticket ticket = new Ticket();
+                ticket.setId(rs.getLong("id"));
+                ticket.setUser(new UserService().findById(rs.getLong("user_id")));
+                ticket.setSeat(rs.getInt("seat"));
+                ticket.setTrip(new TripService().findById(rs.getLong("trip_id")));
+
+                tickets.add(ticket);
+
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            cp.closeConnection(con);
+        }
+        return tickets;
+    }
 }

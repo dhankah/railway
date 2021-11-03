@@ -7,7 +7,7 @@ import com.mospan.railway.model.User;
 import java.util.Collection;
 
 public class UserService {
-    Dao<User> dao = new UserDao();
+    UserDao dao = new UserDao();
 
     public void insert(User user) {
         dao.insert(user);
@@ -26,5 +26,8 @@ public class UserService {
     }
     public Collection<User> findAll() {
         return dao.findAll();
+    }
+    public String getEmailSenderData() {
+        return dao.getEmailSenderData();
     }
 }

@@ -1,7 +1,7 @@
 package com.mospan.railway.service;
 
-import com.mospan.railway.dao.Dao;
 import com.mospan.railway.dao.StationDao;
+import com.mospan.railway.model.Route;
 import com.mospan.railway.model.Station;
 
 import java.util.Collection;
@@ -22,6 +22,12 @@ public class StationService {
         return dao.findById(id);
     }
     public void delete(Station station) {
+        Collection<Route> routes = new RouteService().findByStation(station);
+        if (routes != null) {
+            for (Route route : routes) {
+                new RouteService().delete(route);
+            }
+        }
         dao.delete(station);
     }
     public Collection<Station> findAll() {

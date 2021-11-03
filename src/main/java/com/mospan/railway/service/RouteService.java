@@ -1,11 +1,14 @@
 package com.mospan.railway.service;
 
+import com.mospan.railway.controller.RouteController;
 import com.mospan.railway.dao.Dao;
 import com.mospan.railway.dao.RouteDao;
 import com.mospan.railway.dao.StationDao;
 import com.mospan.railway.model.Route;
 import com.mospan.railway.model.Station;
+import com.mospan.railway.model.Trip;
 
+import java.time.LocalDate;
 import java.util.Collection;
 
 public class RouteService {
@@ -24,6 +27,13 @@ public class RouteService {
         return dao.findById(id);
     }
     public void delete(Route route) {
+
+        Collection<Trip> trips = new TripService().findTripsForRoute(route);
+        if (null != trips) {
+        for (Trip trip : trips) {
+            new TripService().delete(trip);
+        }
+        }
         dao.delete(route);
     }
     public Collection<Route> findAll() {
