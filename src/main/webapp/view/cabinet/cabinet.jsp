@@ -42,6 +42,17 @@
                 </div>
             </div>
             <hr>
+            <c:if test="${!sessionScope.user.isAdmin}">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h6 class="mb-0"> <fmt:message key="balance"/></h6>
+                    </div>
+                    <div class="col-sm-9 text-secondary">
+                            ${sessionScope.user.balance} <a href="${pageContext.request.contextPath}/top_up"><fmt:message key="top_up"/></a>
+                    </div>
+                </div>
+                <hr>
+            </c:if>
 
             <div class="row">
                 <div class="col-sm-12">
@@ -91,10 +102,6 @@
                             <li class="list-group-item"> <fmt:message key="departure"/>: ${ticket.trip.departDate} ${ticket.trip.route.departTime}</li>
                             <li class="list-group-item"> <fmt:message key="arrival"/>: ${ticket.trip.arrivalDate} ${ticket.trip.route.arrivalTime}</li>
                         </ul>
-                        <form class="m-3" action="${pageContext.request.contextPath}/tickets/${ticket.id}" method="post">
-                            <input type="hidden" name="_method" value="delete" />
-                            <input type="submit" class="btn btn-primary custom" value="<fmt:message key="cancel_purchase"/>" onclick="return confirm('<fmt:message key="confirm"/>')">
-                        </form>
                     </div>
                 </div>
             </c:forEach>

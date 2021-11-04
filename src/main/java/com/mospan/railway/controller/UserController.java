@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -152,7 +153,6 @@ public class UserController extends ResourceController{
     @Override
     protected void delete(Entity user, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (null != new TicketService().findAllForUser(user.getId()).get(1)) {
-
             ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
             ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
             logger.info("deleting user " + user.getId() + " failed: user has trips");
@@ -164,6 +164,12 @@ public class UserController extends ResourceController{
 
             resp.sendRedirect(req.getContextPath() + "/cabinet");
             return;
+        }
+        else {
+            Collection<Ticket> tickets = new TicketService().findAllForUser(user.getId()).get(0);
+            for (Ticket ticket : tickets) {
+                new TicketService().delete(ticket);
+            }
         }
         new UserService().delete((User) user);
         logger.info("user's profile " + user.getId() + " deleted successfully");

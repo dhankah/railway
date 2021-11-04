@@ -1,12 +1,13 @@
 package com.mospan.railway.service;
 
-import com.mospan.railway.dao.Dao;
+import com.mospan.railway.controller.EmailSender;
 import com.mospan.railway.dao.TripDao;
 import com.mospan.railway.model.Route;
 import com.mospan.railway.model.Ticket;
 import com.mospan.railway.model.Trip;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
 
 public class TripService {
@@ -28,6 +29,10 @@ public class TripService {
     public void delete(Trip trip) {
         Collection<Ticket> tickets = new TicketService().findTicketsForTrip(trip);
         for (Ticket ticket : tickets) {
+            if (ticket.getTrip().getDepartDate().isAfter(LocalDate.now()) ||
+                    ticket.getTrip().getDepartDate().isEqual(LocalDate.now()) && ticket.getTrip().getRoute().getDepartTime().isAfter(LocalTime.now())) {
+                EmailSender.sendTripCancelNotification(ticket);
+            }
             new TicketService().delete(ticket);
         }
         dao.delete(trip);

@@ -7,7 +7,7 @@
         <title>${pageTitle}</title>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/bootstrap.min.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/button_style.css">
-        <script src="${pageContext.request.contextPath}/view/js/validate.js"></script>
+        <script src="${pageContext.request.contextPath}/view/js/validation.js"></script>
 
     </head>
     <body>

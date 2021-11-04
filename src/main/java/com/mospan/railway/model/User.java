@@ -6,6 +6,7 @@ public class User extends Entity{
     private Detail details;
     private String login;
     private String password;
+    private double balance;
 
     public Role getRole() {
         return role;
@@ -47,4 +48,11 @@ public class User extends Entity{
         return isAdmin();
     }
 
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
 }

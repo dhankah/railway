@@ -4,6 +4,7 @@ import com.mospan.railway.model.*;
 import com.mospan.railway.service.StationService;
 import com.mospan.railway.service.TicketService;
 import com.mospan.railway.service.TripService;
+import com.mospan.railway.service.UserService;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -11,6 +12,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -35,6 +38,20 @@ public class TicketController extends ResourceController{
         ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
 
         User user = (User) req.getSession().getAttribute("user");
+
+        double price = (new TripService().findById(Long.parseLong(req.getParameter("trip"))).getRoute().getPrice());
+
+        if (user.getBalance() < price) {
+            logger.info("purchasing ticket failed: user does not have enough money");
+            if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
+                req.getSession().setAttribute("errorMessage", ua.getString("not_enough"));
+            } else {
+                req.getSession().setAttribute("errorMessage", en.getString("not_enough"));
+            }
+            resp.sendRedirect(req.getHeader("Referer"));
+            return;
+        }
+
         Collection<Ticket> tickets = (new TicketService().findAllForUser(user.getId()).get(1));
         if (null != tickets) {
 
@@ -59,6 +76,8 @@ public class TicketController extends ResourceController{
         new TripService().update(trip);
         ticket.setTrip(trip);
         ticket.setSeat(Integer.parseInt(req.getParameter("number")));
+        user.setBalance(user.getBalance() - price);
+        new UserService().update(user);
         new TicketService().insert(ticket);
         logger.info("ticket purchased successfully");
         resp.sendRedirect(req.getContextPath() + "/cabinet");
@@ -79,7 +98,15 @@ public class TicketController extends ResourceController{
     @Override
     protected void delete(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("deleting ticket " + entity.getId());
-        new TicketService().delete((Ticket) entity);
+        Ticket ticket = (Ticket) entity;
+        if ((ticket.getTrip().getDepartDate().isAfter(LocalDate.now()) ||
+                ticket.getTrip().getDepartDate().isEqual(LocalDate.now())
+                        && ticket.getTrip().getRoute().getDepartTime().isAfter(LocalTime.now()))) {
+            User user = (User) req.getSession().getAttribute("user");
+            user.setBalance(user.getBalance() + ticket.getTrip().getRoute().getPrice());
+            new UserService().update(user);
+        }
+        new TicketService().delete(ticket);
         resp.sendRedirect(req.getContextPath() + "/cabinet");
     }
 

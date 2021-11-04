@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 public class UserDao implements Dao<User>{
-    Validator validator = new Validator();
+
     ConnectionPool cp = ConnectionPool.getInstance();
     Connection con;
     DetailService detailService = new DetailService();
@@ -75,11 +75,12 @@ public class UserDao implements Dao<User>{
         con = cp.getConnection();
         PreparedStatement st = null;
         try {
-            st = con.prepareStatement("UPDATE user SET login = ?, password = ? WHERE id = ?");
+            st = con.prepareStatement("UPDATE user SET login = ?, password = ?, balance = ? WHERE id = ?");
 
             st.setString(1, user.getLogin());
             st.setString(2, user.getPassword());
-            st.setLong(3, user.getId());
+            st.setDouble(3, user.getBalance());
+            st.setLong(4, user.getId());
 
             st.executeUpdate();
 
@@ -111,7 +112,7 @@ public class UserDao implements Dao<User>{
             user.setLogin(login);
             user.setPassword(rs.getString("password"));
             user.setId(rs.getLong("id"));
-
+            user.setBalance(rs.getDouble("balance"));
             user.setDetails(detailService.findById(rs.getLong("detail_id")));
 
 
@@ -144,7 +145,7 @@ public class UserDao implements Dao<User>{
             user.setId(id);
             user.setLogin(rs.getString("login"));
             user.setPassword(rs.getString("password"));
-
+            user.setBalance(rs.getDouble("balance"));
             if (rs.getInt("role_id") == 0) {
                 user.setRole(Role.ADMIN);
             }
@@ -166,28 +167,7 @@ public class UserDao implements Dao<User>{
 
     @Override
     public Collection<User> findAll() {
-        con = cp.getConnection();
-        List<User> users = new ArrayList<>();
-
-        try {
-            PreparedStatement st = null;
-            st = con.prepareStatement("SELECT * FROM user");
-
-            ResultSet rs = st.executeQuery();
-            long id = 1;
-            while (rs.next()) {
-               User user = findById(id);
-               users.add(user);
-               id++;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            cp.closeConnection(con);
-        }
-
-        return users;
+       throw new UnsupportedOperationException();
     }
 
     public String getEmailSenderData() {
