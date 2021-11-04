@@ -153,14 +153,11 @@ public class UserController extends ResourceController{
     @Override
     protected void delete(Entity user, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (null != new TicketService().findAllForUser(user.getId()).get(1)) {
-            ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
-            ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
+            ResourceBundle rb = ResourceBundle.getBundle("i18n.resources", new Locale((String) req.getSession().getAttribute("defaultLocale")));
             logger.info("deleting user " + user.getId() + " failed: user has trips");
-            if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
-                req.getSession().setAttribute("errorMessage", ua.getString("should_cancel_trip"));
-            } else {
-                req.getSession().setAttribute("errorMessage", en.getString("should_cancel_trip"));
-            }
+
+            req.getSession().setAttribute("errorMessage", rb.getString("should_cancel_trip"));
+
 
             resp.sendRedirect(req.getContextPath() + "/cabinet");
             return;

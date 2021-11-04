@@ -55,7 +55,7 @@ public class Validator {
                 rs = st.executeQuery();
                 rs.next();
                 String temp = rs.getString("login");
-                logger.info("User edit form validation failed");
+                logger.info("User edit form validation failed: login is taken");
                 return "false";
             } else if (!user.getDetails().getEmail().equals(userUpd.getDetails().getEmail())) {
                 System.out.println("user " + user.getDetails().getEmail() + "new" + userUpd.getDetails().getEmail());
@@ -64,7 +64,7 @@ public class Validator {
                 rs = st.executeQuery();
                 rs.next();
                 String temp = rs.getString("email");
-                logger.info("User edit form validation failed");
+                logger.info("User edit form validation failed: email is taken");
                 return "false";
             }
 

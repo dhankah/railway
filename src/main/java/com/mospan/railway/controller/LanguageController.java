@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @WebServlet(value = "/language")
 public class LanguageController extends HttpServlet {
-    private static final Logger logger = Logger.getLogger(Validator.class);
+    private static final Logger logger = Logger.getLogger(LanguageController.class);
 
         @Override
         protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

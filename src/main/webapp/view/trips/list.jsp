@@ -23,7 +23,7 @@
     <div class="form-group m-5">
     <form action="${pageContext.request.contextPath}/trips/1/page" name="edit" onsubmit="validateSearchForm()">
         <div class="col-sm-3"><fmt:message key="from"/></div>
-        <select name="depart_station" style="width: 220px">
+        <select name="depart_station" class="custom_input">
             <c:forEach items="${requestScope.stations}" var="station">
                <option value = ${station.name}
                        <c:if test="${station.id == sessionScope.depart_station}"> selected </c:if>
@@ -31,7 +31,7 @@
             </c:forEach>
         </select>
         <div class="col-sm-3"><fmt:message key="to"/></div>
-        <select name="arrival_station" style="width: 220px">
+        <select name="arrival_station" class="custom_input">
             <c:forEach items="${requestScope.stations}" var="station">
                <option value = ${station.name}
                        <c:if test="${station.id == sessionScope.arrival_station}"> selected </c:if>
@@ -45,33 +45,42 @@
     </div>
 
     <c:if test="${null != sessionScope.trips}">
-        <ul class="list-group m-5">
+        <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col"><fmt:message key="train_number"/></th>
+                <th scope="col"><fmt:message key="depart_station"/></th>
+                <th scope="col"><fmt:message key="departure_date"/></th>
+                <th scope="col"><fmt:message key="departure_time"/></th>
+                <th scope="col"><fmt:message key="arrival_station"/></th>
+                <th scope="col"><fmt:message key="arrival_date"/></th>
+                <th scope="col"><fmt:message key="arrival_time"/></th>
+                <th scope="col"><fmt:message key="time"/></th>
+                <th scope="col"><fmt:message key="price"/></th>
+                <th scope="col"><fmt:message key="places"/></th>
+            </tr>
+        </thead>
+        <tbody>
             <c:forEach items="${sessionScope.trips}" var="trip">
-                <li class="list-group-item">
-                    <fmt:message key="train_number"/>
-                        ${trip.route.id}
-                    <fmt:message key="from"/>
-                        ${trip.route.startStation.name}
-                        ${trip.route.departTime}
-                        ${trip.departDate}
-                    <fmt:message key="to"/>
-                        ${trip.route.endStation.name}
-                        ${trip.route.arrivalTime}
-                        ${trip.arrivalDate}
-                    <fmt:message key="time"/>
-                        ${trip.route.day} days
-                        ${trip.route.hour} hours
-                        ${trip.route.minute} minutes
-                    <fmt:message key="price"/>
-                        ${trip.route.price}
-                    <fmt:message key="places"/>
-                        ${trip.availablePlaces}
-                    <a href="${pageContext.request.contextPath}/trips/${trip.id}/route_info"><fmt:message key="route_info"/></a>
-                    <c:if test="${not empty sessionScope.user && !sessionScope.user.isAdmin}">
-                        <a href="${pageContext.request.contextPath}/trips/${trip.id}/choose"><fmt:message key="choose_seat"/></a>
-                    </c:if>
-                </li>
+                    <tr>
+                        <td>${trip.route.id}</td>
+                        <td>${trip.route.startStation.name}</td>
+                        <td>${trip.departDate}</td>
+                        <td>${trip.route.departTime}</td>
+                        <td>${trip.route.endStation.name}</td>
+                        <td>${trip.arrivalDate}</td>
+                        <td>${trip.route.arrivalTime}</td>
+                        <td> ${trip.route.day} days ${trip.route.hour} hours ${trip.route.minute} minutes
+                        <td>${trip.route.price}</td>
+                        <td>${trip.availablePlaces}</td>
+                        <td><a href="${pageContext.request.contextPath}/trips/${trip.id}/route_info"><fmt:message key="route_info"/></a>
+                            <c:if test="${not empty sessionScope.user && !sessionScope.user.isAdmin}">
+                                <a href="${pageContext.request.contextPath}/trips/${trip.id}/choose"><fmt:message key="choose_seat"/></a>
+                            </c:if>
+                        </td>
+                    </tr>
             </c:forEach>
-        </ul>
+        </tbody>
+        </table>
     </c:if>
 </z:layout>

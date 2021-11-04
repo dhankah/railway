@@ -76,10 +76,7 @@ public class TripController extends ResourceController {
     @Override
     protected void goToPage(long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("forwarding to page " + id + " of trips");
-        ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
-        ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
-
-
+        ResourceBundle rb = ResourceBundle.getBundle("i18n.resources", new Locale((String) req.getSession().getAttribute("defaultLocale")));
 
         req.getSession().setAttribute("date", LocalDate.now());
         req.setAttribute("stations", new StationService().findAll());
@@ -107,22 +104,17 @@ public class TripController extends ResourceController {
             if (trips.isEmpty()) {
                 logger.info("found no trips for user's request");
                 req.getSession().removeAttribute("trips");
-                if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
-                    req.getSession().setAttribute("errorMessage", ua.getString("no_trains_error"));
-                } else {
-                    req.getSession().setAttribute("errorMessage", en.getString("no_trains_error"));
-                }
+
+                req.getSession().setAttribute("errorMessage", rb.getString("no_trains_error"));
             } else {
                 logger.info("search for trips was successful");
             }
         } else {
             req.getSession().removeAttribute("trips");
             logger.info("found no route for user's request");
-            if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
-                req.getSession().setAttribute("errorMessage", ua.getString("no_route_error"));
-            } else {
-                req.getSession().setAttribute("errorMessage", en.getString("no_route_error"));
-            }
+
+            req.getSession().setAttribute("errorMessage", rb.getString("no_route_error"));
+
 
         }
 

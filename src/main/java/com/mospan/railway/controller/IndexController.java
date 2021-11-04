@@ -22,6 +22,7 @@ public class IndexController extends HttpServlet {
       /*  Timer timer = new Timer();
         Task task = new Task();
         timer.schedule(task, 0,86400000);*/
+
         if (req.getSession().getAttribute("defaultLocale") == null) {
             req.getSession().setAttribute("defaultLocale", "ua");
         }

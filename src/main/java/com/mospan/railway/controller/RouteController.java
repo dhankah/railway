@@ -3,7 +3,6 @@ package com.mospan.railway.controller;
 import com.mospan.railway.model.Entity;
 import com.mospan.railway.model.Route;
 
-import com.mospan.railway.model.Trip;
 import com.mospan.railway.service.RouteService;
 import com.mospan.railway.service.StationService;
 
@@ -18,8 +17,6 @@ import java.io.IOException;
 import java.time.LocalTime;
 
 import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 
 @WebServlet (value = "/routes/*")

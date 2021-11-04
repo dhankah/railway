@@ -11,14 +11,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <z:layout pageTitle="Change password">
 
-    <form name="edit" method="post" action="${pageContext.request.contextPath}/cabinet/${sessionScope.user.id}" onsubmit="return validateEditPasswordForm">
+    <form name="edit" method="post" action="${pageContext.request.contextPath}/cabinet/${sessionScope.user.id}" onsubmit="return validateEditPasswordForm" class="m-5">
         <input type="hidden" name="_method" value="put" />
     <div class="row mb-3">
         <div class="col-sm-3">
             <h6 class="mb-0"> <fmt:message key="enter_current_password"/></h6>
         </div>
         <div class="col-sm-9 text-secondary">
-            <input type="password" class="form-control" name="old_password">
+            <input type="password" class="form-control custom_input" name="old_password">
         </div>
     </div>
     <div class="row mb-3">
@@ -26,7 +26,7 @@
             <h6 class="mb-0"><fmt:message key="enter_new_password"/></h6>
         </div>
         <div class="col-sm-9 text-secondary">
-            <input type="password" class="form-control" name="password">
+            <input type="password" class="form-control custom_input" name="password">
         </div>
     </div>
 
@@ -35,7 +35,7 @@
             <h6 class="mb-0"> <fmt:message key="reenter_new_password"/></h6>
         </div>
         <div class="col-sm-9 text-secondary">
-            <input type="password" class="form-control" name="re_password">
+            <input type="password" class="form-control custom_input" name="re_password">
         </div>
     </div>
 

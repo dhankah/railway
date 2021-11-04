@@ -21,5 +21,5 @@
             </div>
         </div>
     </div>
-    <a href="${pageContext.request.contextPath}/trips" class="btn btn-primary custom"><fmt:message key="back"/></a>
+    <a href="${pageContext.request.contextPath}/trips" class="btn btn-primary custom m-5"><fmt:message key="back"/></a>
 </z:layout>

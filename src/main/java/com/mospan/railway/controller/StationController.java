@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 
 @WebServlet (value = "/stations/*")
 public class StationController extends ResourceController {
+
     private static final Logger logger = Logger.getLogger(StationController.class);
     Validator validator = new Validator();
 
@@ -46,14 +47,12 @@ public class StationController extends ResourceController {
             resp.sendRedirect(req.getContextPath() + "/stations/1/page");
             return;
         }
-        ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
-        ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
+
+        ResourceBundle rb = ResourceBundle.getBundle("i18n.resources", new Locale((String) req.getSession().getAttribute("defaultLocale")));
         logger.info("updating station " + station.getId() + " failed");
-        if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
-            req.getSession().setAttribute("errorMessage", ua.getString("station_exists"));
-        } else {
-            req.getSession().setAttribute("errorMessage", en.getString("station_exists"));
-        }
+
+        req.getSession().setAttribute("errorMessage", rb.getString("station_exists"));
+
         resp.sendRedirect(req.getContextPath() + "/stations/1/page");
     }
 
@@ -84,15 +83,11 @@ public class StationController extends ResourceController {
             resp.sendRedirect(req.getContextPath() + "/stations/1/page");
             return;
         }
-        ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
-        ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
+        ResourceBundle rb = ResourceBundle.getBundle("i18n.resources", new Locale((String) req.getSession().getAttribute("defaultLocale")));
 
         logger.info("saving station " + station.getName() + " failed");
-        if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
-            req.getSession().setAttribute("errorMessage", ua.getString("station_exists"));
-        } else {
-            req.getSession().setAttribute("errorMessage", en.getString("station_exists"));
-        }
+
+        req.getSession().setAttribute("errorMessage", rb.getString("station_exists"));
 
         resp.sendRedirect(req.getContextPath() + "/stations/1/page");
     }

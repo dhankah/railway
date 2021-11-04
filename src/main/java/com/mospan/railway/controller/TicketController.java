@@ -34,8 +34,7 @@ public class TicketController extends ResourceController{
     @Override
     protected void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("purchasing ticket");
-        ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
-        ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
+        ResourceBundle rb = ResourceBundle.getBundle("i18n.resources", new Locale((String) req.getSession().getAttribute("defaultLocale")));
 
         User user = (User) req.getSession().getAttribute("user");
 
@@ -43,11 +42,8 @@ public class TicketController extends ResourceController{
 
         if (user.getBalance() < price) {
             logger.info("purchasing ticket failed: user does not have enough money");
-            if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
-                req.getSession().setAttribute("errorMessage", ua.getString("not_enough"));
-            } else {
-                req.getSession().setAttribute("errorMessage", en.getString("not_enough"));
-            }
+            req.getSession().setAttribute("errorMessage", rb.getString("not_enough"));
+
             resp.sendRedirect(req.getHeader("Referer"));
             return;
         }
@@ -59,11 +55,9 @@ public class TicketController extends ResourceController{
                 Trip trip = new TripService().findById(Long.parseLong(req.getParameter("trip")));
                 if (ticket.getTrip().getId() == trip.getId()) {
                     logger.info("purchasing ticket failed: user already has ticket on this trip");
-                    if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
-                        req.getSession().setAttribute("errorMessage", ua.getString("ticket_error"));
-                    } else {
-                        req.getSession().setAttribute("errorMessage", en.getString("ticket_error"));
-                    }
+
+                    req.getSession().setAttribute("errorMessage", rb.getString("ticket_error"));
+
                     resp.sendRedirect(req.getContextPath() + "/trips/" + trip.getId() + "/choose");
                     return;
                 }
