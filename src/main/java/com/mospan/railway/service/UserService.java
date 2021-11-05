@@ -30,4 +30,7 @@ public class UserService {
     public String getEmailSenderData() {
         return dao.getEmailSenderData();
     }
+    public User findByEmail(String email) {
+        return dao.findByEmail(email);
+    }
 }

@@ -82,7 +82,7 @@ public class DetailDao implements Dao<Detail>{
             detail.setId(rs.getLong("id"));
         } catch (SQLException e) {
             logger.info("search by email failed");
-            e.printStackTrace();
+            detail = null;
         } finally {
             cp.closeConnection(con);
         }

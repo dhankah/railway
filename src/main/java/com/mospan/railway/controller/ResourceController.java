@@ -87,6 +87,12 @@ public abstract class ResourceController extends HttpServlet {
                     case "page" :
                         this.goToPage(Long.parseLong(id), req, resp);
                         return;
+                    case "reset_password" :
+                        this.resetPassword(req, resp);
+                        return;
+                    case "reset_password_page" :
+                        this.resetPasswordPage(req, resp);
+                        return;
                 }
 
                 break;
@@ -103,6 +109,7 @@ public abstract class ResourceController extends HttpServlet {
 
         super.service(req, resp);
     }
+
 
     abstract Entity findModel(String id);
 
@@ -150,4 +157,11 @@ public abstract class ResourceController extends HttpServlet {
         resp.sendError(404, "Not found");
     }
 
+    protected void resetPassword(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.sendError(404, "Not found");
+    }
+
+    protected void resetPasswordPage( HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.sendError(404, "Not found");
+    }
 }

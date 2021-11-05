@@ -12,7 +12,7 @@
 <h1><fmt:message key="register"/></h1>
 <br>
     <main class="col-lg-3 col-md-4 col-sm-6 form-signin m-3 m-sm-auto">
-        <form name="edit" method="post" action="${pageContext.request.contextPath}/auth/register" onsubmit="return  validateRegisterForm()">
+        <form name="edit" method="post" action="${pageContext.request.contextPath}/auth/register" onsubmit="return validateRegisterForm()">
             <fmt:message key="login"/>
             <br>
             <input type = "text" name = "login" class="form-control"/><br>

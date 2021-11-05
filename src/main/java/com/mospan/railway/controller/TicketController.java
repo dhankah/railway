@@ -100,7 +100,7 @@ public class TicketController extends ResourceController{
             user.setBalance(user.getBalance() + ticket.getTrip().getRoute().getPrice());
             new UserService().update(user);
         }
-        new TicketService().delete(ticket);
+        new TicketService().delete(ticket, true);
         resp.sendRedirect(req.getContextPath() + "/cabinet");
     }
 

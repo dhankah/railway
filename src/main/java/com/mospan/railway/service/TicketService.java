@@ -4,6 +4,7 @@ package com.mospan.railway.service;
 import com.mospan.railway.dao.TicketDao;
 import com.mospan.railway.model.Ticket;
 import com.mospan.railway.model.Trip;
+import com.mospan.railway.util.EmailSender;
 
 import java.util.Collection;
 import java.util.List;
@@ -23,7 +24,10 @@ public class TicketService {
     public Ticket findById(long id) {
         return dao.findById(id);
     }
-    public void delete(Ticket ticket) {
+    public void delete(Ticket ticket, boolean needNotif) {
+        if (needNotif) {
+            EmailSender.sendTicketNotification(ticket, "ticket_return");
+        }
         dao.delete(ticket);
     }
     public Collection<Ticket> findAll() {

@@ -4,6 +4,7 @@ import com.mospan.railway.model.*;
 
 import com.mospan.railway.service.TicketService;
 import com.mospan.railway.service.UserService;
+
 import com.mospan.railway.util.PasswordEncryptor;
 import com.mospan.railway.util.validator.Validator;
 import org.apache.log4j.Logger;
@@ -43,6 +44,7 @@ public class UserController extends ResourceController{
 
 
         req.setCharacterEncoding("UTF-8");
+
 
 
         //update password
@@ -152,7 +154,7 @@ public class UserController extends ResourceController{
         else {
             Collection<Ticket> tickets = new TicketService().findAllForUser(user.getId()).get(0);
             for (Ticket ticket : tickets) {
-                new TicketService().delete(ticket);
+                new TicketService().delete(ticket, false);
             }
         }
         new UserService().delete((User) user);
@@ -169,4 +171,6 @@ public class UserController extends ResourceController{
     protected void changePassword(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/view/cabinet/change_password.jsp").forward(req, resp);
     }
+
+
 }

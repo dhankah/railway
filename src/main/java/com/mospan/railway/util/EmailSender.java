@@ -1,6 +1,7 @@
 package com.mospan.railway.util;
 
 import com.mospan.railway.model.Ticket;
+import com.mospan.railway.model.User;
 import com.mospan.railway.service.UserService;
 import org.apache.log4j.Logger;
 
@@ -13,21 +14,19 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class EmailSender {
+    private EmailSender() {
+    }
 
     private static final Logger logger = Logger.getLogger(EmailSender.class);
 
-    public static void sendTripCancelNotification(Ticket ticket) {
+    public static void sendTicketNotification(Ticket ticket, String reason) {
         logger.info("Sending an email");
         String recipient = ticket.getUser().getDetails().getEmail();
-
         String sender = "railway.service@outlook.com";
-
         String host = "smtp.outlook.com";
 
         Properties properties = System.getProperties();
-
         properties.setProperty("mail.smtp.host", host);
-
         properties.setProperty("mail.smtp.auth", "true");
         properties.setProperty("mail.smtp.starttls.enable", "true");
 
@@ -37,7 +36,6 @@ public class EmailSender {
                 return new PasswordAuthentication("railway.service@outlook.com", new UserService().getEmailSenderData());
             }
         });
-
         try {
             MimeMessage message = new MimeMessage(session);
 
@@ -45,18 +43,78 @@ public class EmailSender {
 
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
 
-            message.setSubject("Your trip has been cancelled");
-
-            message.setText("Dear " + ticket.getUser().getDetails().getFirstName() + ",\n\nYour trip on " + ticket.getTrip().getDepartDate() + " " +
-                    "from " + ticket.getTrip().getRoute().getStartStation().getName() + " to " + ticket.getTrip().getRoute().getEndStation().getName() +
-                    " was cancelled. Sorry for inconveniences and thank you for understanding." +
-                    "\n\nBest regards, RailwayService");
-
-
+            if (reason.equals("cancel_trip")) {
+                message.setSubject(tripCancelMessage(ticket)[0]);
+                message.setText(tripCancelMessage(ticket)[1]);
+            } else if (reason.equals("return_ticket")) {
+                message.setSubject(ticketReturnMessage(ticket)[0]);
+                message.setText(ticketReturnMessage(ticket)[1]);
+            }
             Transport.send(message);
-            logger.info("Email with trip cancel notification successfully sent to user " + ticket.getUser().getLogin());
+            logger.info("Email notification successfully sent to user " + ticket.getUser().getLogin());
         } catch (MessagingException mex) {
             mex.printStackTrace();
         }
     }
+
+
+    public static String[] tripCancelMessage(Ticket ticket) {
+        return new String[]{"Your trip has been cancelled", "Dear " + ticket.getUser().getDetails().getFirstName() + ",\n\nYour trip on " + ticket.getTrip().getDepartDate() + " " +
+                "from " + ticket.getTrip().getRoute().getStartStation().getName() + " to " + ticket.getTrip().getRoute().getEndStation().getName() +
+                " was cancelled. Sorry for inconveniences and thank you for understanding. Your money is to be returned soon" +
+                "\n\nBest regards, RailwayService"};
+    }
+
+    public static String[] ticketReturnMessage(Ticket ticket) {
+        return new String[]{"Your ticket has been returned", "Dear " + ticket.getUser().getDetails().getFirstName() + ",\n\nYour ticket for trip on " + ticket.getTrip().getDepartDate() + " " +
+                "from " + ticket.getTrip().getRoute().getStartStation().getName() + " to " + ticket.getTrip().getRoute().getEndStation().getName() +
+                " was successfully returned. Your money is to be returned soon" +
+                "\n\nBest regards, RailwayService"};
+    }
+
+
+    public static void sendUserNotification(String email, String reason) {
+        logger.info("Sending an email");
+        String recipient = email;
+        String sender = "railway.service@outlook.com";
+        String host = "smtp.outlook.com";
+
+        Properties properties = System.getProperties();
+        properties.setProperty("mail.smtp.host", host);
+        properties.setProperty("mail.smtp.auth", "true");
+        properties.setProperty("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getDefaultInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication("railway.service@outlook.com", new UserService().getEmailSenderData());
+            }
+        });
+        try {
+            MimeMessage message = new MimeMessage(session);
+
+            message.setFrom(new InternetAddress(sender));
+
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+
+            if (reason.equals("password_reset")) {
+                message.setSubject(resetPasswordMessage()[0]);
+                message.setText(resetPasswordMessage()[1]);
+            }
+            Transport.send(message);
+            logger.info("Email notification successfully sent to user");
+        } catch (MessagingException mex) {
+            mex.printStackTrace();
+        }
+    }
+
+
+    public static String[] resetPasswordMessage() {
+        return new String[]{"Password reset",
+                "You have received this email because we got a request for password reset. To create a new password follow the link" +
+                "\n" + "http://localhost:8080/railway_war" + "/auth/reset_password" +
+                "\nIf you did not request a password reset, just ignore this email." +
+                "\n\nBest regards, RailwayService"};
+    }
 }
+

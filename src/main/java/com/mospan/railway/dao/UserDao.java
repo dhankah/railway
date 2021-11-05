@@ -128,6 +128,43 @@ public class UserDao implements Dao<User>{
         return user;
     }
 
+    public User findByEmail(String email) {
+        User user = new User();
+
+        con = cp.getConnection();
+
+        try {
+            PreparedStatement st = null;
+            st = con.prepareStatement("SELECT * FROM user WHERE detail_id = ?");
+
+            st.setLong(1, new DetailService().find(email).getId());
+
+            ResultSet rs = st.executeQuery();
+            rs.next();
+
+            user.setLogin(rs.getString("login"));
+            user.setPassword(rs.getString("password"));
+            user.setId(rs.getLong("id"));
+            user.setBalance(rs.getDouble("balance"));
+            user.setDetails(detailService.findById(rs.getLong("detail_id")));
+
+
+            if (rs.getInt("role_id") == 0) {
+                user.setRole(Role.ADMIN);
+            } else {
+                user.setRole(Role.CLIENT);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            cp.closeConnection(con);
+        }
+        return user;
+    }
+
+
     @Override
     public User findById(long id) {
         con = cp.getConnection();

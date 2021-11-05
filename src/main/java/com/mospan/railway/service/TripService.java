@@ -31,9 +31,9 @@ public class TripService {
         for (Ticket ticket : tickets) {
             if (ticket.getTrip().getDepartDate().isAfter(LocalDate.now()) ||
                     ticket.getTrip().getDepartDate().isEqual(LocalDate.now()) && ticket.getTrip().getRoute().getDepartTime().isAfter(LocalTime.now())) {
-                EmailSender.sendTripCancelNotification(ticket);
+                EmailSender.sendTicketNotification(ticket, "trip_cancel");
             }
-            new TicketService().delete(ticket);
+            new TicketService().delete(ticket, false);
         }
         dao.delete(trip);
     }

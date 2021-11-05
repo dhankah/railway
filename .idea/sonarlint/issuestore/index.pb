@@ -13,8 +13,6 @@ O
 .idea/artifacts/railway_war.xml,c\f\cf36457239594bdaf39e0f1d391d64e71ea58966
 b
 2src/main/java/com/mospan/railway/model/Detail.java,5\c\5ca28b0b71b89d3669321ec3ffba845a66b8c219
-k
-;src/main/java/com/mospan/railway/service/DetailService.java,e\6\e6d85c9cdc9deb4975edfba132726be02b5e4c68
 c
 3src/main/java/com/mospan/railway/model/Station.java,3\a\3af67ca4c0d4defcaebf2880617d8fc2bae0e00d
 i
@@ -34,8 +32,6 @@ k
 ;src/main/java/com/mospan/railway/web/filter/AuthFilter.java,1\1\1187798ea1fdbfaa5e69e80be0bd36c62e442d7d
 ]
 -src/main/java/com/mospan/railway/dao/Dao.java,d\0\d040857597b15243e6333646e25d03d17bcac710
-S
-#src/main/webapp/view/auth/login.jsp,0\2\021257efb5776b07ba96bdb3c30b661b3069b513
 Y
 )src/main/webapp/view/common/bootstrap.jsp,c\9\c9d2d2c6a455742d3ab122e52f3414fc91459159
 b
@@ -50,8 +46,6 @@ Y
 railway.log,a\e\ae0f4fac67e1fe5a1af4f4b22acce5ca46b1ae99
 h
 8src/main/java/com/mospan/railway/dao/ConnectionPool.java,a\d\ad9796cf0b4cb4a561ada83c15222bb40b7ee3e2
-c
-3src/main/java/com/mospan/railway/dao/DetailDao.java,c\8\c8bf516fb26d3a116c63567916f671229ad7979e
 `
 0src/main/java/com/mospan/railway/model/Trip.java,c\7\c7916b67977a1a7cfe618fa82df981fa67190144
 T
@@ -72,26 +66,16 @@ c
 3src/main/java/com/mospan/railway/dao/TicketDao.java,b\e\be4e67707ed7581b1880e20e3cd2dc08b866261d
 a
 1src/main/java/com/mospan/railway/dao/TripDao.java,5\c\5c48092f9d0991b2abeef10c372cf8430bd4c6e2
-i
-9src/main/java/com/mospan/railway/service/UserService.java,4\8\488ca02b984636612430af4bf3b7779726fe0266
 7
 pom.xml,4\4\442292b8a7efeabbe4cc176709b833b1792140ec
-U
-%src/main/webapp/view/cabinet/edit.jsp,f\3\f34d6bcae103bc66d82a65f6278a40a530c08ed6
 `
 0src/main/java/com/mospan/railway/model/Role.java,d\c\dc40fd2dd904a7a7eaa92750a850e22d31bb567b
 X
 (src/main/webapp/view/cabinet/cabinet.jsp,c\f\cf5737afac912221c11fba985d6410cc3c84f3a3
-k
-;src/main/java/com/mospan/railway/service/TicketService.java,f\6\f6c92debeb4faaa8f00f802e60e575ba6e6cd768
 `
 0src/main/java/com/mospan/railway/model/User.java,4\2\421f207161a0eb08bf62ff79423cfa5580b4820b
-U
-%src/main/webapp/view/js/validation.js,b\f\bf23231de523396368d46e6bdbc0b234bb6bbdae
 W
 'src/main/webapp/view/cabinet/top_up.jsp,b\1\b1e3d89db610a5faa5670095076561651660427e
-s
-Csrc/main/java/com/mospan/railway/controller/ResourceController.java,2\5\257274837a0d4bc6c3d8e69e9c7fd4af10420829
 Z
 *src/main/webapp/view/trips/select_seat.jsp,b\2\b297d1fbc176ebe7e70fca5f0604d2a8b3c8811c
 m
@@ -110,8 +94,6 @@ p
 @src/main/java/com/mospan/railway/controller/RouteController.java,9\1\91b30424b352606d1d35e2aae84a6c4eaa01b642
 e
 5src/main/java/com/mospan/railway/controller/Task.java,7\9\79f35d9a67f08bbc8720b7bb2fed17b9c86a8948
-q
-Asrc/main/java/com/mospan/railway/controller/TicketController.java,3\f\3ff37d494e9251ca28d5d6ad7048facbbde4b118
 p
 @src/main/java/com/mospan/railway/controller/TopUpController.java,0\4\04a50ca49e26a671b50b1f1614acf439ac19f6cf
 o

@@ -8,7 +8,7 @@
         <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/bootstrap.min.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/button_style.css">
         <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/input.css">
-        <script src="${pageContext.request.contextPath}/view/js/validation.js"></script>
+        <script src="${pageContext.request.contextPath}/view/js/validate.js"></script>
 
     </head>
     <body>
