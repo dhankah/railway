@@ -1,6 +1,6 @@
 package com.mospan.railway.service;
 
-import com.mospan.railway.controller.EmailSender;
+import com.mospan.railway.util.EmailSender;
 import com.mospan.railway.dao.TripDao;
 import com.mospan.railway.model.Route;
 import com.mospan.railway.model.Ticket;

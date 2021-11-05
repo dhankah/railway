@@ -4,7 +4,8 @@ import com.mospan.railway.model.*;
 
 import com.mospan.railway.service.TicketService;
 import com.mospan.railway.service.UserService;
-import com.mospan.railway.validator.Validator;
+import com.mospan.railway.util.PasswordEncryptor;
+import com.mospan.railway.util.validator.Validator;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -38,8 +39,8 @@ public class UserController extends ResourceController{
     @Override
     protected void update(Entity user, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
-        ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
+        ResourceBundle rb = ResourceBundle.getBundle("i18n.resources", new Locale((String) req.getSession().getAttribute("defaultLocale")));
+
 
         req.setCharacterEncoding("UTF-8");
 
@@ -47,38 +48,27 @@ public class UserController extends ResourceController{
         //update password
         if (null != req.getParameter("password")) {
             logger.info("updating password for user " + user.getId());
-            if (req.getParameter("old_password").equals(new UserService().find(((User) user).getLogin()).getPassword())
+            if (PasswordEncryptor.hashPassword(req.getParameter("old_password")).equals(new UserService().find(((User) user).getLogin()).getPassword())
                     && req.getParameter("password").equals(req.getParameter("re_password"))) {
-                ((User) user).setPassword(req.getParameter("password"));
+                ((User) user).setPassword(PasswordEncryptor.hashPassword(req.getParameter("password")));
                 new UserService().update((User) user);
                 logger.info("password for user " + user.getId() + " updated successfully");
-                if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
-                    req.getSession().setAttribute("message", ua.getString("password_updated"));
-                } else {
-                    req.getSession().setAttribute("message", en.getString("password_updated"));
-                }
+                req.getSession().setAttribute("message", rb.getString("password_updated"));
+
             } else if (!req.getParameter("old_password").equals(new UserService().find(((User) user).getLogin()).getPassword())) {
                 logger.info("password update for user " + user.getId() + " failed: wrong old password");
-                if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
-                    req.getSession().setAttribute("errorMessage", ua.getString("wrong_old_pass"));
-                } else {
-                    req.getSession().setAttribute("errorMessage", en.getString("wrong_old_pass"));
-                }
+
+                req.getSession().setAttribute("errorMessage", rb.getString("wrong_old_pass"));
+
 
             } else if (!req.getParameter("password").equals(req.getParameter("re_password"))) {
                 logger.info("password update for user " + user.getId() + " failed: passwords do not match");
-                if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
-                    req.getSession().setAttribute("errorMessage", ua.getString("not_same+passwords"));
-                } else {
-                    req.getSession().setAttribute("errorMessage", en.getString("not_same+passwords"));
-                }
+
+                req.getSession().setAttribute("errorMessage", rb.getString("not_same+passwords"));
+
 
             } else {
-                if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
-                    req.getSession().setAttribute("errorMessage", ua.getString("sth_wrong"));
-                } else {
-                    req.getSession().setAttribute("errorMessage", en.getString("sth_wrong"));
-                }
+                    req.getSession().setAttribute("errorMessage", rb.getString("sth_wrong"));
 
             }
             resp.sendRedirect(req.getContextPath() + "/cabinet/" + user.getId() +"/change_password");
@@ -102,11 +92,9 @@ public class UserController extends ResourceController{
 
         if (validator.validateUser((User) user, userUpd).equals("false")) {
             logger.info("info update for user " + user.getId() + " failed: login or email already exists");
-            if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
-                req.getSession().setAttribute("errorMessage", ua.getString("login_email_exists"));
-            } else {
-                req.getSession().setAttribute("errorMessage", en.getString("login_email_exists"));
-            }
+
+                req.getSession().setAttribute("errorMessage", rb.getString("login_email_exists"));
+
             resp.sendRedirect(req.getContextPath() + "/cabinet/" + user.getId() + "/edit");
             return;
         } else if (validator.validateUser((User) user, userUpd).equals("no_change")) {
@@ -115,11 +103,9 @@ public class UserController extends ResourceController{
             return;
         }
 
-        if (req.getSession().getAttribute("defaultLocale").equals("ua")) {
-            req.getSession().setAttribute("message", ua.getString("profile_updated"));
-        } else {
-            req.getSession().setAttribute("message", en.getString("profile_updated"));
-        }
+
+        req.getSession().setAttribute("message", rb.getString("profile_updated"));
+
 
         new UserService().update(userUpd);
         logger.info("info for user " + user.getId() + " updated successfully");
@@ -154,6 +140,7 @@ public class UserController extends ResourceController{
     protected void delete(Entity user, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (null != new TicketService().findAllForUser(user.getId()).get(1)) {
             ResourceBundle rb = ResourceBundle.getBundle("i18n.resources", new Locale((String) req.getSession().getAttribute("defaultLocale")));
+
             logger.info("deleting user " + user.getId() + " failed: user has trips");
 
             req.getSession().setAttribute("errorMessage", rb.getString("should_cancel_trip"));

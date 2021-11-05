@@ -4,15 +4,12 @@ import com.mospan.railway.model.Detail;
 import com.mospan.railway.model.Role;
 import com.mospan.railway.model.User;
 import com.mospan.railway.service.DetailService;
-import com.mospan.railway.validator.Validator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class UserDao implements Dao<User>{
 

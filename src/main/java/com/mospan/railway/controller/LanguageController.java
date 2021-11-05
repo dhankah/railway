@@ -1,7 +1,5 @@
 package com.mospan.railway.controller;
 
-import com.mospan.railway.validator.Validator;
-import com.mysql.cj.Session;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

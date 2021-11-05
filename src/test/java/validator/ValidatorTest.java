@@ -7,7 +7,7 @@ import com.mospan.railway.model.Station;
 import com.mospan.railway.model.User;
 import com.mospan.railway.service.StationService;
 import com.mospan.railway.service.UserService;
-import com.mospan.railway.validator.Validator;
+import com.mospan.railway.util.validator.Validator;
 
 import org.junit.*;
 

@@ -3,7 +3,7 @@ package com.mospan.railway.controller;
 import com.mospan.railway.model.Entity;
 import com.mospan.railway.model.Station;
 import com.mospan.railway.service.StationService;
-import com.mospan.railway.validator.Validator;
+import com.mospan.railway.util.validator.Validator;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

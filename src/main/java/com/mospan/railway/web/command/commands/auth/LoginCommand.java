@@ -3,6 +3,7 @@ package com.mospan.railway.web.command.commands.auth;
 import com.mospan.railway.controller.IndexController;
 import com.mospan.railway.model.User;
 import com.mospan.railway.service.UserService;
+import com.mospan.railway.util.PasswordEncryptor;
 import com.mospan.railway.web.command.Command;
 import org.apache.log4j.Logger;
 
@@ -18,22 +19,20 @@ public class LoginCommand implements Command {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
-        ResourceBundle ua = ResourceBundle.getBundle("i18n.resources", new Locale("ua"));
-        ResourceBundle en = ResourceBundle.getBundle("i18n.resources", new Locale("en"));
+        ResourceBundle rb = ResourceBundle.getBundle("i18n.resources", new Locale((String) request.getSession().getAttribute("defaultLocale")));
+
 
         String login = request.getParameter("login");
-        String password = request.getParameter("password");
+        String password = PasswordEncryptor.hashPassword(request.getParameter("password"));
 
         UserService userService = new UserService();
         User user = userService.find(login);
 
         if (user == null || !user.getPassword().equals(password)) {
             logger.info("logging in failure: wrong login or password");
-            if (request.getSession().getAttribute("defaultLocale").equals("ua")) {
-                request.getSession().setAttribute("errorMessage", ua.getString("wrong_login_password"));
-            } else {
-                request.getSession().setAttribute("errorMessage", en.getString("wrong_login_password"));
-            }
+
+            request.getSession().setAttribute("errorMessage", rb.getString("wrong_login_password"));
+
 
 
             return request.getContextPath() + "/auth/login";
