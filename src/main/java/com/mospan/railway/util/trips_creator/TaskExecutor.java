@@ -1,7 +1,10 @@
-package com.mospan.railway.util.tripsCreator;
+package com.mospan.railway.util.trips_creator;
 
 import java.util.Timer;
 
+/**
+ * Schedules a task for creating trips automatically
+ */
 public class TaskExecutor {
     public static void main (String[] args) {
         Timer timer = new Timer();

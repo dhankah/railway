@@ -15,12 +15,21 @@ import java.io.IOException;
 public class TopUpController extends HttpServlet {
 
     private static final Logger logger = Logger.getLogger(TopUpController.class);
+
+    /**
+     * GET /top_up
+     * Displays topUp account form for user
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("forwarding to top_up page");
         req.getRequestDispatcher("/view/cabinet/top_up.jsp").forward(req, resp);
     }
 
+    /**
+     * POST /top_up
+     * tops user's account up
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         logger.info("topping balance up for user " + req.getSession().getAttribute("user"));

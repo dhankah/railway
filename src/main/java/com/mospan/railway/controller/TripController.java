@@ -30,6 +30,10 @@ public class TripController extends ResourceController {
         }
     }
 
+    /**
+     * GET /trips
+     * Displays a page for trips search
+     */
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -41,15 +45,15 @@ public class TripController extends ResourceController {
         req.getRequestDispatcher("/view/trips/list.jsp").forward(req, resp);
     }
 
-
+    /**
+     * Displays a page for selecting a ticket for a trip
+     */
     @Override
     protected void choose(Entity trip, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("viewing page for seat selection");
 
         List<Seat> seats = new ArrayList<>();
-
         TicketService ticketService = new TicketService();
-
         Collection<Integer> occupied = ticketService.findSeats((Trip) trip);
 
         for (int i = 1; i < 37; i++) {
@@ -65,6 +69,9 @@ public class TripController extends ResourceController {
         req.getRequestDispatcher("/view/trips/select_seat.jsp").forward(req, resp);;
     }
 
+    /**
+     * Displays a page with the route info
+     */
     @Override
     protected void routeInfo(Entity trip, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("viewing info about route " + ((Trip)trip).getRoute().getId());
@@ -72,10 +79,13 @@ public class TripController extends ResourceController {
         req.getRequestDispatcher("/view/routes/route_info.jsp").forward(req, resp);
     }
 
-
+    /**
+     * GET /trips/{id}/page
+     * Displays list of trips for the user's request
+     */
     @Override
     protected void goToPage(long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        logger.info("forwarding to page " + id + " of trips");
+        logger.info("forwarding to page " + " of trips");
         ResourceBundle rb = ResourceBundle.getBundle("i18n.resources", new Locale((String) req.getSession().getAttribute("defaultLocale")));
 
         req.getSession().setAttribute("date", LocalDate.now());
@@ -92,6 +102,7 @@ public class TripController extends ResourceController {
                 Collection<Trip> tripsForRoute = new TripService().findRecords(route, LocalDate.parse(req.getParameter("depart_date")));
                 if (tripsForRoute != null) {
                     for (Trip trip : tripsForRoute) {
+                        //trip is ignored if the train has departed before te time of request
                        if (trip.getDepartDate().isEqual(LocalDate.now()) && trip.getRoute().getDepartTime().isBefore(LocalTime.now())) {
                            continue;
                        }

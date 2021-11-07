@@ -1,4 +1,4 @@
-package com.mospan.railway.util.tripsCreator;
+package com.mospan.railway.util.trips_creator;
 
 import com.mospan.railway.model.Route;
 import com.mospan.railway.model.Trip;
@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.TimerTask;
 
+/**
+ * Creates trips for each existing route every day, so there are always trips planned for a month and a week
+ */
 public class Task extends TimerTask {
     private static final Logger logger = Logger.getLogger(Task.class);
     @Override

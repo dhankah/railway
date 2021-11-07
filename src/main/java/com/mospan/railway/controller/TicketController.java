@@ -31,6 +31,10 @@ public class TicketController extends ResourceController{
         }
     }
 
+    /**
+     * POST /tickets
+     * Save new tickets
+     */
     @Override
     protected void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("purchasing ticket");
@@ -40,6 +44,7 @@ public class TicketController extends ResourceController{
 
         double price = (new TripService().findById(Long.parseLong(req.getParameter("trip"))).getRoute().getPrice());
 
+        //user does not have enough money
         if (user.getBalance() < price) {
             logger.info("purchasing ticket failed: user does not have enough money");
             req.getSession().setAttribute("errorMessage", rb.getString("not_enough"));
@@ -50,9 +55,9 @@ public class TicketController extends ResourceController{
 
         Collection<Ticket> tickets = (new TicketService().findAllForUser(user.getId()).get(1));
         if (null != tickets) {
-
             for (Ticket ticket : tickets) {
                 Trip trip = new TripService().findById(Long.parseLong(req.getParameter("trip")));
+                //user already has a ticket for the trip
                 if (ticket.getTrip().getId() == trip.getId()) {
                     logger.info("purchasing ticket failed: user already has ticket on this trip");
 
@@ -63,6 +68,7 @@ public class TicketController extends ResourceController{
                 }
             }
         }
+        //user has no obstacles for buying a ticket
         Ticket ticket = new Ticket();
         ticket.setUser((User) req.getSession().getAttribute("user"));
         Trip trip = new TripService().findById(Long.parseLong(req.getParameter("trip")));
@@ -77,6 +83,10 @@ public class TicketController extends ResourceController{
         resp.sendRedirect(req.getContextPath() + "/cabinet");
     }
 
+    /** pretty sure we will delete this later)
+     * GET /tickets
+     * Displays list of tickets
+     */
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("viewing tickets");
@@ -89,6 +99,10 @@ public class TicketController extends ResourceController{
         req.getRequestDispatcher("/view/cabinet.jsp").forward(req, resp);
     }
 
+    /**
+     * DELETE tickets/{id}
+     * Removes a specified ticket from db
+     */
     @Override
     protected void delete(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("deleting ticket " + entity.getId());

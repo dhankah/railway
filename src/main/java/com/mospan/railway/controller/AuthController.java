@@ -30,28 +30,18 @@ public class AuthController extends HttpServlet {
         String path = req.getPathInfo();
 
 
-        if (path.equals("/login")) {
-            logger.info("forwarding to the login page");
-            req.getRequestDispatcher("/view/auth/login.jsp").forward(req, resp);
-        } else if (path.equals("/register")) {
-            logger.info("forwarding to the register page");
-            req.getRequestDispatcher("/view/auth/register.jsp").forward(req, resp);
-        } else if (path.equals("/reset_password_email_form")) {
-            req.getRequestDispatcher("/view/password_reset/email.jsp").forward(req, resp);
-        } else if (path.equals("/reset_password_email")) {
-            if (null == new DetailService().find(req.getParameter("email"))) {
-                req.getSession().setAttribute("errorMessage", rb.getString("no_user_with_such_email"));
-                req.getRequestDispatcher("/view/password_reset/email.jsp").forward(req, resp);
-                return;
-            }
-            req.getSession().setAttribute("email", req.getParameter("email"));
-            EmailSender.sendUserNotification(req.getParameter("email"), "password_reset");
-            req.getSession().setAttribute("message", rb.getString("sent_email"));
-            req.getRequestDispatcher("/view/auth/login.jsp").forward(req, resp);
-        } else if (path.equals("/reset_password")) {
-            req.getRequestDispatcher("/view/password_reset/reset_password.jsp").forward(req, resp);
-        } else {
-            resp.sendError(404, "Not found");
+        switch (path) {
+            case "/login":
+                logger.info("forwarding to the login page");
+                req.getRequestDispatcher("/view/auth/login.jsp").forward(req, resp);
+                break;
+            case "/register":
+                logger.info("forwarding to the register page");
+                req.getRequestDispatcher("/view/auth/register.jsp").forward(req, resp);
+                break;
+            default:
+                resp.sendError(404, "Not found");
+                break;
         }
     }
 

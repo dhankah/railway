@@ -19,6 +19,9 @@ public class EmailSender {
 
     private static final Logger logger = Logger.getLogger(EmailSender.class);
 
+    /**
+     * Sending a notification for {reason} - either cancelling a trip or returning a ticket
+     */
     public static void sendTicketNotification(Ticket ticket, String reason) {
         logger.info("Sending an email");
         String recipient = ticket.getUser().getDetails().getEmail();
@@ -72,49 +75,5 @@ public class EmailSender {
                 "\n\nBest regards, RailwayService"};
     }
 
-
-    public static void sendUserNotification(String email, String reason) {
-        logger.info("Sending an email");
-        String recipient = email;
-        String sender = "railway.service@outlook.com";
-        String host = "smtp.outlook.com";
-
-        Properties properties = System.getProperties();
-        properties.setProperty("mail.smtp.host", host);
-        properties.setProperty("mail.smtp.auth", "true");
-        properties.setProperty("mail.smtp.starttls.enable", "true");
-
-        Session session = Session.getDefaultInstance(properties, new Authenticator() {
-            @Override
-            protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication("railway.service@outlook.com", new UserService().getEmailSenderData());
-            }
-        });
-        try {
-            MimeMessage message = new MimeMessage(session);
-
-            message.setFrom(new InternetAddress(sender));
-
-            message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
-
-            if (reason.equals("password_reset")) {
-                message.setSubject(resetPasswordMessage()[0]);
-                message.setText(resetPasswordMessage()[1]);
-            }
-            Transport.send(message);
-            logger.info("Email notification successfully sent to user");
-        } catch (MessagingException mex) {
-            mex.printStackTrace();
-        }
-    }
-
-
-    public static String[] resetPasswordMessage() {
-        return new String[]{"Password reset",
-                "You have received this email because we got a request for password reset. To create a new password follow the link" +
-                "\n" + "http://localhost:8080/railway_war" + "/auth/reset_password" +
-                "\nIf you did not request a password reset, just ignore this email." +
-                "\n\nBest regards, RailwayService"};
-    }
 }
 

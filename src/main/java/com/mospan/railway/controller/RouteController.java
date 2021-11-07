@@ -31,10 +31,12 @@ public class RouteController extends ResourceController{
         }
     }
 
-
+    /**
+     * PUT /routes/{id}
+     * Updates specified route
+     */
     @Override
     protected void update(Entity route, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         logger.info("updating route " + route.getId());
         ((Route) route).setDepartTime(LocalTime.parse(req.getParameter("depart_time")));
         ((Route) route).setTime(convertTime(req));
@@ -48,7 +50,10 @@ public class RouteController extends ResourceController{
         resp.sendRedirect(req.getContextPath() + "/routes/1/page");
     }
 
-
+    /**
+     * GET /routes/{id}/edit
+     * Displays edit form for given route
+     */
     @Override
     protected void edit(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("redirecting to route edit page");
@@ -57,6 +62,10 @@ public class RouteController extends ResourceController{
         req.getRequestDispatcher("/view/routes/edit.jsp").forward(req, resp);
     }
 
+    /**
+     * POST /routes
+     * Save new routes
+     */
     @Override
     protected void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("saving a new route");
@@ -72,25 +81,29 @@ public class RouteController extends ResourceController{
         resp.sendRedirect(req.getContextPath() + "/routes/1/page");
     }
 
+    /**
+     * GET /routes
+     * Displays list of routes
+     */
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        req.setAttribute("time", LocalTime.MIDNIGHT);
-        req.setAttribute("stations", new StationService().findAll());
-        req.setAttribute("routes", new RouteService().findAll());
-        req.getRequestDispatcher("/view/routes/list.jsp").forward(req, resp);
+        goToPage(1, req, resp);
     }
 
-
+    /**
+     * DELETE routes/{id}
+     * Removes a specified route from db
+     */
     @Override
     protected void delete(Entity route, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         logger.info("deleting route " + route.getId());
         new RouteService().delete((Route) route);
         resp.sendRedirect(req.getContextPath() + "/routes/1/page");
     }
 
-
+    /**
+     * converting time from days, hours, minutes to seconds format
+     */
     private long convertTime(HttpServletRequest req) {
         Long days = (!"".equals(req.getParameter("days"))) ? Long.parseLong(req.getParameter("days")) : 0;
         Long hours = (!"".equals(req.getParameter("hours"))) ? Long.parseLong(req.getParameter("hours")) : 0;
@@ -99,9 +112,12 @@ public class RouteController extends ResourceController{
         hours += days * 24;
         minutes += hours * 60;
         return minutes * 60;
-
     }
 
+    /**
+     * GET /routes/{id}/page
+     * Displays list of routes for the page {id}
+     */
     @Override
     protected void goToPage(long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("forwarding to page " + id + " of routes");

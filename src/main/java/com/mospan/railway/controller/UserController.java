@@ -34,8 +34,8 @@ public class UserController extends ResourceController{
     }
 
     /**
-     * PUT /stations/{id}
-     * Updates specified station
+     * PUT /cabinet/{id}
+     * Updates user info
      */
     @Override
     protected void update(Entity user, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -114,6 +114,10 @@ public class UserController extends ResourceController{
         resp.sendRedirect(req.getContextPath() + "/cabinet");
     }
 
+    /**
+     * GET /cabinet/{id}/edit
+     * Displays edit form for the user
+     */
     @Override
     protected void edit(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("forwarding to user edit page");
@@ -122,7 +126,10 @@ public class UserController extends ResourceController{
     }
 
 
-
+    /**
+     * GET /cabinet
+     * Displays user's cabinet page
+     */
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("forwarding to user cabinet page");
@@ -137,7 +144,10 @@ public class UserController extends ResourceController{
         req.getRequestDispatcher("/view/cabinet/cabinet.jsp").forward(req, resp);
     }
 
-
+    /**
+     * DELETE cabinet/{id}
+     * Deletes user from db
+     */
     @Override
     protected void delete(Entity user, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (null != new TicketService().findAllForUser(user.getId()).get(1)) {
@@ -167,6 +177,10 @@ public class UserController extends ResourceController{
         resp.sendRedirect(req.getContextPath() + "/auth/login");
     }
 
+    /**
+     * GET /cabinet/{id}/change_password
+     * Displays password change form for the user
+     */
     @Override
     protected void changePassword(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/view/cabinet/change_password.jsp").forward(req, resp);

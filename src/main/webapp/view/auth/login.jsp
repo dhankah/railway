@@ -30,8 +30,6 @@
 
         </form>
         <a href="${pageContext.request.contextPath}/auth/register"> <fmt:message key="register"/></a>
-        <a href="${pageContext.request.contextPath}/auth/reset_password_email_form"> <fmt:message key="reset_password"/></a>
-
     </main>
 
 </z:layout>

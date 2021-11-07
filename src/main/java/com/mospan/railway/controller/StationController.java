@@ -98,15 +98,12 @@ public class StationController extends ResourceController {
      */
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        List<Station> stations = (List<Station>) new StationService().findAll();
-        req.setAttribute("stations", stations);
-        req.getRequestDispatcher("/view/stations/list.jsp").forward(req, resp);
+        goToPage(1, req, resp);
     }
 
     /**
      * DELETE stations/{id}
-     * Removes specified station from db
+     * Removes a specified station from db
      */
     @Override
     protected void delete(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -115,6 +112,10 @@ public class StationController extends ResourceController {
         resp.sendRedirect(req.getContextPath() + "/stations/1/page");
     }
 
+    /**
+     * GET /stations/{id}/page
+     * Displays list of stations for the page {id}
+     */
     @Override
     protected void goToPage(long id, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("forwarding to page " + id + " of stations");
