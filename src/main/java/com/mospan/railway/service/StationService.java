@@ -1,13 +1,13 @@
 package com.mospan.railway.service;
 
-import com.mospan.railway.dao.StationDao;
+import com.mospan.railway.dao.impl.StationDaoImpl;
 import com.mospan.railway.model.Route;
 import com.mospan.railway.model.Station;
 
 import java.util.Collection;
 
 public class StationService {
-    StationDao dao = new StationDao();
+    StationDaoImpl dao = new StationDaoImpl();
 
     public void insert(Station station) {
         dao.insert(station);

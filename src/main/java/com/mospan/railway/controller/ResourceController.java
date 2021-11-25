@@ -12,10 +12,6 @@ import java.io.IOException;
 public abstract class ResourceController extends HttpServlet {
     private static final String ACTION_CREATE = "create";
     private static final String ACTION_EDIT = "edit";
-    private static final String NOT_FOUND = "edit";
-
-
-
 
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String method = req.getMethod();

@@ -1,13 +1,13 @@
 package com.mospan.railway.service;
 
-import com.mospan.railway.dao.Dao;
-import com.mospan.railway.dao.DetailDao;
+import com.mospan.railway.dao.impl.DetailDaoImpl;
+import com.mospan.railway.dao.interfaces.DetailDao;
 import com.mospan.railway.model.Detail;
 
 import java.util.Collection;
 
 public class DetailService {
-    Dao<Detail> dao = new DetailDao();
+    DetailDao dao = new DetailDaoImpl();
 
     public void insert(Detail detail) {
         dao.insert(detail);

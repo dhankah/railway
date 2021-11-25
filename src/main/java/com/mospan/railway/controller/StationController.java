@@ -2,6 +2,7 @@ package com.mospan.railway.controller;
 
 import com.mospan.railway.model.Entity;
 import com.mospan.railway.model.Station;
+
 import com.mospan.railway.service.StationService;
 import com.mospan.railway.util.validator.Validator;
 import org.apache.log4j.Logger;
@@ -64,7 +65,7 @@ public class StationController extends ResourceController {
     protected void edit(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("forwarding to station edit page");
         req.setCharacterEncoding("UTF-8");
-        req.setAttribute("station", (Station) entity);
+        req.setAttribute("station", entity);
         req.getRequestDispatcher("/view/stations/edit.jsp").forward(req, resp);
     }
 

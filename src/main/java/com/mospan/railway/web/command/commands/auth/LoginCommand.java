@@ -1,6 +1,5 @@
 package com.mospan.railway.web.command.commands.auth;
 
-import com.mospan.railway.controller.IndexController;
 import com.mospan.railway.model.User;
 import com.mospan.railway.service.UserService;
 import com.mospan.railway.util.PasswordEncryptor;

@@ -30,7 +30,7 @@ public class IndexController extends HttpServlet {
 
 
         if (user != null && user.isAdmin()){
-            logger.info("redirecting to the trips page");
+            logger.info("redirecting to the stations page");
             resp.sendRedirect(req.getContextPath() + "/stations/1/page");
         } else {
             logger.info("redirecting to the trips page");

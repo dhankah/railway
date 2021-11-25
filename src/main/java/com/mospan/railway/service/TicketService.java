@@ -1,7 +1,8 @@
 package com.mospan.railway.service;
 
 
-import com.mospan.railway.dao.TicketDao;
+import com.mospan.railway.dao.impl.TicketDaoImpl;
+import com.mospan.railway.dao.interfaces.TicketDao;
 import com.mospan.railway.model.Ticket;
 import com.mospan.railway.model.Trip;
 import com.mospan.railway.util.EmailSender;
@@ -10,16 +11,13 @@ import java.util.Collection;
 import java.util.List;
 
 public class TicketService {
-    TicketDao dao = new TicketDao();
+    TicketDao dao = new TicketDaoImpl();
 
     public void insert(Ticket ticket) {
         dao.insert(ticket);
     }
     public void update(Ticket ticket) {
         dao.update(ticket);
-    }
-    public Ticket find(String param) {
-        return dao.find(param);
     }
     public Ticket findById(long id) {
         return dao.findById(id);

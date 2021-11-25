@@ -1,13 +1,13 @@
 package com.mospan.railway.service;
 
-import com.mospan.railway.dao.Dao;
-import com.mospan.railway.dao.UserDao;
+import com.mospan.railway.dao.impl.UserDaoImpl;
+import com.mospan.railway.dao.interfaces.UserDao;
 import com.mospan.railway.model.User;
 
 import java.util.Collection;
 
 public class UserService {
-    UserDao dao = new UserDao();
+    UserDao dao = new UserDaoImpl();
 
     public void insert(User user) {
         dao.insert(user);
@@ -23,9 +23,6 @@ public class UserService {
     }
     public void delete(User user) {
         dao.delete(user);
-    }
-    public Collection<User> findAll() {
-        return dao.findAll();
     }
     public String getEmailSenderData() {
         return dao.getEmailSenderData();

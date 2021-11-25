@@ -1,7 +1,6 @@
 package com.mospan.railway.controller;
 
 import com.mospan.railway.model.*;
-import com.mospan.railway.service.StationService;
 import com.mospan.railway.service.TicketService;
 import com.mospan.railway.service.TripService;
 import com.mospan.railway.service.UserService;
@@ -83,15 +82,15 @@ public class TicketController extends ResourceController{
         resp.sendRedirect(req.getContextPath() + "/cabinet");
     }
 
-    /** pretty sure we will delete this later)
+    /**
      * GET /tickets
      * Displays list of tickets
      */
     @Override
     protected void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("viewing tickets");
-        List<Ticket> upcomingTickets = ((List<Ticket>) new TicketService().findAllForUser(((User)req.getSession().getAttribute("user")).getId()).get(1));
-        List<Ticket> oldTickets = ((List<Ticket>) new TicketService().findAllForUser(((User)req.getSession().getAttribute("user")).getId()).get(1));
+        List<Ticket> upcomingTickets = (new TicketService().findAllForUser(((User)req.getSession().getAttribute("user")).getId()).get(1));
+        List<Ticket> oldTickets = (new TicketService().findAllForUser(((User)req.getSession().getAttribute("user")).getId()).get(1));
 
         req.setAttribute("upcoming_tickets", upcomingTickets);
         req.setAttribute("old_tickets", oldTickets);

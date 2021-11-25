@@ -19,9 +19,8 @@ public class Validator {
     public boolean validateStations(Station station) {
         logger.info("Starting station form validation");
         con = cp.getConnection();
-        PreparedStatement st = null;
-        try {
-            st = con.prepareStatement("SELECT * FROM station WHERE name = ?");
+
+        try (PreparedStatement st = con.prepareStatement("SELECT * FROM station WHERE name = ?")) {
             st.setString(1, station.getName());
             ResultSet rs = st.executeQuery();
             rs.next();
@@ -49,7 +48,6 @@ public class Validator {
         try {
             ResultSet rs;
             if (!user.getLogin().equals(userUpd.getLogin())) {
-                System.out.println("user " + user.getLogin() + "new" + userUpd.getLogin());
                 st = con.prepareStatement("SELECT * FROM user WHERE login = ?");
                 st.setString(1, userUpd.getLogin());
                 rs = st.executeQuery();
@@ -58,7 +56,7 @@ public class Validator {
                 logger.info("User edit form validation failed: login is taken");
                 return "false";
             } else if (!user.getDetails().getEmail().equals(userUpd.getDetails().getEmail())) {
-                System.out.println("user " + user.getDetails().getEmail() + "new" + userUpd.getDetails().getEmail());
+
                 st = con.prepareStatement("SELECT * FROM detail WHERE email = ?");
                 st.setString(1, userUpd.getDetails().getEmail());
                 rs = st.executeQuery();
@@ -83,10 +81,8 @@ public class Validator {
     public boolean validateRegisterUser(User user) {
         logger.info("Starting user register form validation");
         con = cp.getConnection();
-        PreparedStatement st = null;
-        try {
+        try (PreparedStatement st = con.prepareStatement("SELECT * FROM user WHERE login = ?")) {
             ResultSet rs;
-            st = con.prepareStatement("SELECT * FROM user WHERE login = ?");
             st.setString(1, user.getLogin());
             rs = st.executeQuery();
             rs.next();
@@ -105,10 +101,7 @@ public class Validator {
     public boolean validateEmailRegister(User user) {
         logger.info("Starting user register form validation");
         con = cp.getConnection();
-        PreparedStatement st = null;
-        System.out.println(user.getLogin());
-        try {
-            st = con.prepareStatement("SELECT * FROM detail WHERE email = ?");
+        try (PreparedStatement st = con.prepareStatement("SELECT * FROM detail WHERE email = ?")) {
             st.setString(1, user.getDetails().getEmail());
             ResultSet rs = st.executeQuery();
             rs.next();

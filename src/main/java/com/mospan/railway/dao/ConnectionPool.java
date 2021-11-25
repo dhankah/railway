@@ -3,6 +3,7 @@ package com.mospan.railway.dao;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 
+import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -45,7 +46,7 @@ public class ConnectionPool {
     }
 
 
-    private void createPool() throws Exception {
+    private void createPool() throws PropertyVetoException {
         cpds = new ComboPooledDataSource();
         cpds.setDriverClass("com.mysql.jdbc.Driver");
         cpds.setJdbcUrl("jdbc:mysql://localhost:3306/railway?useUnicode=true&characterEncoding=utf8");

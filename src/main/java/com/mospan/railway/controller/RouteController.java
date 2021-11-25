@@ -71,12 +71,12 @@ public class RouteController extends ResourceController{
         logger.info("saving a new route");
         Route route = new Route();
 
-        ((Route) route).setDepartTime(LocalTime.parse(req.getParameter("depart_time")));
+        route.setDepartTime(LocalTime.parse(req.getParameter("depart_time")));
 
-        ((Route) route).setTime(convertTime(req));
-        ((Route) route).setStartStation(new StationService().find(req.getParameter("start_station")));
-        ((Route) route).setEndStation(new StationService().find(req.getParameter("end_station")));
-        ((Route) route).setPrice(Double.parseDouble(req.getParameter("price")));
+        route.setTime(convertTime(req));
+        route.setStartStation(new StationService().find(req.getParameter("start_station")));
+        route.setEndStation(new StationService().find(req.getParameter("end_station")));
+        route.setPrice(Double.parseDouble(req.getParameter("price")));
         new RouteService().insert(route);
         resp.sendRedirect(req.getContextPath() + "/routes/1/page");
     }
@@ -105,9 +105,9 @@ public class RouteController extends ResourceController{
      * converting time from days, hours, minutes to seconds format
      */
     private long convertTime(HttpServletRequest req) {
-        Long days = (!"".equals(req.getParameter("days"))) ? Long.parseLong(req.getParameter("days")) : 0;
-        Long hours = (!"".equals(req.getParameter("hours"))) ? Long.parseLong(req.getParameter("hours")) : 0;
-        Long minutes = (!"".equals(req.getParameter("minutes"))) ? Long.parseLong(req.getParameter("minutes")) : 0;
+        long days = (!"".equals(req.getParameter("days"))) ? Long.parseLong(req.getParameter("days")) : 0;
+        long hours = (!"".equals(req.getParameter("hours"))) ? Long.parseLong(req.getParameter("hours")) : 0;
+        long minutes = (!"".equals(req.getParameter("minutes"))) ? Long.parseLong(req.getParameter("minutes")) : 0;
 
         hours += days * 24;
         minutes += hours * 60;

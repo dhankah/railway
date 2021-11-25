@@ -1,9 +1,9 @@
 package com.mospan.railway.controller;
 
 import com.mospan.railway.model.User;
-import com.mospan.railway.service.DetailService;
+
 import com.mospan.railway.service.UserService;
-import com.mospan.railway.util.EmailSender;
+
 import com.mospan.railway.util.PasswordEncryptor;
 import com.mospan.railway.web.command.commands.auth.LoginCommand;
 import com.mospan.railway.web.command.commands.auth.LogoutCommand;
@@ -25,7 +25,6 @@ public class AuthController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        ResourceBundle rb = ResourceBundle.getBundle("i18n.resources", new Locale((String) req.getSession().getAttribute("defaultLocale")));
 
         String path = req.getPathInfo();
 
@@ -73,7 +72,7 @@ public class AuthController extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         ResourceBundle rb = ResourceBundle.getBundle("i18n.resources", new Locale((String) req.getSession().getAttribute("defaultLocale")));
         User user = new UserService().findByEmail((String) req.getSession().getAttribute(("email")));
         if (PasswordEncryptor.hashPassword(req.getParameter("password1")).equals((PasswordEncryptor.hashPassword(req.getParameter("password2"))))) {

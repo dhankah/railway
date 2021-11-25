@@ -1,7 +1,7 @@
 package com.mospan.railway.util;
 
 import com.mospan.railway.model.Ticket;
-import com.mospan.railway.model.User;
+
 import com.mospan.railway.service.UserService;
 import org.apache.log4j.Logger;
 

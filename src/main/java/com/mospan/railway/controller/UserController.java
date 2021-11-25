@@ -83,10 +83,10 @@ public class UserController extends ResourceController{
         userUpd.setId(user.getId());
         userUpd.setPassword(((User)user).getPassword());
         userUpd.setLogin(req.getParameter("login"));
+        userUpd.setBalance(((User) user).getBalance());
         Detail detailUpd = new Detail();
         detailUpd.setId(user.getId());
         detailUpd.setFirstName(req.getParameter("first_name"));
-
         detailUpd.setLastName(req.getParameter("last_name"));
         detailUpd.setEmail(req.getParameter("email"));
         userUpd.setDetails(detailUpd);
