@@ -106,13 +106,7 @@ public class TicketController extends ResourceController{
     protected void delete(Entity entity, HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("deleting ticket " + entity.getId());
         Ticket ticket = (Ticket) entity;
-        if ((ticket.getTrip().getDepartDate().isAfter(LocalDate.now()) ||
-                ticket.getTrip().getDepartDate().isEqual(LocalDate.now())
-                        && ticket.getTrip().getRoute().getDepartTime().isAfter(LocalTime.now()))) {
-            User user = (User) req.getSession().getAttribute("user");
-            user.setBalance(user.getBalance() + ticket.getTrip().getRoute().getPrice());
-            new UserService().update(user);
-        }
+
         new TicketService().delete(ticket, true);
         resp.sendRedirect(req.getContextPath() + "/cabinet");
     }

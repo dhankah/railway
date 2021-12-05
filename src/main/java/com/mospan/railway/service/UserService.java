@@ -4,7 +4,6 @@ import com.mospan.railway.dao.impl.UserDaoImpl;
 import com.mospan.railway.dao.interfaces.UserDao;
 import com.mospan.railway.model.User;
 
-import java.util.Collection;
 
 public class UserService {
     UserDao dao = new UserDaoImpl();

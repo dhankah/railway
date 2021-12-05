@@ -195,11 +195,11 @@ public class RouteDaoImpl implements RouteDao {
 
         if (id != 1) {
             id = id - 1;
-            id = id * 10 + 1;
+            id = id * 5 + 1;
         }
 
 
-        try (PreparedStatement st = con.prepareStatement("SELECT * FROM route LIMIT ?, 10")) {
+        try (PreparedStatement st = con.prepareStatement("SELECT * FROM route LIMIT ?, 5")) {
             st.setLong(1, id - 1);
             ResultSet rs = st.executeQuery();
             while (rs.next()) {

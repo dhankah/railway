@@ -192,9 +192,10 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public String getEmailSenderData() {
+
         con = cp.getConnection();
         String p = null;
-        try (PreparedStatement st = con.prepareStatement("SELECT password FROM email_data where email = 'railway.service@outlook.com'")) {
+        try (PreparedStatement st = con.prepareStatement("SELECT password FROM email_data where email = 'railway.service@hotmail.com'")) {
 
             ResultSet rs = st.executeQuery();
             rs.next();

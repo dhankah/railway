@@ -1,6 +1,7 @@
 package com.mospan.railway.service;
 
 import com.mospan.railway.dao.interfaces.TripDao;
+import com.mospan.railway.model.User;
 import com.mospan.railway.util.EmailSender;
 import com.mospan.railway.dao.impl.TripDaoImpl;
 import com.mospan.railway.model.Route;
@@ -30,6 +31,9 @@ public class TripService {
             if (ticket.getTrip().getDepartDate().isAfter(LocalDate.now()) ||
                     ticket.getTrip().getDepartDate().isEqual(LocalDate.now()) && ticket.getTrip().getRoute().getDepartTime().isAfter(LocalTime.now())) {
                 EmailSender.sendTicketNotification(ticket, "trip_cancel");
+                User user = ticket.getUser();
+                user.setBalance(user.getBalance() + ticket.getTrip().getRoute().getPrice());
+                new UserService().update(user);
             }
             new TicketService().delete(ticket, false);
         }

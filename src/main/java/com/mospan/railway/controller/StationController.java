@@ -124,7 +124,7 @@ public class StationController extends ResourceController {
         req.setAttribute("stations", stationsForList);
 
         int size = new StationService().findAll().size();
-        int pages = size % 10 == 0 ? size / 10 : size / 10 + 1;
+        int pages = size % 5 == 0 ? size / 5 : size / 5 + 1;
         req.setAttribute("pages", pages);
 
         List<Station> stations = (List<Station>) new StationService().findRecords(id);

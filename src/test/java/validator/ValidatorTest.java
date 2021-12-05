@@ -16,6 +16,7 @@ public class ValidatorTest {
     static Station dbStation = new Station();
     static User dbUser = new User();
 
+
     @BeforeClass
     public static void setUp() {
         //inserting station

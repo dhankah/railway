@@ -5,6 +5,7 @@ import com.mospan.railway.dao.impl.TicketDaoImpl;
 import com.mospan.railway.dao.interfaces.TicketDao;
 import com.mospan.railway.model.Ticket;
 import com.mospan.railway.model.Trip;
+import com.mospan.railway.model.User;
 import com.mospan.railway.util.EmailSender;
 
 import java.util.Collection;
@@ -25,6 +26,9 @@ public class TicketService {
     public void delete(Ticket ticket, boolean needNotif) {
         if (needNotif) {
             EmailSender.sendTicketNotification(ticket, "ticket_return");
+            User user = ticket.getUser();
+            user.setBalance(user.getBalance() + ticket.getTrip().getRoute().getPrice());
+            new UserService().update(user);
         }
         dao.delete(ticket);
     }

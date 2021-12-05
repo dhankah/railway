@@ -126,7 +126,7 @@ public class RouteController extends ResourceController{
         req.setAttribute("routes", new RouteService().findAll());
 
         int size = new RouteService().findAll().size();
-        int pages = size % 10 == 0 ? size / 10 : size / 10 + 1;
+        int pages = size % 5 == 0 ? size / 5 : size / 5 + 1;
         req.setAttribute("pages", pages);
 
         List<Route> routes = (List<Route>) new RouteService().findRecords(id);
